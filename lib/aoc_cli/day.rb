@@ -37,7 +37,7 @@ module AocCli
 		end
 		module Data
 			class DayObject
-				attr_reader :user, :year, :day, :data
+				attr_reader :user, :year, :day, :data, :dir
 				def initialize(
 					user:Files::Metafile.get(:user),
 					year:Files::Metafile.get(:year),
@@ -46,15 +46,15 @@ module AocCli
 					@year = Interface::Validate.year(year)
 					@day = Interface::Validate.day(day)
 					@data = parse(raw: fetch)
-					@dir = dir
+					@dir = dir ||= get_dir
 				end
 				def write
 					puts "#{dir}/#{path}"
 					File.write("#{dir}/#{path}", data)
 				end
-				def dir
-					dir ||= get_dir
-				end
+				#def dir
+					#dir ||= get_dir
+				#end
 				protected
 				def get_dir
 					day.to_i < 10 ? "0#{day}" : day.to_s

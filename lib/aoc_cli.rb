@@ -73,6 +73,10 @@ module AocCli
 				day
 			end
 			def self.part(part)
+				raise Errors::PartNil if part.nil?
+				raise Errors::PuzzComp if part.to_i == 3
+				raise Errors::PartInv if part.to_i < 1 || part.to_i > 2
+				part
 			end
 			def self.val?(k:, v:)
 				if v.nil? 

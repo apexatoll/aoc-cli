@@ -95,5 +95,32 @@ module AocCli
 				error
 			end
 		end
+		class PartNil < StandardError
+			def message
+				<<~error
+				#{ERROR}: No part value passed.
+				Check the .meta file or pass it manually with the #{"-p".yellow} or #{"--part".yellow} flags
+				error
+			end
+		end
+		class PartInv < StandardError
+			attr_reader :part
+			def initialize(part)
+				@part = part
+			end
+			def message
+				<<~error
+				#{ERROR}: Invalid part passed: #{part.red}
+				Part refers to the part of the puzzle and can either be 1 or 2.
+				error
+			end
+		end
+		class PuzzComp < StandardError
+			def message
+				<<~error
+				#{ERROR}: This puzzle is already complete!
+				error
+			end
+		end
 	end
 end

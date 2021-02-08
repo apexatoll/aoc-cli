@@ -46,18 +46,30 @@ module AocCli
 			def self.type
 				read.scan(/(?<=dir=>).[A-Z]*$/).first.to_sym
 			end
-			def self.add(hash:)
+			def self.add(hash:, dir:".")
 				hash.map {|k, v| "#{k}=>#{v}\n"}
-					.each{|l| File.write(path, l, mode:"a")}
+					.each{|l| File.write("#{dir}/#{path}",l , mode:"a")}
+			end
+			def self.delete(keys:, dir:".")
+				del = keys.map{|k| /^#{k}=>.*$/}
+				new = lines(dir:dir).reject{|l| del.map{|r| r.match?(l)}.any?}.join
+				write(file:new, dir:dir)
 			end
 			def self.get_part(day:)
 				JSON.parse(read.scan(/(?<=stars=>).*$/)&.first)[day.to_s].to_i + 1
 			end
-			def self.path
-				".meta"
+			def self.path(dir:".")
+				"#{dir}/.meta"
 			end
 			private
-			def self.read
+			def self.write(file:, dir:".")
+				
+			end
+			def self.read(dir:".")
+				raise Errors::NotInit unless File.exist?(path)
+				File.read(path)
+			end
+			def self.lines(dir:".")
 				raise Errors::NotInit unless File.exist?(path)
 				File.read(path)
 			end

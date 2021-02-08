@@ -1,0 +1,187 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AlrInit	lib/aoc_cli/errors.rb	/^		class AlrInit < StandardError$/;"	c	class:AocCli.Errors
+AocCli	lib/aoc_cli.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/commands.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/day.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/errors.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/files.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/solve.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/tools.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/version.rb	/^module AocCli$/;"	m
+AocCli	lib/aoc_cli/year.rb	/^module AocCli$/;"	m
+Calendar	lib/aoc_cli/year.rb	/^			class Calendar < YearObject$/;"	c	class:AocCli.Year.Data
+Calendar	lib/aoc_cli/year.rb	/^		class Calendar$/;"	c	class:AocCli.Year
+Commands	lib/aoc_cli/commands.rb	/^	module Commands$/;"	m	class:AocCli
+Config	lib/aoc_cli/files.rb	/^		class Config$/;"	c	class:AocCli.Files
+Convert	lib/aoc_cli/tools.rb	/^		class Convert$/;"	c	class:AocCli.Tools
+Cookie	lib/aoc_cli/files.rb	/^		class Cookie < Config$/;"	c	class:AocCli.Files
+Correct	lib/aoc_cli/solve.rb	/^			class Correct < Solve$/;"	c	class:AocCli.Solve.Responses
+Data	lib/aoc_cli/day.rb	/^		module Data$/;"	m	class:AocCli.Day
+Data	lib/aoc_cli/year.rb	/^		module Data$/;"	m	class:AocCli.Year
+Day	lib/aoc_cli/day.rb	/^	module Day$/;"	m	class:AocCli
+DayInit	lib/aoc_cli/commands.rb	/^		class DayInit$/;"	c	class:AocCli.Commands
+DayObject	lib/aoc_cli/day.rb	/^			class DayObject$/;"	c	class:AocCli.Day.Data
+DaySolve	lib/aoc_cli/commands.rb	/^		class DaySolve$/;"	c	class:AocCli.Commands
+Errors	lib/aoc_cli/errors.rb	/^	module Errors$/;"	m	class:AocCli
+Files	lib/aoc_cli/files.rb	/^	module Files$/;"	m	class:AocCli
+FlagInv	lib/aoc_cli/errors.rb	/^		class FlagInv < StandardError$/;"	c	class:AocCli.Errors
+Get	lib/aoc_cli/tools.rb	/^		class Get < Convert$/;"	c	class:AocCli.Tools
+Incorrect	lib/aoc_cli/solve.rb	/^			class Incorrect < Solve$/;"	c	class:AocCli.Solve.Responses
+Init	lib/aoc_cli/day.rb	/^		class Init$/;"	c	class:AocCli.Day
+Input	lib/aoc_cli/day.rb	/^			class Input < DayObject$/;"	c	class:AocCli.Day.Data
+Interface	lib/aoc_cli.rb	/^	module Interface$/;"	m	class:AocCli
+KeyDup	lib/aoc_cli/errors.rb	/^		class KeyDup < StandardError$/;"	c	class:AocCli.Errors
+KeyNil	lib/aoc_cli/errors.rb	/^		class KeyNil < StandardError$/;"	c	class:AocCli.Errors
+KeyNot	lib/aoc_cli/errors.rb	/^		class KeyNot < StandardError$/;"	c	class:AocCli.Errors
+KeyStore	lib/aoc_cli/commands.rb	/^		class KeyStore$/;"	c	class:AocCli.Commands
+Meta	lib/aoc_cli/year.rb	/^		class Meta$/;"	c	class:AocCli.Year
+Metafile	lib/aoc_cli/files.rb	/^		class Metafile$/;"	c	class:AocCli.Files
+NotInit	lib/aoc_cli/errors.rb	/^		class NotInit < StandardError$/;"	c	class:AocCli.Errors
+Opts	lib/aoc_cli.rb	/^		class Opts$/;"	c	class:AocCli.Interface
+PartInv	lib/aoc_cli/errors.rb	/^		class PartInv < StandardError$/;"	c	class:AocCli.Errors
+PartNil	lib/aoc_cli/errors.rb	/^		class PartNil < StandardError$/;"	c	class:AocCli.Errors
+Post	lib/aoc_cli/tools.rb	/^		class Post < Convert$/;"	c	class:AocCli.Tools
+PuzzComp	lib/aoc_cli/errors.rb	/^		class PuzzComp < StandardError$/;"	c	class:AocCli.Errors
+Puzzle	lib/aoc_cli/day.rb	/^			class Puzzle < DayObject$/;"	c	class:AocCli.Day.Data
+Query	lib/aoc_cli.rb	/^		class Query$/;"	c	class:AocCli.Interface
+Request	lib/aoc_cli/tools.rb	/^		class Request$/;"	c	class:AocCli.Tools
+Responses	lib/aoc_cli/solve.rb	/^		module Responses$/;"	m	class:AocCli.Solve
+RootNot	lib/aoc_cli/errors.rb	/^		class RootNot < StandardError$/;"	c	class:AocCli.Errors
+Solve	lib/aoc_cli/solve.rb	/^		class Solve$/;"	c	class:AocCli.Solve
+Solve	lib/aoc_cli/solve.rb	/^	module Solve$/;"	m	class:AocCli
+Stats	lib/aoc_cli/year.rb	/^			class Stats < YearObject$/;"	c	class:AocCli.Year.Data
+Tools	lib/aoc_cli/tools.rb	/^	module Tools$/;"	m	class:AocCli
+UserDup	lib/aoc_cli/errors.rb	/^		class UserDup < StandardError$/;"	c	class:AocCli.Errors
+Validate	lib/aoc_cli.rb	/^		class Validate$/;"	c	class:AocCli.Interface
+Wait	lib/aoc_cli/solve.rb	/^			class Wait$/;"	c	class:AocCli.Solve.Responses
+Year	lib/aoc_cli/year.rb	/^	module Year$/;"	m	class:AocCli
+YearInit	lib/aoc_cli/commands.rb	/^		class YearInit$/;"	c	class:AocCli.Commands
+YearInv	lib/aoc_cli/errors.rb	/^		class YearInv < StandardError$/;"	c	class:AocCli.Errors
+YearNil	lib/aoc_cli/errors.rb	/^		class YearNil < StandardError$/;"	c	class:AocCli.Errors
+YearObject	lib/aoc_cli/year.rb	/^			class YearObject$/;"	c	class:AocCli.Year.Data
+add	lib/aoc_cli/files.rb	/^			def self.add(hash:)$/;"	F	class:AocCli.Files.Metafile
+add_line	lib/aoc_cli/files.rb	/^			def add_line(key:, val:)$/;"	f	class:AocCli.Files.Config
+array	lib/aoc_cli/tools.rb	/^			def array$/;"	f	class:AocCli.Tools.Convert
+chunk	lib/aoc_cli/tools.rb	/^			def chunk(f:, t:, t_off:0, f_off:0)$/;"	f	class:AocCli.Tools.Convert
+cookie	lib/aoc_cli/tools.rb	/^			def cookie$/;"	f	class:AocCli.Tools.Request
+curl	lib/aoc_cli/tools.rb	/^			def curl$/;"	f	class:AocCli.Tools.Request
+data	lib/aoc_cli/solve.rb	/^			def data$/;"	f	class:AocCli.Solve.Solve
+day	lib/aoc_cli.rb	/^			def self.day(day)$/;"	F	class:AocCli.Interface.Validate
+defaults	lib/aoc_cli/commands.rb	/^			def defaults$/;"	f	class:AocCli.Commands.DayInit
+defaults	lib/aoc_cli/commands.rb	/^			def defaults$/;"	f	class:AocCli.Commands.DaySolve
+defaults	lib/aoc_cli/commands.rb	/^			def defaults$/;"	f	class:AocCli.Commands.KeyStore
+defaults	lib/aoc_cli/commands.rb	/^			def defaults$/;"	f	class:AocCli.Commands.YearInit
+dir	lib/aoc_cli/day.rb	/^			def dir$/;"	f	class:AocCli.Day.Init
+dir	lib/aoc_cli/files.rb	/^			def dir$/;"	f	class:AocCli.Files.Config
+exec	lib/aoc_cli/commands.rb	/^			def exec $/;"	f	class:AocCli.Commands.DaySolve
+exec	lib/aoc_cli/commands.rb	/^			def exec$/;"	f	class:AocCli.Commands.DayInit
+exec	lib/aoc_cli/commands.rb	/^			def exec$/;"	f	class:AocCli.Commands.KeyStore
+exec	lib/aoc_cli/commands.rb	/^			def exec$/;"	f	class:AocCli.Commands.YearInit
+fetch	lib/aoc_cli/day.rb	/^				def fetch$/;"	f	class:AocCli.Day.Data.DayObject
+fetch	lib/aoc_cli/year.rb	/^				def fetch$/;"	f	class:AocCli.Year.Data.YearObject
+file	lib/aoc_cli/files.rb	/^			def file$/;"	f	class:AocCli.Files.Config
+file	lib/aoc_cli/year.rb	/^			def file$/;"	f	class:AocCli.Year.Calendar
+fill	lib/aoc_cli/year.rb	/^				def fill(stars:)$/;"	f	class:AocCli.Year.Data.Calendar
+get	lib/aoc_cli/files.rb	/^			def self.get(field)$/;"	F	class:AocCli.Files.Metafile
+get_dir	lib/aoc_cli/day.rb	/^				def get_dir$/;"	f	class:AocCli.Day.Data.DayObject
+get_part	lib/aoc_cli/files.rb	/^			def self.get_part(day:)$/;"	F	class:AocCli.Files.Metafile
+has_term?	lib/aoc_cli/files.rb	/^			def has_term?(key:nil, val:nil)$/;"	f	class:AocCli.Files.Config
+help	lib/aoc_cli.rb	/^			def help$/;"	f	class:AocCli.Interface.Query
+high	lib/aoc_cli/solve.rb	/^				def high$/;"	f	class:AocCli.Solve.Responses.Incorrect
+html	lib/aoc_cli/tools.rb	/^			def html$/;"	f	class:AocCli.Tools.Convert
+inc_part	lib/aoc_cli/solve.rb	/^				def inc_part$/;"	f	class:AocCli.Solve.Responses.Correct
+initialize	lib/aoc_cli.rb	/^			def initialize$/;"	f	class:AocCli.Interface.Opts
+initialize	lib/aoc_cli.rb	/^			def initialize$/;"	f	class:AocCli.Interface.Query
+initialize	lib/aoc_cli/commands.rb	/^			def initialize(args)$/;"	f	class:AocCli.Commands.DayInit
+initialize	lib/aoc_cli/commands.rb	/^			def initialize(args)$/;"	f	class:AocCli.Commands.DaySolve
+initialize	lib/aoc_cli/commands.rb	/^			def initialize(args)$/;"	f	class:AocCli.Commands.KeyStore
+initialize	lib/aoc_cli/commands.rb	/^			def initialize(args)$/;"	f	class:AocCli.Commands.YearInit
+initialize	lib/aoc_cli/day.rb	/^				def initialize($/;"	f	class:AocCli.Day.Data.DayObject
+initialize	lib/aoc_cli/day.rb	/^			def initialize(day:,$/;"	f	class:AocCli.Day.Init
+initialize	lib/aoc_cli/errors.rb	/^			def initialize(key)$/;"	f	class:AocCli.Errors.KeyDup
+initialize	lib/aoc_cli/errors.rb	/^			def initialize(part)$/;"	f	class:AocCli.Errors.PartInv
+initialize	lib/aoc_cli/errors.rb	/^			def initialize(user)$/;"	f	class:AocCli.Errors.KeyNot
+initialize	lib/aoc_cli/errors.rb	/^			def initialize(user)$/;"	f	class:AocCli.Errors.UserDup
+initialize	lib/aoc_cli/errors.rb	/^			def initialize(year)$/;"	f	class:AocCli.Errors.YearInv
+initialize	lib/aoc_cli/files.rb	/^			def initialize$/;"	f	class:AocCli.Files.Config
+initialize	lib/aoc_cli/files.rb	/^			def initialize(user:)$/;"	f	class:AocCli.Files.Cookie
+initialize	lib/aoc_cli/solve.rb	/^			def initialize(answer:,$/;"	f	class:AocCli.Solve.Solve
+initialize	lib/aoc_cli/tools.rb	/^			def initialize(input)$/;"	f	class:AocCli.Tools.Convert
+initialize	lib/aoc_cli/tools.rb	/^			def initialize(page:, day:nil, data:)$/;"	f	class:AocCli.Tools.Post
+initialize	lib/aoc_cli/tools.rb	/^			def initialize(user:Files::Metafile.get(:user), $/;"	f	class:AocCli.Tools.Get
+initialize	lib/aoc_cli/tools.rb	/^			def initialize(year:Files::Metafile.get(:year), $/;"	f	class:AocCli.Tools.Request
+initialize	lib/aoc_cli/year.rb	/^				def initialize(user:Files::Metafile.get(:user),$/;"	f	class:AocCli.Year.Data.YearObject
+initialize	lib/aoc_cli/year.rb	/^			def initialize($/;"	f	class:AocCli.Year.Calendar
+initialize	lib/aoc_cli/year.rb	/^			def initialize(user:"main", year:)$/;"	f	class:AocCli.Year.Meta
+key	lib/aoc_cli/files.rb	/^			def key$/;"	f	class:AocCli.Files.Cookie
+log	lib/aoc_cli/solve.rb	/^				def log$/;"	f	class:AocCli.Solve.Responses.Incorrect
+low	lib/aoc_cli/solve.rb	/^				def low$/;"	f	class:AocCli.Solve.Responses.Incorrect
+md	lib/aoc_cli/tools.rb	/^			def md$/;"	f	class:AocCli.Tools.Convert
+md_head	lib/aoc_cli/tools.rb	/^			def md_head$/;"	f	class:AocCli.Tools.Convert
+md_ref	lib/aoc_cli/tools.rb	/^			def md_ref$/;"	f	class:AocCli.Tools.Convert
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.AlrInit
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.FlagInv
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.KeyDup
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.KeyNil
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.KeyNot
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.NotInit
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.PartInv
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.PartNil
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.PuzzComp
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.RootNot
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.UserDup
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.YearInv
+message	lib/aoc_cli/errors.rb	/^			def message$/;"	f	class:AocCli.Errors.YearNil
+meta	lib/aoc_cli/day.rb	/^			def meta$/;"	f	class:AocCli.Day.Init
+meta	lib/aoc_cli/year.rb	/^			def meta$/;"	f	class:AocCli.Year.Meta
+mkdir	lib/aoc_cli/day.rb	/^			def mkdir$/;"	f	class:AocCli.Day.Init
+no_comm	lib/aoc_cli/tools.rb	/^			def no_comm$/;"	f	class:AocCli.Tools.Convert
+page	lib/aoc_cli/day.rb	/^				def page$/;"	f	class:AocCli.Day.Data.Input
+page	lib/aoc_cli/day.rb	/^				def page$/;"	f	class:AocCli.Day.Data.Puzzle
+page	lib/aoc_cli/year.rb	/^				def page$/;"	f	class:AocCli.Year.Data.Calendar
+page	lib/aoc_cli/year.rb	/^				def page$/;"	f	class:AocCli.Year.Data.Stats
+parse	lib/aoc_cli.rb	/^			def parse$/;"	f	class:AocCli.Interface.Opts
+parse	lib/aoc_cli/day.rb	/^				def parse(raw:)$/;"	f	class:AocCli.Day.Data.Input
+parse	lib/aoc_cli/day.rb	/^				def parse(raw:)$/;"	f	class:AocCli.Day.Data.Puzzle
+parse	lib/aoc_cli/solve.rb	/^			def parse(attempt:)$/;"	f	class:AocCli.Solve.Solve
+parse	lib/aoc_cli/year.rb	/^				def parse(raw:)$/;"	f	class:AocCli.Year.Data.Calendar
+parse	lib/aoc_cli/year.rb	/^				def parse(raw:)$/;"	f	class:AocCli.Year.Data.Stats
+part	lib/aoc_cli.rb	/^			def self.part(part)$/;"	F	class:AocCli.Interface.Validate
+part	lib/aoc_cli/day.rb	/^			def part$/;"	f	class:AocCli.Day.Init
+path	lib/aoc_cli/day.rb	/^				def path$/;"	f	class:AocCli.Day.Data.Input
+path	lib/aoc_cli/day.rb	/^				def path$/;"	f	class:AocCli.Day.Data.Puzzle
+path	lib/aoc_cli/files.rb	/^			def path$/;"	f	class:AocCli.Files.Config
+path	lib/aoc_cli/files.rb	/^			def self.path$/;"	F	class:AocCli.Files.Metafile
+plain	lib/aoc_cli/tools.rb	/^			def plain$/;"	f	class:AocCli.Tools.Convert
+post	lib/aoc_cli/tools.rb	/^			def post(data:)$/;"	f	class:AocCli.Tools.Request
+raw	lib/aoc_cli/tools.rb	/^			def raw$/;"	f	class:AocCli.Tools.Convert
+read	lib/aoc_cli/files.rb	/^			def self.read$/;"	F	class:AocCli.Files.Metafile
+refresh	lib/aoc_cli/solve.rb	/^				def refresh$/;"	f	class:AocCli.Solve.Responses.Correct
+respond	lib/aoc_cli/commands.rb	/^			def respond$/;"	f	class:AocCli.Commands.DayInit
+respond	lib/aoc_cli/commands.rb	/^			def respond$/;"	f	class:AocCli.Commands.DaySolve
+respond	lib/aoc_cli/commands.rb	/^			def respond$/;"	f	class:AocCli.Commands.KeyStore
+respond	lib/aoc_cli/commands.rb	/^			def respond$/;"	f	class:AocCli.Commands.YearInit
+respond	lib/aoc_cli/solve.rb	/^			def respond$/;"	f	class:AocCli.Solve.Solve
+response	lib/aoc_cli/solve.rb	/^				def response$/;"	f	class:AocCli.Solve.Responses.Correct
+response	lib/aoc_cli/solve.rb	/^				def response$/;"	f	class:AocCli.Solve.Responses.Incorrect
+response	lib/aoc_cli/solve.rb	/^				def response$/;"	f	class:AocCli.Solve.Responses.Wait
+run	lib/aoc_cli.rb	/^			def run(opts:)$/;"	f	class:AocCli.Interface.Query
+send	lib/aoc_cli/solve.rb	/^			def send$/;"	f	class:AocCli.Solve.Solve
+stars	lib/aoc_cli/year.rb	/^				def stars$/;"	f	class:AocCli.Year.Data.Stats
+store	lib/aoc_cli/files.rb	/^			def store(key:)$/;"	f	class:AocCli.Files.Cookie
+time	lib/aoc_cli/solve.rb	/^				def time$/;"	f	class:AocCli.Solve.Responses.Wait
+total_stars	lib/aoc_cli/year.rb	/^				def total_stars$/;"	f	class:AocCli.Year.Data.Stats
+type	lib/aoc_cli/files.rb	/^			def self.type$/;"	F	class:AocCli.Files.Metafile
+update_meta	lib/aoc_cli/year.rb	/^			def update_meta$/;"	f	class:AocCli.Year.Calendar
+url	lib/aoc_cli/tools.rb	/^			def url$/;"	f	class:AocCli.Tools.Request
+val	lib/aoc_cli.rb	/^			def self.val?(k:, v:)$/;"	F	class:AocCli.Interface.Validate
+write	lib/aoc_cli/day.rb	/^				def write$/;"	f	class:AocCli.Day.Data.DayObject
+write	lib/aoc_cli/day.rb	/^			def write$/;"	f	class:AocCli.Day.Init
+write	lib/aoc_cli/year.rb	/^			def write$/;"	f	class:AocCli.Year.Calendar
+write	lib/aoc_cli/year.rb	/^			def write$/;"	f	class:AocCli.Year.Meta
+year	lib/aoc_cli.rb	/^			def self.year(year)$/;"	F	class:AocCli.Interface.Validate

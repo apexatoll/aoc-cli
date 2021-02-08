@@ -77,8 +77,10 @@ module AocCli
 			end
 		end
 		class Post < Convert
-			def initialize(page:, day:nil, data:)
-				@input = Request.new(page:page, day:day).post(data:data)
+			def initialize(user:Files::Metafile.get(:user), 
+						   year:Files::Metafile.get(:year), 
+						    day:Files::Metafile.get(:day), page:, data:)
+				@input = Request.new(year:year, user:user, page:page, day:day).post(data:data)
 			end
 		end
 	end

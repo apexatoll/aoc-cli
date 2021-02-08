@@ -67,11 +67,17 @@ module AocCli
 			def respond
 				"REsponse"
 			end
+			def all
+				{user:user, day: day, year:year, part:part, answer:answer}
+			end
 			def defaults
 				{user:Files::Metafile.get(:user), 
 				 year:Files::Metafile.get(:year),
+				 part:Files::Metafile.get(:part),
 				 day:Files::Metafile.get(:day)}
 			end
 		end
 	end
 end
+
+#AocCli::Commands::DaySolve.new(answer: 96)

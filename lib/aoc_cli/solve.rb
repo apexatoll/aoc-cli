@@ -7,10 +7,10 @@ module AocCli
 		class Solve
 			attr_reader :user, :year, :day, :part, :answer, :reply
 			def initialize(answer:,
-				year:Metafile.new.get(:year),
-				day: Metafile.new.get(:day),
-				part:Metafile.new.get(:part),
-				user:Metafile.new.get(:user))
+				year:Files::Metafile.get(:year),
+				day: Files::Metafile.get(:day),
+				part:Files::Metafile.get(:part),
+				user:Files::Metafile.get(:user))
 				@user   = user ||= raise Errors::UserNil
 				@answer = answer ||= raise Errors::AnsNil
 				@day    = Interface::Validate.day(day)
@@ -33,9 +33,9 @@ module AocCli
 					.refresh
 				end
 			end
-			private
+			#private
 			def send
-				Tools::Post.new(page: :answer, day:day, data:data)
+				Tools::Post.new(page: :answer, year:year, day:day, data:data)
 			end
 			def parse(attempt:)
 				attempt.chunk(f:"<main", t:"<\/main", t_off:1)
@@ -73,7 +73,7 @@ module AocCli
 					Year::Calendar
 						.new(path:"..", year:Files::Metafile.get(:year))
 						.write
-						.update_meta
+						.update_meta(dir:"..")
 					puts "Refreshing puzzle...".yellow
 					Day::Data::Puzzle
 						.new(user:Files::Metafile.get(:user),
@@ -84,6 +84,7 @@ module AocCli
 					self
 				end
 				def inc_part
+					#Files::Metafile.inc_part
 					
 					self
 				end
@@ -94,7 +95,7 @@ module AocCli
 					self
 				end
 			end
-			class Wait
+			class Wait < Solve
 				def response
 					puts <<~response
 					#{"Please wait".yellow.bold}: You have #{time.to_s} to wait

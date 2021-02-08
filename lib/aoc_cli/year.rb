@@ -34,8 +34,8 @@ module AocCli
 				File.write("#{path}/#{year}.md", file)
 				self
 			end
-			def update_meta
-				Files::Metafile.add(hash:{stars:stats.stars.to_json, total:stats.total_stars})
+			def update_meta(dir:".")
+				Files::Metafile.add(dir:dir, hash:{stars:stats.stars.to_json, total:stats.total_stars})
 			end
 			private
 			def file
