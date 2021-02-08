@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/aoc_cli.rb'
+AocCli::Interface::Query.new
