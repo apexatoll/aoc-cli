@@ -36,7 +36,8 @@ module AocCli
 				add_line(key:"cookie=>#{user}", val:key)
 			end
 			def key
-				file.scan(/(?<=cookie=>#{user}=>).*$/)&.first ||= raise(Errors::Key_Not_Found)
+				file.scan(/(?<=cookie=>#{user}=>).*$/)&.first ||= 
+					raise(Errors::Key_Not_Found)
 			end
 		end
 		class Metafile
@@ -50,28 +51,17 @@ module AocCli
 				hash.map {|k, v| "#{k}=>#{v}\n"}
 					.each{|l| File.write("#{dir}/#{path}",l , mode:"a")}
 			end
-			def self.delete(keys:, dir:".")
-				del = keys.map{|k| /^#{k}=>.*$/}
-				new = lines(dir:dir).reject{|l| del.map{|r| r.match?(l)}.any?}.join
-				write(file:new, dir:dir)
+			def self.get_part(day:, dir:".")
+				JSON.parse(read(dir:dir).scan(/(?<=stars=>).*$/)
+					&.first)[day.to_s].to_i + 1
 			end
-			def self.get_part(day:)
-				JSON.parse(read.scan(/(?<=stars=>).*$/)&.first)[day.to_s].to_i + 1
+			private
+			def self.read(dir:".")
+				raise Errors::NotInit unless File.exist?(path(dir:dir))
+				File.read(path(dir:dir))
 			end
 			def self.path(dir:".")
 				"#{dir}/.meta"
-			end
-			private
-			def self.write(file:, dir:".")
-				
-			end
-			def self.read(dir:".")
-				raise Errors::NotInit unless File.exist?(path)
-				File.read(path)
-			end
-			def self.lines(dir:".")
-				raise Errors::NotInit unless File.exist?(path)
-				File.read(path)
 			end
 		end
 	end

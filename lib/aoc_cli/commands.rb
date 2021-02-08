@@ -51,7 +51,7 @@ module AocCli
 				{user:Files::Metafile.get(:user), year:Files::Metafile.get(:year)}
 			end
 			def respond
-				puts "Day initialised"
+				puts "Day #{day} initialised"
 			end
 		end
 		class DaySolve
@@ -73,11 +73,9 @@ module AocCli
 			def defaults
 				{user:Files::Metafile.get(:user), 
 				 year:Files::Metafile.get(:year),
-				 part:Files::Metafile.get(:part),
-				 day:Files::Metafile.get(:day)}
+				  day:Files::Metafile.get(:day),
+				 part:Files::Metafile.get(:part)}
 			end
 		end
 	end
 end
-
-#AocCli::Commands::DaySolve.new(answer: 96)

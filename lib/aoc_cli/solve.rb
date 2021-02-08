@@ -63,47 +63,53 @@ module AocCli
 					self
 				end
 				def log
-					File.write(".attempts", "#{{Time.new => answer}.to_json}\n", mode:"a")
+					File.write(".attempts", "#{{Time.new => answer}
+						.to_json}\n", mode:"a")
 					self
 				end
 			end
 			class Correct < Solve
 				def refresh
-					puts "Refreshing calendar...".yellow
-					Year::Calendar
-						.new(path:"..", year:Files::Metafile.get(:year))
-						.write
-						.update_meta(dir:"..")
-					puts "Refreshing puzzle...".yellow
-					Day::Data::Puzzle
-						.new(user:Files::Metafile.get(:user),
-							 year:Files::Metafile.get(:year),
-							  day:Files::Metafile.get(:day), 
-							  dir:".")
-						.write
-					self
-				end
-				def inc_part
-					#Files::Metafile.inc_part
-					
+					refresh_calendar
+					refresh_puzzle
 					self
 				end
 				def response
-					puts <<~response
-					#{"Correct!".bold.green}: your puzzle and calendar will now be updated.
-					response
+					msg = "#{"Correct!".bold.green} "
+					case part
+					when "1" then msg += get_part_2
+					when "2" then msg += now_complete end
+					puts msg
 					self
+				end
+				private 
+				def refresh_calendar
+					puts "- Updating calendar...".blue.italic
+					Year::Meta.new(user:user, year:year, dir:"..").write
+					Year::Calendar.new(dir:"..", year:year).write.update_meta
+				end
+				def get_part_2
+					"Downloading part two..".blue.italic
+				end
+				def now_complete
+					"This day is now complete!".green
+				end
+				def refresh_puzzle
+					puts "- Updating puzzle...".yellow
+					Day::Init.new(day:day, dir:".").write
+					Day::Data::Puzzle.new(day:day, dir:".").write
 				end
 			end
 			class Wait < Solve
 				def response
+					puts time
 					puts <<~response
 					#{"Please wait".yellow.bold}: You have #{time.to_s} to wait
 					response
 					self
 				end
 				def time
-					reply.scan(/\d+m \d+s/).first.to_s
+					reply.scan(/(?:\d+m\s)?\d+s/).first.to_s
 				end
 			end
 		end

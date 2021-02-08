@@ -1,12 +1,13 @@
 module AocCli
 	module Day
 		class Init
-			attr_reader :year, :day, :user
+			attr_reader :year, :day, :user, :dir
 			def initialize(day:,
 					user:Files::Metafile.get(:user), 
-					year:Files::Metafile.get(:year))
+					year:Files::Metafile.get(:year), dir:nil)
 				@year = Interface::Validate.year(year)
 				@day  = Interface::Validate.day(day)
+				@dir  = dir ||= get_dir
 				@user = user
 			end
 			def mkdir
@@ -18,13 +19,10 @@ module AocCli
 				File.write("#{dir}/.meta", meta)
 				self
 			end
-			def dir
+			def get_dir
 				day < 10 ? "0#{day}" : day.to_s
 			end
 			private
-			def part
-				Files::Metafile.get_part(day:day)
-			end
 			def meta
 				<<~meta
 				dir=>DAY
@@ -33,6 +31,12 @@ module AocCli
 				user=>#{user}
 				part=>#{part}
 				meta
+			end
+			def part
+				Files::Metafile.get_part(day:day, dir:year_dir_relative)
+			end
+			def year_dir_relative
+				Files::Metafile.type == :ROOT ? "." : ".."
 			end
 		end
 		module Data
@@ -49,12 +53,8 @@ module AocCli
 					@dir = dir ||= get_dir
 				end
 				def write
-					puts "#{dir}/#{path}"
 					File.write("#{dir}/#{path}", data)
 				end
-				#def dir
-					#dir ||= get_dir
-				#end
 				protected
 				def get_dir
 					day.to_i < 10 ? "0#{day}" : day.to_s
@@ -75,7 +75,6 @@ module AocCli
 					raw.chunk(f:"<article", t:"<\/article", f_off:2).md
 						.gsub(/(?<=\])\[\]/, "")
 						.gsub(/\n.*<!--.*-->.*\n/, "")
-						#.gsub("\n\n\n", "\n")
 				end
 			end
 			class Input < DayObject

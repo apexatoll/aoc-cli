@@ -1,13 +1,18 @@
 module AocCli
 	module Year
 		class Meta
-			attr_reader :user, :year
-			def initialize(user:"main", year:)
-				@user, @year = user, Interface::Validate.year(year)
+			attr_reader :user, :year, :dir
+			def initialize(user:"main", year:, dir:".")
+				@user, @year, @dir = user, Interface::Validate.year(year), dir
+			end
+			def mkdir
+				raise Errors::YearExist if Dir.exist?(year.to_s)
+				Dir.mkdir(year.to_s)
+				self
 			end
 			def write
-				raise Errors::AlrInit if File.exist?(".meta")
-				File.write(".meta", meta)
+				raise Errors::AlrInit if File.exist?(".meta") && Files::Metafile.get(:year) != year
+				File.write("#{dir}/.meta", meta)
 			end
 			private
 			def meta
@@ -19,22 +24,18 @@ module AocCli
 			end
 		end
 		class Calendar
-			attr_reader :cal, :stats, :user, :year, :path
-			def initialize(
-				user:Files::Metafile.get(:user), 
-				year:, 
-				path:".")
-				@user, @year = user, year
-				@path = path
+			attr_reader :cal, :stats, :user, :year, :dir
+			def initialize(user:Files::Metafile.get(:user), year:, dir:".")
+				@user, @year, @dir = user, year, dir
 				@stats = Data::Stats.new(user:user, year:year)
-				@cal = Data::Calendar.new(user:user, year:year)
-					.fill(stars:stats.stars)
+				@cal   = Data::Calendar.new(user:user, year:year)
+							.fill(stars:stats.stars)
 			end
 			def write
-				File.write("#{path}/#{year}.md", file)
+				File.write("#{dir}/#{year}.md", file)
 				self
 			end
-			def update_meta(dir:".")
+			def update_meta
 				Files::Metafile.add(dir:dir, hash:{stars:stats.stars.to_json, total:stats.total_stars})
 			end
 			private
