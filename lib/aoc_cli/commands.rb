@@ -43,12 +43,15 @@ module AocCli
 			end
 			def exec
 				Day::Init.new(user:user, year:year, day:day).mkdir.write
+				#Cache::Query.new(user:user, year:year, day:day)
+				#AocCli::Day::Files.new(user: "main", year: 2015, day: 13).write
 				Day::Data::Puzzle.new(user:user, year:year, day:day).write
 				Day::Data::Input.new(user:user, year:year, day:day).write
 				self
 			end
 			def defaults
-				{user:Files::Metafile.get(:user), year:Files::Metafile.get(:year)}
+				{user:Files::Metafile.get(:user), 
+				 year:Files::Metafile.get(:year)}
 			end
 			def respond
 				puts "Day #{day} initialised"

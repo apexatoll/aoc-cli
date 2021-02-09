@@ -50,7 +50,7 @@ module AocCli
 					@year = Interface::Validate.year(year)
 					@day = Interface::Validate.day(day)
 					@data = parse(raw: fetch)
-					@dir = dir ||= get_dir
+					#@dir = dir ||= get_dir
 				end
 				def write
 					File.write("#{dir}/#{path}", data)
@@ -62,6 +62,10 @@ module AocCli
 				private
 				def fetch
 					Tools::Get.new(user:user, year:year, day:day, page:page)
+				end
+				#def another_way
+				def dir
+					Files::Metafile.type == :DAY ? "." : get_dir
 				end
 			end
 			class Puzzle < DayObject

@@ -7,6 +7,7 @@ require_relative 'aoc_cli/tools.rb'
 require_relative 'aoc_cli/files.rb'
 require_relative 'aoc_cli/year.rb'
 require_relative 'aoc_cli/day.rb'
+require_relative 'aoc_cli/cache.rb'
 require_relative 'aoc_cli/solve.rb'
 
 module AocCli
