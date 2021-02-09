@@ -1,8 +1,11 @@
 # AoC-cli
 
 AoC-cli is a command-line application to interact with the Advent of Code puzzles built entirely in Ruby.
+
 I am in no way affiliated with AoC, but I would like to take this opportunity to thank the creator Eric Wastl for the taking the time and great effort to produce these fantastic puzzles!
+
 AoC-cli has several features and allows for complete control within the terminal.
+
 Please note that requests are hard-coded to be throttled to a maximum of 1 HTTP request per 5 seconds. This is to ensure that the AoC server is not overloaded with requests. Please do not try and change this - it is to protect the server!
 
 ### Features
@@ -54,7 +57,11 @@ You are now ready to use the cli.
 
 First you need to intialise your year directory. AoC-cli defaults to a main directory containing each day's puzzle in a separate subdirectory.
 
-Initialise the year directory using the command `aoc -y <year> [-u <user>]`
+Initialise the year directory using the command 
+
+```bash
+aoc -y <year> [-u <user>]
+```
 
 The user flag is not needed if you wish to use the default 'main' session cookie.
 
@@ -70,13 +77,32 @@ You can now get day data! To fetch puzzle instructions and inputs you can run th
 
 From the day directory you can attempt puzzles by running the command 
 
-`aoc -s [--solve] <answer>`. 
+```bash
+aoc -s [--solve] <answer>
+```
 
 The additional puzzle information is fetched from the metafile. You will then receive feedback on whether your attempt was succesful. If your answer is correct, aoc-cli will automatically update the puzzle instructions and your calendar file.
 
 Incorrect attempts will be logged in an attempts file. You can see your previous attemtpts by running the command `aoc -a [--attempts]` from the day directory. You may receive a message telling you whether your attempt was too high or too low.
 
 If you have sent multiple incorrect attempts AoC will ask you to wait before trying again - be patient!
+
+Attempts can also be piped to aoc. For example if you are solving the puzzle in ruby you could use the command
+
+```bash
+ruby day.rb | aoc
+```
+
+
+### Vim Integration
+
+For vim users, I have a keymap setup to run this automatically. In your vimrc file you could add 
+
+```vim
+autocmd filetype ruby nmap <silent><leader>ac :! ruby % \| aoc<CR>
+```
+
+Running leader + ac would then run your program and send the answer to the server for verification (as long as your program only outputs an answer and no other text). Do not send endless attempts - only send when you are comfortable with your answer!
  
 
 ## Further features
