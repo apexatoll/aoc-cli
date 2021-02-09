@@ -52,8 +52,9 @@ module AocCli
 					@data = parse(raw: fetch)
 					#@dir = dir ||= get_dir
 				end
-				def write
-					File.write("#{dir}/#{path}", data)
+				def write(paths:)
+					paths.each{|p| File.write(p, data)}
+					#File.write("#{dir}/#{path}", data)
 				end
 				protected
 				def get_dir
@@ -64,9 +65,11 @@ module AocCli
 					Tools::Get.new(user:user, year:year, day:day, page:page)
 				end
 				#def another_way
-				def dir
-					Files::Metafile.type == :DAY ? "." : get_dir
-				end
+				#def dir
+					#If you are in the day directory it writes to .
+					#Else it writes to the day sub directory
+					#Files::Metafile.type == :DAY ? "." : get_dir
+				#end
 			end
 			class Puzzle < DayObject
 				def page
@@ -91,6 +94,52 @@ module AocCli
 				def path
 					"input"
 				end
+			end
+		end
+		class DayFiles 
+			extend AocCli::Cache::Query
+			attr_reader :user, :year, :day, :cache
+			def initialize(user:, year:, day:, pages:[:Input, :Puzzle])
+				@user, @year, @day = user, year, day
+				#@year = year
+				#@day  = day
+				#@user = Interface::Validate.user(user)
+				#@year = Interface::Validate.year(year)
+				#@day  = Interface::Validate.day(day)
+				@cache = Cache::Query
+					.new(user:user, year:year, day:day, pages:pages).get
+			end
+			def write
+				cache.store.each do |page, data|
+					if data
+						#here the data is loaded from the cache
+						#query and written to the day directory
+						File.write(local_path(page:page), data)
+					else
+						#page.each do |p|
+						download(page:p, paths:[cache.path(page:p), local_path(page:p)])
+						#end
+						#data.each{|d| }
+						#here the data must be downloaded and stored in both the cache and the local dir
+						puts "this file #{k} does not exist"
+						puts "it shou#{cache.path(page:k)}"
+						puts "and in #{local_path(page:k)}"
+					end
+				end
+			end
+			private
+			def download(page:, paths:)
+				Object.const_get("Day::Data::#{page}")
+					.new(user:user, year:year, day:day)
+					.write(paths:paths)
+			end
+			def local_path(page:)
+				"#{dir}/#{cache.path(page:page)}"
+			end
+			def dir
+				Files::Metafile.type == :DAY ? "." : day.to_i < 10 ?
+					"0#{day}" : day.to_s
+				#"."
 			end
 		end
 	end

@@ -29,7 +29,7 @@ module AocCli
 				@user, @year, @dir = user, year, dir
 				@stats = Data::Stats.new(user:user, year:year)
 				@cal   = Data::Calendar.new(user:user, year:year)
-							.fill(stars:stats.stars)
+					.fill(stars:stats.stars)
 			end
 			def write
 				File.write("#{dir}/#{year}.md", file)
@@ -58,7 +58,8 @@ module AocCli
 				end
 				private
 				def fetch
-					Tools::Get.new(user:user, year:year, page:page).plain.split("\n")
+					Tools::Get.new(user:user, year:year, page:page)
+						.plain.split("\n")
 				end
 			end
 			class Calendar < YearObject

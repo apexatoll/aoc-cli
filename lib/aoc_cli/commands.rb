@@ -43,10 +43,11 @@ module AocCli
 			end
 			def exec
 				Day::Init.new(user:user, year:year, day:day).mkdir.write
+				Day::DayFiles.new(user:user, year:year, day:day).write
 				#Cache::Query.new(user:user, year:year, day:day)
 				#AocCli::Day::Files.new(user: "main", year: 2015, day: 13).write
-				Day::Data::Puzzle.new(user:user, year:year, day:day).write
-				Day::Data::Input.new(user:user, year:year, day:day).write
+				#Day::Data::Puzzle.new(user:user, year:year, day:day).write
+				#Day::Data::Input.new(user:user, year:year, day:day).write
 				self
 			end
 			def defaults

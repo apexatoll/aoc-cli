@@ -3,7 +3,7 @@ module AocCli
 		class Request
 			require 'curb'
 			attr_reader :page, :base, :year, :day, :user
-			URL = "https://adventofcode.com/"
+			URL = "https://adventofcode.com"
 			def initialize(year:Files::Metafile.get(:year), 
 							 day:Files::Metafile.get(:day), 
 							user:Files::Metafile.get(:user), page:)
@@ -11,6 +11,7 @@ module AocCli
 				@base = "#{URL}/#{year}"
 			end
 			def curl
+				puts url
 				Curl.get(url){|h| h.headers['Cookie'] = cookie}.body
 			end
 			def post(data:)
