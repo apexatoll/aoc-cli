@@ -83,26 +83,25 @@ module AocCli
 					self
 				end
 				private 
-				def refresh_calendar
-					puts "- Updating calendar...".blue.italic
-					Year::Meta.new(user:user, year:year, dir:"..").write
-					Year::Calendar.new(dir:"..", year:year).write.update_meta
-				end
 				def get_part_2
-					"Downloading part two..".blue.italic
+					"Downloading part two.."
 				end
 				def now_complete
 					"This day is now complete!".green
 				end
+				def refresh_calendar
+					puts "- Updating calendar...".blue
+					Year::Meta.new(user:user, year:year, dir:"..").write
+					Year::Calendar.new(dir:"..", year:year).write.update_meta
+				end
 				def refresh_puzzle
 					puts "- Updating puzzle...".yellow
-					Day::Init.new(day:day, dir:".").write
-					Day::Data::Puzzle.new(day:day, dir:".").write
+					Day::Init.new(day:day).write
+					Day::Data::Puzzle.new(day:day).write
 				end
 			end
 			class Wait < Solve
 				def response
-					puts time
 					puts <<~response
 					#{"Please wait".yellow.bold}: You have #{time.to_s} to wait
 					response
