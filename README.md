@@ -1,38 +1,21 @@
-# AoC-cli
+# `Advent of Code CLI`
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/demo.gif)
 
-AoC-cli is a command-line application to interact with the Advent of Code puzzles built entirely in Ruby.
+AoC-cli is a command-line application to interact with the Advent of Code puzzles built in Ruby.
 
-I am in no way affiliated with AoC, but I would like to take this opportunity to thank the creator Eric Wastl for the taking the time and great effort to produce these fantastic puzzles!
+AoC-cli has many features and allows for complete interaction with AoC from within the terminal.
 
-AoC-cli has several features and allows for complete control within the terminal.
-
-Please note that requests are hard-coded to be throttled to a maximum of 1 HTTP request per 5 seconds. This is to ensure that the AoC server is not overloaded with requests. Please do not try and change this - it is to protect the server!
-
-### Features
+## Features
 - Download raw input files and puzzle instructions as markdown files with one single command
 - Download calendar files as markdown to show progress within the year
-- Send solve attempts to the AoC server and return the response. Calendar files and puzzle files are then refreshed automatically
-- Information about days and years is stored in automatically generated metafiles. This means that attempting a puzzle is as simple as running `aoc -s $attempt` from the puzzle directory
-- Account information is obtained by using session cookies. AoC-cli allows for multiple keys to be stored to represent multiple accounts
-
+- Send solve attempts to the AoC server and return the response. Calendar files and puzzle files are refreshed automatically
+- Information about days and years is stored automatically generated metafiles. This means that answering a puzzle is as simple as running `aoc -s $attempt` from the puzzle directory
+<!--- Account information is obtained by using session cookies. AoC-cli allows for multiple keys to be stored to represent multiple accounts-->
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'aoc_cli'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install aoc_cli
+Run `$ gem install aoc_cli`
 
 ## Setup
 
@@ -110,6 +93,10 @@ Running leader + ac would then run your program and send the answer to the serve
 ## Further features
 
 
+I am in no way affiliated with AoC, but I would like to take this opportunity to thank the creator Eric Wastl for the taking the time and great effort to produce these fantastic puzzles!
+
+
+Please note that requests are hard-coded to be throttled to a maximum of 1 HTTP request per 5 seconds. This is to ensure that the AoC server is not overloaded with requests. Please do not try and change this - it is to protect the server!
 
 ## Contributing
 
