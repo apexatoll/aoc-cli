@@ -40,8 +40,8 @@ module Files
 					 val:Val.set_key(key))
 		end
 		def key
-			get_line(key:"cookie=>#{Val.get_user(user)}",
-					 val:Val.get_key(key))
+			get_line(key:"cookie=>#{user}")
+					 #val:Val.get_key(key))
 		end
 	end
 	class Metafile
@@ -124,7 +124,7 @@ module Files
 					   "WHERE #{col} = #{val}")
 		end
 		def path(db:)
-			"lib/aoc_cli/db/#{db}"
+			"#{__dir__}/db/#{db}"
 		end
 	end
 end end

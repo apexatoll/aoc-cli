@@ -5,7 +5,7 @@ module Tools
 		attr_reader :page, :base, :year, :day, :user
 		def initialize(user:Mf.get(:user), year:Mf.get(:year),
 						day:Mf.get(:day),  page:)
-			@user = Val.user(user)
+			@user = Val.get_user(user)
 			@page = page
 			#@year = year
 			@year = Val.year(year)

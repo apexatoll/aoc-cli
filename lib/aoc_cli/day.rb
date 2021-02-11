@@ -7,7 +7,7 @@ module Day
 			@year = Val.year(year)
 			@day  = Val.day(day)
 			@user = Val.get_user(user)
-			@paths = Files::Paths
+			@paths = AocCli::Files::Paths
 				.new(user:user, year:year, day:day)
 		end
 		def mkdir
@@ -30,11 +30,11 @@ module Day
 			meta
 		end
 		def part
-			Files::Metafile
+			AocCli::Files::Metafile
 				.get_part(day:day, dir:year_dir_relative)
 		end
 		def year_dir_relative
-			Files::Metafile.type == :ROOT ? "." : ".."
+			AocCli::Files::Metafile.type == :ROOT ? "." : ".."
 		end
 	end
 	class Files 
@@ -71,7 +71,7 @@ module Day
 				@year  = Val.year(year)
 				@day   = Val.day(day)
 				@data  = parse(raw: fetch)
-				@paths = Files::Paths.new(day:day)
+				@paths = AocCli::Files::Paths.new(day:day)
 			end
 			def write(to:paths.paths(file:page))
 				to.each{|path| File.write(path, data)}
@@ -113,7 +113,7 @@ module Day
 		def initialize(year:Mf.get(:year), day:Mf.get(:day))
 			@year = Val.year(year)
 			@day  = Val.day(day)
-			@code = Files::Database
+			@code = AocCli::Files::Database
 				.new(db:"reddit.db")
 				.select(table:"'#{year}'", 
 						col:"day", val:"'#{day}'")

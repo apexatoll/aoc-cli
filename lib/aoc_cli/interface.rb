@@ -4,7 +4,7 @@ module Interface
 		def initialize
 			ARGV.size > 0 ? 
 				run(opts:Opts.new.parse) : 
-				puts(help)
+				puts(self.class.help)
 		end
 		def run(opts:)
 			Object.const_get("AocCli::Commands::#{opts.cmd}")
@@ -13,7 +13,7 @@ module Interface
 			#rescue StandardError => e
 				#abort e.message
 		end
-		def help
+		def self.help
 			<<~help_screen
 			Here is the help screen
 			help_screen
@@ -45,12 +45,15 @@ module Interface
 			when "-u", "--user"
 				args[:user] = Val.val?(k: :u, v:ARGV.shift)
 			when "-U", "--default-user"
+				@cmd = :UserDefault
 				nil
 			when "-y", "--init-year"
 				@cmd = :YearInit
 				args[:year] = Val.year(ARGV.shift.to_i)
 			when "-Y"
 				args[:year] = Val.year(ARGV.shift.to_i)
+			when "-h", "--help"
+				abort Interface::Query.help
 			else raise E::FlagInv
 			end end
 			self

@@ -51,7 +51,7 @@ module Commands
 			Day::Init
 				.new(user:user, year:year, day:day)
 				.mkdir.write
-			Day::DayFiles
+			Day::Files
 				.new(user:user, year:year, day:day)
 				.write
 			self
@@ -91,17 +91,23 @@ module Commands
 	class OpenReddit
 		attr_reader :year, :day
 		def initialize(args)
-			puts args
-			args  = defaults.merge(args).compact
-			puts args
-			@year = args[:year]
-			@day  = args[:day]
+			@year = args[:year] ||= Mf.get(:year)
+			@day  = args[:day]  ||= Mf.get(:day)
 		end
 		def exec
 			Day::Reddit.new(year:year, day:day).open
+			self
 		end
-		def defaults
-			{year:Mf.get(:year), day:Mf.get(:day)}
+		def respond
+		end
+	end
+	class UserDefault
+		def initialize
+		end
+		def exec
+		end
+		def respond
+
 		end
 	end
 end end

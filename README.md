@@ -1,5 +1,7 @@
 # AoC-cli
 
+![https://github.com/apexatoll/aoc-files/blob/master/demo.gif](demo)
+
 AoC-cli is a command-line application to interact with the Advent of Code puzzles built entirely in Ruby.
 
 I am in no way affiliated with AoC, but I would like to take this opportunity to thank the creator Eric Wastl for the taking the time and great effort to produce these fantastic puzzles!
