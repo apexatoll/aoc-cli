@@ -27,24 +27,30 @@ module Interface
 		def parse
 			while ARGV.size > 0
 			case  ARGV.shift
-			when "-k", "--key" then
-				@cmd = :KeyStore
-				args[:key]  = Val.set?(k: :k, v:ARGV.shift)
-			when "-y", "--year"
-				@cmd = :YearInit
-				args[:year] = Val.year(ARGV.shift.to_i)
-			when "-u", "--user"
-				args[:user] = Val.val?(k: :u, v:ARGV.shift)
-			when "-d", "--day"
+			when "-d", "--init-day"
 				@cmd = :DayInit
 				args[:day]  = Val.day(ARGV.shift.to_i)
+			when "-D", "--day"
+				args[:day]  = Val.day(ARGV.shift.to_i)
+			when "-k", "--key"
+				@cmd = :KeyStore
+				args[:key]  = Val.set?(k: :k, v:ARGV.shift)
+			when "-p", "--part"
+				args[:part] = Val.part(ARGV.shift.to_i)
+			when "-R", "--reddit"
+				@cmd = :OpenReddit
 			when "-s", "--solve"
 				@cmd = :DaySolve
 				args[:ans]  = Val.set?(k: :a, v:ARGV.shift)
-			when "-p", "--part"
-				args[:part] = Val.part(ARGV.shift.to_i)
-			when "-r", "--reddit"
-			#when "--default"
+			when "-u", "--user"
+				args[:user] = Val.val?(k: :u, v:ARGV.shift)
+			when "-U", "--default-user"
+				nil
+			when "-y", "--init-year"
+				@cmd = :YearInit
+				args[:year] = Val.year(ARGV.shift.to_i)
+			when "-Y"
+				args[:year] = Val.year(ARGV.shift.to_i)
 			else raise E::FlagInv
 			end end
 			self

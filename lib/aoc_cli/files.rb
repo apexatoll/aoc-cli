@@ -113,4 +113,18 @@ module Files
 			in_day? ? ".meta" : "#{day_dir}/.meta"
 		end
 	end
+	class Database
+		require 'sqlite3'
+		attr_reader :db
+		def initialize(db:)
+			@db = SQLite3::Database.open(path(db:db))
+		end
+		def select(table:, col:nil, val:nil)
+			db.execute("SELECT * FROM #{table}"\
+					   "WHERE #{col} = #{val}")
+		end
+		def path(db:)
+			"lib/aoc_cli/db/#{db}"
+		end
+	end
 end end

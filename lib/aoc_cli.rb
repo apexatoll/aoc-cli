@@ -11,7 +11,6 @@ require_relative 'aoc_cli/year'
 require_relative 'aoc_cli/day'
 require_relative 'aoc_cli/cache'
 require_relative 'aoc_cli/solve'
-require_relative 'aoc_cli/database'
 
 module AocCli
 	Mf  = AocCli::Files::Metafile

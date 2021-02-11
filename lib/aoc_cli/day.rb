@@ -37,7 +37,7 @@ module Day
 			Files::Metafile.type == :ROOT ? "." : ".."
 		end
 	end
-	class DayFiles 
+	class Files 
 		attr_reader :user, :year, :day, :cache, :files, :paths
 		def initialize(user:Mf.get(:user), year:Mf.get(:year),
 					    day:Mf.get(:day), files:[:Input, :Puzzle])
@@ -47,7 +47,7 @@ module Day
 			@cache = Cache::Query
 				.new(user:user, year:year, day:day, files:files)
 				.get
-			@paths = Files::Paths
+			@paths = AocCli::Files::Paths
 				.new(user:user, year:year, day:day)
 		end
 		def write
@@ -109,14 +109,12 @@ module Day
 		end
 	end
 	class Reddit
-		attr_reader :year, :day
+		attr_reader :year, :day, :code
 		def initialize(year:Mf.get(:year), day:Mf.get(:day))
-			#@year = AocCli::Interface::Validate.year(year)
-			#@day  = AocCli::Interface::Validate.day(day)
-			@year = year
-			@day = day
-			@code = AocCli::Database::Query
-				.new(name:"reddit.db")
+			@year = Val.year(year)
+			@day  = Val.day(day)
+			@code = Files::Database
+				.new(db:"reddit.db")
 				.select(table:"'#{year}'", 
 						col:"day", val:"'#{day}'")
 				.flatten[1]
@@ -126,14 +124,13 @@ module Day
 		end
 		def cmd
 			["ttrv", "rtv"]
-				.map{|cli| [cli, `which #{cli}`]}.to_h
-				.reject{|cli, path| path.empty?}&.first ||= "open"
+				.map{|cli| cli unless `which #{cli}`.empty?}
+				.reject{|cmd| cmd.nil?}&.first || "open"
 		end
 		def link
 			"https://www.reddit.com/r/"\
-			"adventofcode/comments/#{code}/"\ 
+			"adventofcode/comments/#{code}/"\
 			"#{year}_day_#{day}_solutions"
 		end
 	end
 end end
-#AocCli::Day::Reddit.new(year: 2018, day: 10).open

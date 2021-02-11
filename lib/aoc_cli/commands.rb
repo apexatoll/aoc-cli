@@ -91,12 +91,14 @@ module Commands
 	class OpenReddit
 		attr_reader :year, :day
 		def initialize(args)
-			args = defaults.merge(args).compact
-			@year = Val.year(year)
-			@day = Val.day(day)
+			puts args
+			args  = defaults.merge(args).compact
+			puts args
+			@year = args[:year]
+			@day  = args[:day]
 		end
 		def exec
-			Day::Reddit.new(year:year, day:day)
+			Day::Reddit.new(year:year, day:day).open
 		end
 		def defaults
 			{year:Mf.get(:year), day:Mf.get(:day)}
