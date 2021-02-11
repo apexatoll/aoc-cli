@@ -1,25 +1,15 @@
-#require_relative 'files'
-#require_relative 'interface'
-#require_relative '../aoc_cli.rb'
-
-#module AocCli
-#include AocCli::Files
-#include AocCli::Interface
-module AocCli
+module AocCli 
 module Tools
 	class Request
-		#include AocCli::Files
-		#include AocCli::Interface
 		require 'curb'
 		attr_reader :page, :base, :year, :day, :user
-		def initialize(
-				user:Files::Metafile.get(:user), 
-				year:Files::Metafile.get(:year), 
-				 day:Files::Metafile.get(:day), page:)
-			@user = user
+		def initialize(user:Mf.get(:user), year:Mf.get(:year),
+						day:Mf.get(:day),  page:)
+			@user = Val.user(user)
 			@page = page
-			@year = Interface::Validate.year(year)
-			@day  = Interface::Validate.day(day)
+			#@year = year
+			@year = Val.year(year)
+			@day  = day
 			@base = "https://adventofcode.com/#{year}"
 		end
 		protected
@@ -31,7 +21,7 @@ module Tools
 		end
 		private
 		def cookie
-			Cookie.new(user:user).key
+			Files::Cookie.new(user:user).key
 		end
 		def url
 			case page
@@ -77,21 +67,19 @@ module Tools
 		end
 	end
 	class Get < Convert
-		def initialize(
-				user:Files::Metafile.get(:user), 
-				year:Files::Metafile.get(:year), day:nil, page:)
-			@input = Request.new(page:page, day:day, year:year, user:user)
+		def initialize(user:Mf.get(:user), year:Mf.get(:year),
+						day:nil, page:)
+			@input = Request
+				.new(page:page, day:day, year:year, user:user)
 				.get
 		end
 	end
 	class Post < Convert
-		def initialize(
-				user:Files::Metafile.get(:user), 
-				year:Files::Metafile.get(:year),
-				 day:Files::Metafile.get(:day), page:, data:)
-			@input = Request.new(year:year, user:user, page:page, day:day)
+		def initialize(user:Mf.get(:user), year:Mf.get(:year),
+						day:Mf.get(:day),  page:, data:)
+			@input = Request
+				.new(year:year, user:user, page:page, day:day)
 				.post(data:data)
 		end
 	end
-end
-end
+end end
