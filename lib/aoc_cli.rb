@@ -13,7 +13,7 @@ require_relative 'aoc_cli/cache'
 require_relative 'aoc_cli/solve'
 
 module AocCli
-	Mf  = AocCli::Files::Metafile
-	Val = AocCli::Interface::Validate
-	E   = AocCli::Errors
+	Metafile = AocCli::Files::Metafile
+	Validate = AocCli::Interface::Validate
+	E = AocCli::Errors
 end
