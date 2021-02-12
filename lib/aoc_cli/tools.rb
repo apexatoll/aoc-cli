@@ -6,7 +6,7 @@ module AocCli
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
 						   d:Metafile.get(:day), page:)
-				@user = Validate.get_user(u)
+				@user = Validate.user(u)
 				@year = Validate.year(y)
 				@day  = d
 				@page = page
@@ -84,6 +84,13 @@ module AocCli
 				@input = Request
 					.new(u:u, y:y, d:d, page:page)
 					.post(data:data)
+			end
+		end
+		class Refresh
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
+						   loc:Metafile.type)
 			end
 		end
 	end 

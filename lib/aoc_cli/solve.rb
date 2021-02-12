@@ -90,7 +90,7 @@ module AocCli
 				end
 				def refresh_calendar
 					puts "- Updating calendar...".blue
-					Year::Meta
+					Year::Init
 						.new(y:year, dir:"..").write
 					Year::Calendar
 						.new(y:year, dir:"..").write.update_meta

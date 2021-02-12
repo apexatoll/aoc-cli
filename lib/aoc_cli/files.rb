@@ -54,65 +54,86 @@ module AocCli
 				read.scan(/(?<=#{field}=>).*$/)&.first&.chomp
 			end
 			def self.type
-				read.scan(/(?<=dir=>).[A-Z]*$/).first.to_sym
+				get("dir").to_sym
 			end
 			def self.add(hash:, dir:".")
 				hash.map {|k, v| "#{k}=>#{v}\n"}
 					.each{|l| File.write("#{dir}/#{path}",l , mode:"a")}
 			end
-			def self.get_part(d:, dir:".")
-				JSON.parse(read(dir:dir).scan(/(?<=stars=>).*$/)
-					&.first)[d.to_s].to_i + 1
-			end
 			private
-			def self.read(dir:".")
-				raise E::NotInit unless File.exist?(path(dir:dir))
-				File.read(path(dir:dir))
+			def self.write()
+
 			end
-			def self.path(dir:".")
-				"#{dir}/.meta"
+			def self.read(dir:".")
+				File.read("#{Validate.init(dir)}/.meta")
+			end
+			def self.root_dir
+				type == :ROOT ? "." : ".."
+			end
+			def self.part(d:)
+				JSON.parse(read(dir:root_dir)
+					.scan(/(?<=stars=>).*$/)&.first)[d.to_s]
+					.to_i + 1
+			end
+			def self.year(u:, y:)
+				<<~meta
+				dir=>ROOT
+				user=>#{u}
+				year=>#{y}
+				meta
+			end
+			def self.day(u:, y:, d:)
+				<<~meta
+				dir=>DAY
+				user=>#{u}
+				year=>#{y}
+				day=>#{d}
+				part=>#{part(d:d)}
+				meta
 			end
 		end
-		class Paths
-			attr_reader :user, :year, :day
-			def initialize(u:Metafile.get(:user), 
-						   y:Metafile.get(:year), d:)
-				@user = Validate.set?(k: :u, v:u)
-				@year = Validate.year(y)
-				@day  = Validate.day(d)
-			end
-			def filename(file:)
-				case file
-				when :Input  then "input"
-				when :Puzzle then "#{day}.md"
-				end 
-			end
-			def in_day?
-				Metafile.type == :DAY 
-			end
-			def day_dir
-				day.to_i < 10 ? "0#{day}" : day.to_s
-			end
-			def local_dir
-				in_day? ? "." : "#{day_dir}"
-			end
-			def cache_dir
-				"#{Dir.home}/.cache/aoc-cli/#{user}/#{year}/#{day_dir}" 
-			end
-			def local_path(file:)
-				"#{local_dir}/#{filename(file:file)}"
-			end
-			def cache_path(file:)
-				"#{cache_dir}/#{filename(file:file)}"
-			end
-			def paths(file:)
-				[cache_path(file:file), local_path(file:file)]
-			end
-			def year_meta
-				in_day? ? "../meta" : ".meta"
-			end
-			def day_meta
-				in_day? ? ".meta" : "#{day_dir}/.meta"
+		module Paths
+			class Day
+				attr_reader :user, :year, :day
+				def initialize(u:Metafile.get(:user), 
+							   y:Metafile.get(:year), d:)
+					@user = Validate.set?(k: :u, v:u)
+					@year = Validate.year(y)
+					@day  = Validate.day(d)
+				end
+				def filename(f:)
+					case f
+					when :Input  then "input"
+					when :Puzzle then "#{day}.md"
+					end 
+				end
+				def in_day?
+					Metafile.type == :DAY 
+				end
+				def day_dir
+					day.to_i < 10 ? "0#{day}" : day.to_s
+				end
+				def local_dir
+					in_day? ? "." : "#{day_dir}"
+				end
+				def cache_dir
+					"#{Dir.home}/.cache/aoc-cli/#{user}/#{year}/#{day_dir}" 
+				end
+				def local(f:)
+					"#{local_dir}/#{filename(f:f)}"
+				end
+				def cache_path(f:)
+					"#{cache_dir}/#{filename(f:f)}"
+				end
+				def cache_and_local(f:)
+					[cache_path(f:f), local(f:f)]
+				end
+				def year_meta
+					in_day? ? "../meta" : ".meta"
+				end
+				def day_meta
+					in_day? ? ".meta" : "#{day_dir}/.meta"
+				end
 			end
 		end
 		class Database

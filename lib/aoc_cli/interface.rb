@@ -5,13 +5,13 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
+				#rescue StandardError => e
+					#abort e.message
 			end
 			def run(opts:)
 				Object.const_get("AocCli::Commands::#{opts.cmd}")
 					.new(opts.args)
 					.exec.respond
-				#rescue StandardError => e
-					#abort e.message
 			end
 		end
 		class Help
@@ -106,14 +106,26 @@ module AocCli
 			end
 		end
 		class Validate
+			def self.user(user)
+				raise E::UserNil if user.nil?
+				raise E::UserInv unless Files::Config.new
+					.is_set?(key:"cookie=>#{user}")
+				user
+			end
+			def self.set_user(user)
+				raise E::UserNil if user.nil?
+				raise E::UserDup if Files::Config.new
+					.is_set?(key:"cookie=>#{user}")
+				user
+			end
 			def self.year(year)
 				raise E::YearNil if year.nil?
 				raise E::YearInv.new(year) if year.to_i < 2015 || year.to_i > 2020
 				year
 			end
 			def self.day(day)
-				raise E::DayNil if day.nil?
-				raise E::DayInv if day.to_i < 1 || day.to_i > 25
+				raise E::DayNil if day.nil? || day == 0
+				raise E::DayInv.new(day) if day.to_i < 1 || day.to_i > 25
 				day
 			end
 			def self.part(part)
@@ -121,6 +133,16 @@ module AocCli
 				raise E::PuzzComp if part.to_i == 3
 				raise E::PartInv  if part.to_i < 1 || part.to_i > 2
 				part
+			end
+			def self.set_key(key)
+				raise E::KeyNil if key.nil?
+				raise E::KeyDup if Files::Config
+					.new.is_set?(val:key)
+				key
+			end
+			def self.get_key(key)
+				raise E::KeyNil if key.nil?
+				key
 			end
 			def self.set?(k:, v:)
 				if v.nil? 
@@ -131,27 +153,18 @@ module AocCli
 					end 
 				else return v end
 			end
-			def self.set_user(user)
-				raise E::UserNil if user.nil?
-				raise E::UserDup if Files::Config.new
-					.is_set?(key:"cookie=>#{user}")
-				user
+			def self.day_dir(day)
+				raise E::DayExist.new(day) if Dir.exist?(day)
+				day
 			end
-			def self.get_user(user)
-				raise E::UserNil if user.nil?
-				raise E::UserInv unless Files::Config.new
-					.is_set?(key:"cookie=>#{user}")
-				user
+			def self.init(dir)
+				raise E::NotInit unless File.exist?("#{dir}/.meta")
+				dir
 			end
-			def self.set_key(key)
-				raise E::KeyNil if key.nil?
-				raise E::KeyDup if Files::Config
-					.new.is_set?(val:key)
-			end
-			def self.get_key(key)
-				raise E::KeyNil if key.nil?
-				raise E::KeyInv unless Files::Config
-					.new.is_set?(val:key)
+			def self.not_other_year(dir:dir, y:year)
+				raise E::AlrInit if File.exist?("#{dir}/.meta") &&
+					Metafile.get(:year) != year
+				"#{dir}/.meta"
 			end
 		end
 	end 

@@ -1,9 +1,10 @@
 module AocCli
 	module Year
-		class Meta
+		class Init
 			attr_reader :user, :year, :dir
-			def initialize(u:Metafile.get(:user), y:, dir:".")
-				@user = Validate.get_user(u)
+			def initialize(u:Metafile.get(:user), 
+						   y:, dir:".")
+				@user = Validate.user(u)
 				@year = Validate.year(y)
 				@dir  = dir
 			end
@@ -13,24 +14,26 @@ module AocCli
 				self
 			end
 			def write
-				raise E::AlrInit if File.exist?(".meta") &&
-					Files::Metafile.get(:year) != year
-				File.write("#{dir}/.meta", meta)
+				File.write(Validate.not_other_year(dir:dir, y:year), 
+						   Metafile.year(y:year, d:day))
+				#raise E::AlrInit if File.exist?(".meta") &&
+					#Files::Metafile.get(:year) != year
+				#File.write("#{dir}/.meta", meta)
 			end
-			private
-			def meta
-				<<~file
-				dir=>ROOT
-				year=>#{year}
-				user=>#{user}
-				file
-			end
+			#private
+			#def meta
+				#<<~file
+				#dir=>ROOT
+				#year=>#{year}
+				#user=>#{user}
+				#file
+			#end
 		end
-		class Calendar
+		class Calendar < Init
 			attr_reader :cal, :stats, :user, :year, :dir
 			def initialize(u:Metafile.get(:user), y:, dir:".")
 				@dir   = dir
-				@user  = Validate.get_user(u)
+				@user  = Validate.user(u)
 				@year  = Validate.year(y)
 				@stats = Data::Stats.new(u:user, y:year)
 				@cal   = Data::Calendar
@@ -62,14 +65,13 @@ module AocCli
 				attr_reader :user, :year, :page, :data
 				def initialize(u:Metafile.get(:user),
 							   y:Metafile.get(:year))
-					@user = Validate.get_user(u)
+					@user = Validate.user(u)
 					@year = Validate.year(y)
 					@data = parse(raw: fetch)
 				end
 				private
 				def fetch
-					Tools::Get.new(u:user, y:year, page:page)
-						.plain.split("\n")
+					Tools::Get.new(u:user, y:year, page:page).plain.split("\n")
 				end
 			end
 			class Calendar < YearObject
@@ -82,8 +84,7 @@ module AocCli
 				end
 				def fill(stars:)
 					stars.each{|s, n| data.each{|l| l.gsub!(
-						/(^.*)\b#{s}\b.$/, "\\1#{s}\s#{"*" * n}"
-					)}}
+						/(^.*)\b#{s}\b.$/, "\\1#{s}\s#{"*" * n}")}}
 					self
 				end
 			end

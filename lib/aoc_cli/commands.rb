@@ -24,7 +24,7 @@ module AocCli
 				@user, @year = args[:user], args[:year]
 			end
 			def exec
-				Year::Meta
+				Year::Init
 					.new(u:user, y:year)
 					.write
 				Year::Calendar
@@ -105,7 +105,7 @@ module AocCli
 		end
 		class SetDefaultUser
 			def initialize(args)
-				@user = Validate.get_user(args[:user])
+				@user = Validate.user(args[:user])
 			end
 			def exec
 				Files::Config.new.change_line(key:"default")
