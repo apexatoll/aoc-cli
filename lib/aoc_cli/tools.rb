@@ -27,8 +27,8 @@ module AocCli
 			end
 			def url
 				case page
-				when :calendar then base 
-				when :stats    then base + "/leaderboard/self"
+				when :Calendar then base 
+				when :Stats    then base + "/leaderboard/self"
 				when :Puzzle   then base + "/day/#{day}"
 				when :Input    then base + "/day/#{day}/input"
 				when :answer   then base + "/day/#{day}/answer"

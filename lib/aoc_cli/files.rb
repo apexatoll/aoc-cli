@@ -3,47 +3,43 @@ module AocCli
 		class Config
 			require 'fileutils'
 			def initialize
-				FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-				File.write(path, "", mode:"a") unless File.exist?(path)
+				Paths::Config.create
 			end
 			def def_acc
 				get_line(key:"default") || "main"
 			end
 			def is_set?(key:nil, val:nil)
-				file.split("\n").grep(/#{key}=>#{val}/).any?
+				read.split("\n").grep(/#{key}=>#{val}/).any?
 			end
 			protected
 			def get_line(key:)
-				file.scan(/(?<=#{key}=>).*$/)&.first
+				read.scan(/(?<=#{key}=>).*$/)&.first
 			end
 			def set_line(key:, val:)
-				File.write(path, "#{key}=>#{val}\n", mode:"a")
+				write(f:"#{key}=>#{val}\n", m:"a")
 			end
-			def change_line(key:, val:)
+			def mod_line(key:, val:)
 				is_set?(key:key) ?
-					File.write(path, file
-						.gsub(/^(?<=#{key}=>).*$/, "#{val}")) :
-					File.write(path, "#{key}=>#{val}\n", mode:"a")
+					write(f:read.gsub(/^(?<=#{key}=>).*$/, val.to_s)) :
+					write(f:"#{key}=>#{val}\n", m:"a")
 			end
-			def file
-				File.read(path)
+			private
+			def read
+				File.read(Paths::Config.path)
 			end
-			def dir
-				"#{Dir.home}/.config/aoc-cli"
-			end
-			def path
-				"#{dir}/aoc.rc"
+			def write(f:, m:"w")
+				File.write(Paths::Config.path, f, mode:m)
 			end
 		end
 		class Cookie < Config
-			attr_reader :user, :key
+			attr_reader :user
 			def initialize(u:)
 				@user = u
 				super()
 			end
 			def store(key:)
-				set_line(key:"cookie=>#{Val.set_user(user)}",
-						 val:Val.set_key(key))
+				set_line(key:"cookie=>#{Validate.set_user(user)}",
+						 val:Validate.set_key(key))
 			end
 			def key
 				get_line(key:"cookie=>#{user}")
@@ -54,16 +50,15 @@ module AocCli
 				read.scan(/(?<=#{field}=>).*$/)&.first&.chomp
 			end
 			def self.type
-				get("dir").to_sym
+				temp = get("dir").to_sym
+				puts temp
+				temp
 			end
-			def self.add(hash:, dir:".")
+			def self.add(hash:, path:".meta")
 				hash.map {|k, v| "#{k}=>#{v}\n"}
-					.each{|l| File.write("#{dir}/#{path}",l , mode:"a")}
+					.each{|l| File.write(path, l, mode:"a")}
 			end
 			private
-			def self.write()
-
-			end
 			def self.read(dir:".")
 				File.read("#{Validate.init(dir)}/.meta")
 			end
@@ -93,6 +88,18 @@ module AocCli
 			end
 		end
 		module Paths
+			class Config
+				def self.create
+					FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+					File.write(path, "", mode:"a") unless File.exist?(path)
+				end
+				def self.dir
+					"#{Dir.home}/.config/aoc-cli"
+				end
+				def self.path
+					"#{dir}/aoc.rc"
+				end
+			end
 			class Day
 				attr_reader :user, :year, :day
 				def initialize(u:Metafile.get(:user), 
@@ -102,12 +109,14 @@ module AocCli
 					@day  = Validate.day(d)
 				end
 				def filename(f:)
-					case f
+					case f.to_sym
 					when :Input  then "input"
 					when :Puzzle then "#{day}.md"
+					when :meta   then ".meta"
 					end 
 				end
 				def in_day?
+					puts Metafile.type
 					Metafile.type == :DAY 
 				end
 				def day_dir
@@ -133,6 +142,30 @@ module AocCli
 				end
 				def day_meta
 					in_day? ? ".meta" : "#{day_dir}/.meta"
+				end
+			end
+			class Year
+				attr_reader :user, :year
+				def initialize(u:Metafile.get(:user),
+							   y:Metafile.get(:year))
+					@user = Validate.user(u)
+					@year = Validate.year(y)
+				end
+				def in_year?
+					File.exist?("./.meta") ? Metafile.type == :ROOT : true
+				end
+				def year_dir
+					in_year? ? "." : ".."
+				end
+				def local(f:)
+					puts in_year?
+					"#{Validate.not_init(dir:year_dir, year:year)}/#{filename(f:f)}"
+				end
+				def filename(f:)
+					case f.to_sym
+					when :Stars then "#{year}.md"
+					when :meta  then ".meta"
+					end
 				end
 			end
 		end

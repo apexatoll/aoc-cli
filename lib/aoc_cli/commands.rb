@@ -27,7 +27,7 @@ module AocCli
 				Year::Init
 					.new(u:user, y:year)
 					.write
-				Year::Calendar
+				Year::Stars
 					.new(u:user, y:year)
 					.write.update_meta
 				self
@@ -108,10 +108,29 @@ module AocCli
 				@user = Validate.user(args[:user])
 			end
 			def exec
-				Files::Config.new.change_line(key:"default")
+				Files::Config.new.mod_line(key:"default")
 			end
 			def respond
 				puts "Default account succesfully changed to #{user.yellow}"
+			end
+		end
+		class Refresh
+			attr_reader :dir
+			def initialize(args)
+				@dir = Metafile.type
+			end
+			def exec
+				case dir
+				when :DAY  then Day::Files.new.write
+				when :ROOT then Year::Stars.new.write.update_meta
+				end
+				self
+			end
+			def respond
+				case dir
+				when :DAY  then puts "Puzzle updated"
+				when :ROOT then puts "Calendar updated"
+				end
 			end
 		end
 	end

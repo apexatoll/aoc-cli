@@ -90,6 +90,8 @@ module AocCli
 					args[:ans]  = Validate.set?(k: :a, v:ARGV.shift)
 				when "-u", "--user"
 					args[:user] = Validate.val?(k: :u, v:ARGV.shift)
+				when "-r", "--refresh"
+					@cmd = :Refresh
 				when "-U", "--default-user"
 					@cmd = :UserDefault
 					nil
@@ -161,10 +163,10 @@ module AocCli
 				raise E::NotInit unless File.exist?("#{dir}/.meta")
 				dir
 			end
-			def self.not_other_year(dir:dir, y:year)
-				raise E::AlrInit if File.exist?("#{dir}/.meta") &&
-					Metafile.get(:year) != year
-				"#{dir}/.meta"
+			def self.not_init(dir:, year:)
+				raise E::AlrInit if File.exist?("#{dir}/.meta") && 
+					Metafile.get(:year) != year.to_s
+				dir
 			end
 		end
 	end 

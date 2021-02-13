@@ -90,15 +90,13 @@ module AocCli
 				end
 				def refresh_calendar
 					puts "- Updating calendar...".blue
-					Year::Init
-						.new(y:year, dir:"..").write
-					Year::Calendar
-						.new(y:year, dir:"..").write.update_meta
+					Year::Init.new.write
+					Year::Stars.new.write.update_meta
 				end
 				def refresh_puzzle
 					puts "- Updating puzzle...".yellow
-					Day::Init.new(d:day).write
-					Day::Data::Puzzle.new(d:day).write
+					Day::Init.new.write
+					Day::Data::Puzzle.new.write
 				end
 			end
 			class Wait < Solve

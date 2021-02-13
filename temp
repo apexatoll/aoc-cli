@@ -1,0 +1,3 @@
+#{flag("-C", "--colour")}Use coloured outputs (default: true)
+#{flag("-B", "--browser")}Always open Reddit in browser (default: false)
+#{flag("-U", "--default")}Default key alias to use (default: "main")

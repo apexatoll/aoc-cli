@@ -15,7 +15,7 @@ module AocCli
 				self
 			end
 			def write
-				File.write("#{paths.local_dir}/.meta", 
+				File.write(paths.local(f:"meta"),
 					Metafile.day(u:user, y:year, d:day))
 				self
 			end
@@ -53,7 +53,7 @@ module AocCli
 					super(u:u, y:y, d:d)
 					@data  = parse(raw: fetch)
 				end
-				def write(to:paths.cache_and_local(file:page))
+				def write(to:paths.cache_and_local(f:page))
 					to.each{|path| File.write(path, data)}
 				end
 				private
@@ -93,7 +93,6 @@ module AocCli
 			end
 			def load
 				files.map{|f| [f, read_file(f:f)]}.to_h
-				self
 			end
 			private
 			def read_file(f:)
