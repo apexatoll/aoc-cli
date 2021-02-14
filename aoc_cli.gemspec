@@ -26,4 +26,6 @@ Gem::Specification.new do |spec|
 	#spec.add_dependency("curb")
 	#spec.add_dependency("json")
 	#spec.add_dependency("pandoc-ruby")
+	#spec.add_dependency("sqlite3")
+	#spec.add_dependency("terminal-table")
 end

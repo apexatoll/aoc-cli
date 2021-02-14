@@ -9,9 +9,9 @@ module AocCli
 			attr_reader :user, :year, :paths
 			def initialize(u:Files::Config.new.def_acc,
 						   y:Metafile.get(:year), dir:".")
-				@user = Validate.user(u)
-				@year = Validate.year(y)
-				@paths = Files::Paths::Year.new(u:user, y:year)
+				@user  = Validate.user(u)
+				@year  = Validate.year(y)
+				@paths = Paths::Year.new(u:user, y:year)
 			end
 			def write
 				File.write(paths.local(f:"meta"), 

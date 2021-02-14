@@ -5,8 +5,8 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				#rescue StandardError => e
-					#abort e.message
+				rescue StandardError => e
+					abort e.message
 			end
 			def run(opts:)
 				Object.const_get("AocCli::Commands::#{opts.cmd}")
@@ -74,7 +74,7 @@ module AocCli
 				while ARGV.size > 0
 				case  ARGV.shift
 				when "-a", "--attempts"
-					@cmd = :SolveAttempts
+					@cmd = :DayAttempts
 				when "-d", "--init-day"
 					@cmd = :DayInit
 					args[:day]  = Validate.day(ARGV.shift.to_i)
@@ -82,14 +82,14 @@ module AocCli
 					args[:day]  = Validate.day(ARGV.shift.to_i)
 				when "-k", "--key"
 					@cmd = :KeyStore
-					args[:key]  = Validate.set?(k: :k, v:ARGV.shift)
+					args[:key]  = Validate.set_key(ARGV.shift)
 				when "-p", "--part"
 					args[:part] = Validate.part(ARGV.shift.to_i)
 				when "-R", "--reddit"
 					@cmd = :OpenReddit
 				when "-s", "--solve"
 					@cmd = :DaySolve
-					args[:ans]  = Validate.set?(k: :a, v:ARGV.shift)
+					args[:ans]  = Validate.ans(ARGV.shift)
 				when "-u", "--user"
 					args[:user] = Validate.user(ARGV.shift)
 				when "-r", "--refresh"
@@ -112,7 +112,8 @@ module AocCli
 		class Validate
 			def self.user(user)
 				raise E::UserNil if user.nil?
-				raise E::UserInv.new(user) unless Files::Config.new.is_set?(key:"cookie=>#{user}")
+				raise E::UserInv.new(user) unless Files::Config
+					.new.is_set?(key:"cookie=>#{user}")
 				user
 			end
 			def self.set_user(user)
@@ -123,18 +124,21 @@ module AocCli
 			end
 			def self.year(year)
 				raise E::YearNil if year.nil?
-				raise E::YearInv.new(year) if year.to_i < 2015 || year.to_i > 2020
+				raise E::YearInv.new(year) if year.to_i < 2015 ||
+					year.to_i > 2020
 				year
 			end
 			def self.day(day)
 				raise E::DayNil if day.nil? || day == 0
-				raise E::DayInv.new(day) if day.to_i < 1 || day.to_i > 25
+				raise E::DayInv.new(day) if day.to_i < 1 ||
+					day.to_i > 25
 				day
 			end
 			def self.part(part)
 				raise E::PartNil  if part.nil?
 				raise E::PuzzComp if part.to_i == 3
-				raise E::PartInv  if part.to_i < 1 || part.to_i > 2
+				raise E::PartInv  if part.to_i < 1 ||
+					part.to_i > 2
 				part
 			end
 			def self.set_key(key)
@@ -149,27 +153,21 @@ module AocCli
 			end
 			def self.ans(ans)
 				raise E::AnsNil if ans.nil?
-			end
-			def self.set?(k:, v:)
-				if v.nil? 
-					case k
-					when :k then raise E::KeyNil
-					when :u then raise E::UserNil
-					when :a then raise E::AnsNil
-					end 
-				else return v end
+				ans
 			end
 			def self.day_dir(day)
 				raise E::DayExist.new(day) if Dir.exist?(day)
 				day
 			end
 			def self.init(dir)
-				raise E::NotInit unless File.exist?("#{dir}/.meta")
+				raise E::NotInit unless File
+					.exist?("#{dir}/.meta")
 				dir
 			end
 			def self.not_init(dir:, year:)
-				raise E::AlrInit if File.exist?("#{dir}/.meta") && 
-					Metafile.get(:year) != year.to_s
+				raise E::AlrInit if File
+					.exist?("#{dir}/.meta") && 
+						Metafile.get(:year) != year.to_s
 				dir
 			end
 		end

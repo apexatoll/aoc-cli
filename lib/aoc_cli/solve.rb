@@ -67,7 +67,9 @@ module AocCli
 			end
 			class Incorrect < Response
 				def react
-					Files::Database::Log.new(attempt:attempt).incorrect
+					Files::Database::Log
+						.new(attempt:attempt)
+						.incorrect(high:high, low:low)
 				end
 				def respond
 					response =  "#{"Incorrect".red.bold}: "\
@@ -96,34 +98,6 @@ module AocCli
 				end
 				def react; end
 			end
-			#class Log
-				#attr_reader :attempt
-				#def initialize(attempt:)
-					#@attempt = attempt
-					#@db ||= Files::Database.new("attempts.db")
-						#.table(t:user, cols:cols)
-				#end
-				#def insert
-					#db.insert(t:user, val:data)
-				#end
-				#def correct
-					#print data << 1
-				#end
-				#def incorrect
-					#print data << 0
-				#end
-				#def data
-					#[attempt.year, attempt.day, attempt.part, attempt.answer]
-				#end
-				#def cols
-					#{"time"=>:TEXT, 
-					 #"year"=>:INT, 
-					 #"day"=>:INT, 
-					 #"part"=>:INT, 
-					 #"answer"=>:TEXT, 
-					 #"correct"=>:INT}
-				#end
-			#end
 		end
 	end
 end

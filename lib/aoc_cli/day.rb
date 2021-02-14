@@ -13,8 +13,7 @@ module AocCli
 				@user  = Validate.user(u)
 				@year  = Validate.year(y)
 				@day   = Validate.day(d)
-				@paths = AocCli::Files::Paths::Day
-					.new(u:user, y:year, d:day)
+				@paths = Paths::Day.new(u:user, y:year, d:day)
 			end
 			def mkdir
 				Dir.mkdir(Validate.day_dir(paths.day_dir))
@@ -26,7 +25,7 @@ module AocCli
 				self
 			end
 		end
-		class Files < Init
+		class Pages < Init
 			attr_reader :cache, :files
 			def initialize(u:Metafile.get(:user), 
 						   y:Metafile.get(:year),
@@ -42,7 +41,8 @@ module AocCli
 			end
 			private
 			def cache
-				@cache ||= Cache.new(u:user, y:year, d:day, f:files).load
+				@cache ||= Cache
+					.new(u:user, y:year, d:day, f:files).load
 			end
 			def download(page:, to:paths.cache_and_local(f:page))
 				Object.const_get("AocCli::Day::Data::#{page}")
@@ -87,11 +87,11 @@ module AocCli
 				end
 			end
 		end
-		class Cache < Files
+		class Cache < Pages
 			require 'fileutils'
-			def initialize(u:Files::Metafile.get(:user), 
-						   y:Files::Metafile.get(:year),
-						   d:Files::Metafile.get(:day),
+			def initialize(u:Metafile.get(:user), 
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
 						   f:[:Input, :Puzzle])
 				super(u:u, y:y, d:d, f:f)
 				FileUtils.mkdir_p(paths.cache_dir) unless Dir
@@ -117,8 +117,8 @@ module AocCli
 						   d:Metafile.get(:day))
 				@year = Validate.year(y)
 				@day  = Validate.day(d)
-				@uniq = AocCli::Files::Database::Query
-					.new(db:"reddit.db")
+				@uniq = Database::Query
+					.new(path:Paths::Database.root("reddit"))
 					.select(t:"'#{year}'", data:{day:"'#{day}'"})
 					.flatten[1]
 			end
@@ -136,7 +136,8 @@ module AocCli
 				"#{year}_day_#{day}_solutions"
 			end
 		end
-		class Attempts < Init
+		class AttemptsTable < Init
+			require 'terminal-table'
 			attr_reader :part, :db
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
@@ -144,13 +145,55 @@ module AocCli
 						   p:Metafile.get(:part))
 				super(u:u, y:y, d:d)
 				@part = Validate.part(p)
-				@db = AocCli::Files::Database::Query.new(db:"attempts.db")
+				@db   = Database::Query
+					.new(path:Paths::Database
+					.cfg("attempts"))
 			end
 			def show
-				puts attempts
+				puts rows.count > 0 ? table : 
+					"You have not attempted this puzzle yet!"
+			end
+			private
+			def table
+				tab = Terminal::Table.new(
+					:headings  => headings,
+					:rows      => rows,
+					:title     => title)
+				tab.style = {
+					:border    => :unicode, 
+					:alignment => :center}
+				tab
+			end
+			def title
+				"#{year} - Day #{day}:#{part}".bold
+			end
+			def headings
+				["Answer", "Time", "Hint"]
+			end
+			def rows
+				@rows ||= attempts
+					.map{|a| [parse_ans(a), parse_time(a),
+							  parse_hint(a)]}
 			end
 			def attempts 
-				db.select(t:user, data:{year:year, day:day, part:part})
+				db.select(
+					t:user, 
+					cols:"time, answer, high, low, correct", 
+					data:{year:year, day:day, part:part})
+			end
+			def parse_ans(attempt)
+				attempt[4] == 1 ? 
+					attempt[1].to_s.green :
+					attempt[1].to_s.red
+			end
+			def parse_time(attempt)
+				DateTime
+					.strptime(attempt[0], "%Y-%m-%d %H:%M:%S %Z")
+					.strftime("%H:%M - %d/%m/%y")
+			end
+			def parse_hint(attempt)
+				attempt[2] == 1 ? "low" : 
+					attempt[3] == 1 ? "high" : "-"
 			end
 		end
 	end

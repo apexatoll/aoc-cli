@@ -130,7 +130,7 @@ module AocCli
 			def respond
 			end
 		end
-		class SolveAttempts
+		class DayAttempts
 			attr_reader :user, :year, :day, :part
 			def initialize(args)
 				args = defaults.merge(args).compact
@@ -140,7 +140,9 @@ module AocCli
 				@part = args[:part]
 			end
 			def exec
-				Day::Attempts.new(u:user, y:year, d:day, p:part).show
+				Day::AttemptsTable
+					.new(u:user, y:year, d:day, p:part)
+					.show
 				self
 			end
 			def respond
