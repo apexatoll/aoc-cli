@@ -73,6 +73,8 @@ module AocCli
 			def parse_args
 				while ARGV.size > 0
 				case  ARGV.shift
+				when "-a", "--attempts"
+					@cmd = :SolveAttempts
 				when "-d", "--init-day"
 					@cmd = :DayInit
 					args[:day]  = Validate.day(ARGV.shift.to_i)
@@ -89,7 +91,7 @@ module AocCli
 					@cmd = :DaySolve
 					args[:ans]  = Validate.set?(k: :a, v:ARGV.shift)
 				when "-u", "--user"
-					args[:user] = Validate.val?(k: :u, v:ARGV.shift)
+					args[:user] = Validate.user(ARGV.shift)
 				when "-r", "--refresh"
 					@cmd = :Refresh
 				when "-U", "--default-user"
@@ -110,8 +112,7 @@ module AocCli
 		class Validate
 			def self.user(user)
 				raise E::UserNil if user.nil?
-				raise E::UserInv unless Files::Config.new
-					.is_set?(key:"cookie=>#{user}")
+				raise E::UserInv.new(user) unless Files::Config.new.is_set?(key:"cookie=>#{user}")
 				user
 			end
 			def self.set_user(user)
@@ -145,6 +146,9 @@ module AocCli
 			def self.get_key(key)
 				raise E::KeyNil if key.nil?
 				key
+			end
+			def self.ans(ans)
+				raise E::AnsNil if ans.nil?
 			end
 			def self.set?(k:, v:)
 				if v.nil? 

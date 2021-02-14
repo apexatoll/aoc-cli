@@ -5,11 +5,11 @@ module AocCli
 			attr_reader :user, :year, :day, :base, :page
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
-						   d:Metafile.get(:day), page:)
+						   d:Metafile.get(:day), p:)
 				@user = Validate.user(u)
 				@year = Validate.year(y)
 				@day  = d
-				@page = page
+				@page = p
 				@base = "https://adventofcode.com/#{year}"
 			end
 			protected
@@ -26,12 +26,12 @@ module AocCli
 				Files::Cookie.new(u:user).key
 			end
 			def url
-				case page
+				case page.to_sym
 				when :Calendar then base 
 				when :Stats    then base + "/leaderboard/self"
 				when :Puzzle   then base + "/day/#{day}"
 				when :Input    then base + "/day/#{day}/input"
-				when :answer   then base + "/day/#{day}/answer"
+				when :Answer   then base + "/day/#{day}/answer"
 				end
 			end
 		end
@@ -71,26 +71,20 @@ module AocCli
 		class Get < Convert
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
-						   d:nil, page:)
+						   d:nil, p:)
 				@input = Request
-					.new(u:u, y:y, d:d, page:page)
+					.new(u:u, y:y, d:d, p:p)
 					.get
 			end
 		end
 		class Post < Convert
 			def initialize(u:Metafile.get(:user), 
 						   y:Metafile.get(:year),
-						   d:Metafile.get(:day), page:, data:)
+						   d:Metafile.get(:day), 
+						   p:"Answer", data:)
 				@input = Request
-					.new(u:u, y:y, d:d, page:page)
+					.new(u:u, y:y, d:d, p:p)
 					.post(data:data)
-			end
-		end
-		class Refresh
-			def initialize(u:Metafile.get(:user),
-						   y:Metafile.get(:year),
-						   d:Metafile.get(:day),
-						   loc:Metafile.type)
 			end
 		end
 	end 

@@ -1,5 +1,10 @@
 module AocCli
 	module Year
+		def self.refresh
+			puts "- Updating calendar...".blue
+			Year::Init.new.write
+			Year::Stars.new.write.update_meta
+		end
 		class Init
 			attr_reader :user, :year, :paths
 			def initialize(u:Files::Config.new.def_acc,
@@ -52,7 +57,7 @@ module AocCli
 				end
 				private
 				def fetch
-					Tools::Get.new(u:user, y:year, page:page).plain.split("\n")
+					Tools::Get.new(u:user, y:year, p:page).plain.split("\n")
 				end
 			end
 			class Calendar < YearObject

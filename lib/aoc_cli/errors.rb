@@ -101,6 +101,13 @@ module AocCli
 				error
 			end
 		end
+		class AnsNil < StandardError
+			def message
+				<<~error
+				#{ERROR}: No answer passed with the solve flag
+				error
+			end
+		end
 		class KeyNil < StandardError
 			def message
 				<<~error
@@ -131,14 +138,6 @@ module AocCli
 			def message
 				<<~error
 				#{ERROR}: You must initialise the directory first
-				error
-			end
-		end
-		class RootNot < StandardError
-			def message
-				<<~error
-				#{ERROR}: You cannot perform that action here
-				Are you sure you are in the year directory?
 				error
 			end
 		end

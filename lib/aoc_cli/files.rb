@@ -50,9 +50,7 @@ module AocCli
 				read.scan(/(?<=#{field}=>).*$/)&.first&.chomp
 			end
 			def self.type
-				temp = get("dir").to_sym
-				puts temp
-				temp
+				get("dir").to_sym
 			end
 			def self.add(hash:, path:".meta")
 				hash.map {|k, v| "#{k}=>#{v}\n"}
@@ -169,19 +167,79 @@ module AocCli
 				end
 			end
 		end
-		class Database
-			require 'sqlite3'
-			attr_reader :db
-			def initialize(db:)
-				@db = SQLite3::Database.open(path(db:db))
+		module Database
+			class Query
+				require 'sqlite3'
+				attr_reader :db
+				def initialize(db:)
+					puts path(db:db)
+					@db = SQLite3::Database.open(path(db:db))
+				end
+				#def select(table:, cols:"*", col:nil, val:nil)
+				def select(t:, cols:"*", data:)
+					str = "SELECT #{cols} FROM #{t} "\
+						"WHERE #{data.map{|k, v| "#{k} = #{v}"}.join(" AND ")}"
+						#"SELECT #{cols} FROM #{table}"\
+						#"rrWHERE #{col} = #{val}")
+					puts str
+					db.execute(str)
+				end
+				def table(t:, cols:)
+					sql = cols.map{|c, t| "#{c} #{t}"}.join(", ")
+					db.execute(
+						"CREATE TABLE IF NOT EXISTS "\
+						"#{t}(#{sql})")
+					self
+				end
+				def insert(t:, val:)
+					db.execute(
+						"INSERT INTO #{t} "\
+						"VALUES(#{val.join(", ")})")
+					self
+				end
+				def path(db:)
+					"#{__dir__}/db/#{db}"
+				end
 			end
-			def select(table:, col:nil, val:nil)
-				db.execute("SELECT * FROM #{table}"\
-						   "WHERE #{col} = #{val}")
-			end
-			def path(db:)
-				"#{__dir__}/db/#{db}"
+			class Log
+				attr_reader :attempt, :db
+				def initialize(attempt:)
+					@attempt = attempt
+					@db = Query.new(db:"attempts.db")
+						.table(t:attempt.user, cols:cols)
+				end
+				def correct
+					db.insert(t:attempt.user, val:data << 1)
+				end
+				def incorrect
+					db.insert(t:attempt.user, val:data << 0)
+				end
+				def data
+					["'#{Time.now}'",
+					 "'#{attempt.year}'",
+					 "'#{attempt.day}'",
+					 "'#{attempt.part}'",
+					 "#{attempt.answer}"]
+				end
+				def cols
+					{"time"=>:TEXT, 
+					 "year"=>:INT, 
+					 "day"=>:INT, 
+					 "part"=>:INT, 
+					 "answer"=>:TEXT, 
+					 "correct"=>:INT}
+				end
 			end
 		end
 	end 
 end
+
+#Attempt = Struct.new(:user, :year, :day, :part, :answer)
+#test = Attempt.new("main", 2020, 10, 1, 12343)
+#AocCli::Files::Database::Log.new(attempt: test).incorrect
+#data = {year: '2020', day: '10', part: '1', correct: '1'}
+#time = AocCli::Files::Database::Query.new(db: "attempts.db").select(t: "main", cols: "time", data: data).first.first
+#puts time
+#
+#DateTime.strptime(time, "%Y-%m-%d %H:%M:%S %Z")
+					#puts val

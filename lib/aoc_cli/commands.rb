@@ -75,7 +75,7 @@ module AocCli
 				@ans  = args[:ans]
 			end
 			def exec 
-				Solve::Solve
+				Solve::Attempt
 					.new(u:user, y:year, d:day, p:part, a:ans)
 					.respond
 				self
@@ -121,16 +121,36 @@ module AocCli
 			end
 			def exec
 				case dir
-				when :DAY  then Day::Files.new.write
-				when :ROOT then Year::Stars.new.write.update_meta
+				when :DAY  then Day.refresh
+				when :ROOT then Year.refresh
 				end
+				#when :ROOT then Year::Stars.new.write.update_meta
 				self
 			end
 			def respond
-				case dir
-				when :DAY  then puts "Puzzle updated"
-				when :ROOT then puts "Calendar updated"
-				end
+			end
+		end
+		class SolveAttempts
+			attr_reader :user, :year, :day, :part
+			def initialize(args)
+				args = defaults.merge(args).compact
+				@user = args[:user]
+				@year = args[:year]
+				@day  = args[:day]
+				@part = args[:part]
+			end
+			def exec
+				Day::Attempts.new(u:user, y:year, d:day, p:part).show
+				self
+			end
+			def respond
+
+			end
+			def defaults
+				{user:Metafile.get(:user),
+				 year:Metafile.get(:year),
+				  day:Metafile.get(:day),
+				 part:Metafile.get(:part)}
 			end
 		end
 	end

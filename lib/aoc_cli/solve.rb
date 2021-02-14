@@ -3,82 +3,58 @@ module AocCli
 		CORRECT   = "That's the right answer"
 		INCORRECT = "That's not the right answer"
 		WAIT      = "You gave an answer too recently"
-		class Solve
-			attr_reader :user, :year, :day, :part, :answer, :reply
-			def initialize(u:Metafile.get(:user), 
+		class Attempt
+			attr_reader :user, :year, :day, :part, :answer
+			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
 						   d:Metafile.get(:day),
 						   p:Metafile.get(:part), a:)
-				@user   = Validate.set?(k: :u, v:u)
-				@answer = Validate.set?(k: :a, v:a)
+				@user   = Validate.user(u)
 				@year   = Validate.year(y)
 				@day    = Validate.day(d)
 				@part   = Validate.part(p)
-				@reply  = parse(attempt:send)
+				@answer = Validate.ans(a)
+			end
+			def raw
+				@raw ||= Tools::Post
+					.new(u:user, y:year, d:day, 
+						 data:{level:part, answer:answer})
+					.plain
+			end
+			def check
+				case raw
+				when /#{CORRECT}/   then :Correct
+				when /#{INCORRECT}/ then :Incorrect
+				when /#{WAIT}/      then :Wait
+				end
 			end
 			def respond
-				case reply
-				when /#{INCORRECT}/ then Responses::Incorrect
-					.new(u:user, y:year, d:day, p:part, a:answer)
-					.log.response
-				when /#{WAIT}/ then Responses::Wait
-					.new(u:user, y:year, d:day, p:part, a:answer)
-					.response
-				when /#{CORRECT}/ then Responses::Correct
-					.new(u:user, y:year, d:day, p:part, a:answer)
-					.response.refresh
-				end
-			end
-			def send
-				Tools::Post
-					.new(page: :answer, y:year, d:day, data:data)
-			end
-			def parse(attempt:)
-				attempt.chunk(f:"<main", t:"<\/main", t_off:1)
-					.plain
-					.gsub("\n", " ")
-					.gsub(/\s+\[.*\]/, "")
-			end
-			def data
-				{level:part, answer:answer}
+				Object
+					.const_get("AocCli::Solve::Respond::#{check}")
+					.new(attempt:self)
+					.respond
+					.react
 			end
 		end
-		module Responses
-			class Incorrect < Solve
-				def high
-					/too high/.match?(reply)
-				end
-				def low
-					/too low/.match?(reply)
-				end
-				def response
-					text = <<~response
-					#{"Incorrect".red.bold}: You guessed - #{answer.to_s.red}
-					response
-					text += "This answer is too high\n" if high
-					text += "This answer is too low\n"  if low
-					puts text
-					self
-				end
-				def log
-					File.write(".attempts", 
-						"#{{Time.new => answer}.to_json}\n",
-						mode:"a")
-					self
+		module Respond
+			class Response
+				attr_reader :attempt
+				def initialize(attempt:)
+					@attempt = attempt
 				end
 			end
-			class Correct < Solve
-				def response
-					msg = "#{"Correct!".bold.green} "
-					case part
-					when "1" then msg += next_part
-					when "2" then msg += complete end
-					puts msg
-					self
+			class Correct < Response
+				def react
+					Year.refresh
+					Day.refresh
+					Files::Database::Log.new(attempt:attempt).correct
 				end
-				def refresh
-					refresh_calendar
-					refresh_puzzle
+				def respond
+					response = "#{"Correct!".bold.green} "
+					response += case attempt.part
+						when "1" then next_part
+						when "2" then complete end
+					puts response
 					self
 				end
 				private 
@@ -88,28 +64,66 @@ module AocCli
 				def complete
 					"This day is now complete!".green
 				end
-				def refresh_calendar
-					puts "- Updating calendar...".blue
-					Year::Init.new.write
-					Year::Stars.new.write.update_meta
+			end
+			class Incorrect < Response
+				def react
+					Files::Database::Log.new(attempt:attempt).incorrect
 				end
-				def refresh_puzzle
-					puts "- Updating puzzle...".yellow
-					Day::Init.new.write
-					Day::Data::Puzzle.new.write
+				def respond
+					response =  "#{"Incorrect".red.bold}: "\
+						"You guessed - #{attempt.answer.to_s.red}\n"
+					response += "This answer is too high\n" if high
+					response += "This answer is too low\n"  if low
+					puts response
+					self
+				end
+				def high
+					/too high/.match?(attempt.raw)
+				end
+				def low
+					/too low/.match?(attempt.raw)
 				end
 			end
-			class Wait < Solve
-				def response
-					puts <<~response
-					#{"Please wait".yellow.bold}: You have #{time.to_s} to wait
-					response
+			class Wait < Response
+				def respond
+					response = "#{"Please wait".yellow.bold}: "\
+								"You have #{time.to_s} to wait"
+					puts response
 					self
 				end
 				def time
-					reply.scan(/(?:\d+m\s)?\d+s/).first.to_s
+					attempt.raw.scan(/(?:\d+m\s)?\d+s/).first.to_s
 				end
+				def react; end
 			end
+			#class Log
+				#attr_reader :attempt
+				#def initialize(attempt:)
+					#@attempt = attempt
+					#@db ||= Files::Database.new("attempts.db")
+						#.table(t:user, cols:cols)
+				#end
+				#def insert
+					#db.insert(t:user, val:data)
+				#end
+				#def correct
+					#print data << 1
+				#end
+				#def incorrect
+					#print data << 0
+				#end
+				#def data
+					#[attempt.year, attempt.day, attempt.part, attempt.answer]
+				#end
+				#def cols
+					#{"time"=>:TEXT, 
+					 #"year"=>:INT, 
+					 #"day"=>:INT, 
+					 #"part"=>:INT, 
+					 #"answer"=>:TEXT, 
+					 #"correct"=>:INT}
+				#end
+			#end
 		end
-	end 
+	end
 end

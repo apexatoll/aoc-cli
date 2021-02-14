@@ -1,17 +1,20 @@
-# `Advent of Code CLI`
+# `Advent of Code - cli`
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/demo.gif)
 
-AoC-cli is a command-line application to interact with the Advent of Code puzzles built in Ruby.
+aoc-cli is a command-line application built in Ruby for Advent of Code puzzles.
 
-AoC-cli has many features and allows for complete interaction with AoC from within the terminal.
+aoc-cli has many features and allows for complete interaction with AoC from within the terminal.
 
-## Features
-- Download raw input files and puzzle instructions as markdown files with one single command
+### Main Features
 - Download calendar files as markdown to show progress within the year
+- Download raw input files and puzzle instructions as markdown files with one single command
 - Send solve attempts to the AoC server and return the response. Calendar files and puzzle files are refreshed automatically
 - Information about days and years is stored automatically generated metafiles. This means that answering a puzzle is as simple as running `aoc -s $attempt` from the puzzle directory
-<!--- Account information is obtained by using session cookies. AoC-cli allows for multiple keys to be stored to represent multiple accounts-->
+- Inteis obtained by using session cookies. AoC-cli allows for multiple keys to be stored to represent multiple accounts
+
+
+
 
 ## Installation
 

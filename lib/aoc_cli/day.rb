@@ -1,8 +1,14 @@
 module AocCli
 	module Day
+		def self.refresh
+			puts "- Updating puzzle...".yellow
+			Init.new.write
+			Data::Puzzle.new.write
+		end
 		class Init
 			attr_reader :year, :day, :user, :paths
-			def initialize(u:Metafile.get(:user), y:Metafile.get(:year), 
+			def initialize(u:Metafile.get(:user), 
+						   y:Metafile.get(:year), 
 						   d:Metafile.get(:day))
 				@user  = Validate.user(u)
 				@year  = Validate.year(y)
@@ -58,7 +64,7 @@ module AocCli
 				end
 				private
 				def fetch
-					Tools::Get.new(u:user, y:year, d:day, page:page)
+					Tools::Get.new(u:user, y:year, d:day, p:page)
 				end
 			end
 			class Puzzle < DayObject
@@ -111,9 +117,9 @@ module AocCli
 						   d:Metafile.get(:day))
 				@year = Validate.year(y)
 				@day  = Validate.day(d)
-				@uniq = AocCli::Files::Database
+				@uniq = AocCli::Files::Database::Query
 					.new(db:"reddit.db")
-					.select(table:"'#{year}'", col:"day", val:"'#{day}'")
+					.select(t:"'#{year}'", data:{day:"'#{day}'"})
 					.flatten[1]
 			end
 			def open
@@ -128,6 +134,23 @@ module AocCli
 				"https://www.reddit.com/r/"\
 				"adventofcode/comments/#{uniq}/"\
 				"#{year}_day_#{day}_solutions"
+			end
+		end
+		class Attempts < Init
+			attr_reader :part, :db
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
+						   p:Metafile.get(:part))
+				super(u:u, y:y, d:d)
+				@part = Validate.part(p)
+				@db = AocCli::Files::Database::Query.new(db:"attempts.db")
+			end
+			def show
+				puts attempts
+			end
+			def attempts 
+				db.select(t:user, data:{year:year, day:day, part:part})
 			end
 		end
 	end
