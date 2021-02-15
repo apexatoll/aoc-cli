@@ -10,6 +10,8 @@ require_relative 'aoc_cli/tools'
 require_relative 'aoc_cli/year'
 require_relative 'aoc_cli/day'
 require_relative 'aoc_cli/solve'
+require_relative 'aoc_cli/database'
+require_relative 'aoc_cli/paths'
 
 module AocCli
 	Metafile = AocCli::Files::Metafile

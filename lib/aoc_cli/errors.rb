@@ -4,8 +4,8 @@ module AocCli
 		class UserNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: The user flag was passed but no user was entered.
-				Please specify which alias to use when using the #{"-u".yellow} or #{"--user".yellow} flag
+				#{ERROR}: No user alias value.
+				Specify an alias to use when passing the #{"-u".yellow} or #{"--user".yellow} flag
 				error
 			end
 		end
@@ -15,7 +15,7 @@ module AocCli
 			end
 			def message
 				<<~error
-				#{ERROR}: Invalid user #{@user.to_s.red}
+				#{ERROR}: Invalid user: #{@user.to_s.red}
 				No key was found under this alias
 				error
 			end
@@ -35,8 +35,8 @@ module AocCli
 		class YearNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: No year specified to initialise.
-					Set the year using the #{"-y".yellow} or #{"--year".yellow} flags.
+				#{ERROR}: No year value.
+				Set the year using the #{"-y".yellow} or #{"--year".yellow} flags.
 				error
 			end
 		end
@@ -47,7 +47,7 @@ module AocCli
 			end
 			def message
 				<<~error
-				#{ERROR}: Invalid year passed #{year.to_s.red}
+				#{ERROR}: Invalid year: #{year.to_s.red}
 				Advent of Code currently spans 2015 - 2020.
 				error
 			end
@@ -55,7 +55,7 @@ module AocCli
 		class DayNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: No day passed
+				#{ERROR}: No day value.
 				Specify the day using the #{"-d".yellow} or #{"--day".yellow} flags.
 				error
 			end
@@ -66,7 +66,7 @@ module AocCli
 			end
 			def message
 				<<~error
-				#{ERROR}: Invalid day passed #{@day.to_s.red}
+				#{ERROR}: Invalid day: #{@day.to_s.red}
 				Valid days are between 1 and 25
 				error
 			end
@@ -84,7 +84,7 @@ module AocCli
 		class PartNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: No part value passed.
+				#{ERROR}: No part value.
 				Check the .meta file or pass it manually with the #{"-p".yellow} or #{"--part".yellow} flags
 				error
 			end
@@ -96,7 +96,7 @@ module AocCli
 			end
 			def message
 				<<~error
-				#{ERROR}: Invalid part passed: #{part.red}
+				#{ERROR}: Invalid part: #{part.red}
 				Part refers to the part of the puzzle and can either be 1 or 2.
 				error
 			end
@@ -104,14 +104,14 @@ module AocCli
 		class AnsNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: No answer passed with the solve flag
+				#{ERROR}: No answer value.
 				error
 			end
 		end
 		class KeyNil < StandardError
 			def message
 				<<~error
-				#{ERROR}: No session key was specified
+				#{ERROR}: No session key value.
 				Use the #{"-k".yellow} or #{"--key".yellow} flags
 				error
 			end
@@ -149,9 +149,13 @@ module AocCli
 			end
 		end
 		class FlagInv < StandardError
+			attr_reader :flag
+			def initialize(flag)
+				@flag = flag
+			end
 			def message
 				<<~error
-				#{ERROR}: Invalid flag passed
+				#{ERROR}: Invalid flag: #{flag.red}
 				Use the #{"-h".yellow} or #{"--help".yellow} flags for a list of commands
 				error
 			end

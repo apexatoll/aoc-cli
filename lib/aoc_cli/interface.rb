@@ -5,31 +5,23 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				rescue StandardError => e
-					abort e.message
+				#rescue StandardError => e
+					#abort e.message
 			end
 			def run(opts:)
-				Object.const_get("AocCli::Commands::#{opts.cmd}")
+				cmd = Object
+					.const_get("AocCli::Commands::#{opts.cmd}")
 					.new(opts.args)
-					.exec.respond
+					.exec
+				cmd.respond if cmd.class.instance_methods.include?(:respond)
 			end
 		end
 		class Help
-			def self.title(title)
-				"#{title.bold}"
-			end
-			def self.flag(short, full)
-				str = "  #{short.yellow.bold} [#{full.blue.italic}]"
-				full.length <= 8 ?
-					str += "\t  " :
-					str += "  "
-				str
-			end
 			def self.print
-				<<~help_screen
-				aoc-cli - v0.1.0 2021
+			<<~help
+			aoc-cli - v0.1.0 2021
 
-				#{title("Usage")}
+			#{title("Usage")}
 				#{"  aoc" + " -flag".italic + " value".bold}
 
 				#{title("Setup")}
@@ -62,7 +54,18 @@ module AocCli
 				#{flag("-U", "--default")}Default key alias to use (default: "main")
 				
 				Year, day, user and part options for commands are set automatically with metafile information when the year and days are initiailised and commands are run from the appropriate directories. These options can be passed manually for commands (not recommended)
-				help_screen
+				help
+			end
+			def self.title(title)
+				"#{title.bold}"
+			end
+			def self.flag(short, full)
+				str = "\t#{short.yellow.bold} [#{full.blue.italic}]"
+				full.length <= 8 ?
+					str += "\t\t\t  " :
+					full.length <= 16 ? 
+						str += "\t\t  " : str += "\t  "
+				str
 			end
 		end
 		class Opts
@@ -75,6 +78,11 @@ module AocCli
 				case  ARGV.shift
 				when "-a", "--attempts"
 					@cmd = :DayAttempts
+				when "-b", "--browser"
+					args[:browser] = true
+				when "-B", "--browser"
+					@cmd = :DefaultReddit
+					args[:value] = ARGV.shift
 				when "-d", "--init-day"
 					@cmd = :DayInit
 					args[:day]  = Validate.day(ARGV.shift.to_i)
@@ -91,12 +99,12 @@ module AocCli
 					@cmd = :DaySolve
 					args[:ans]  = Validate.ans(ARGV.shift)
 				when "-u", "--user"
-					args[:user] = Validate.user(ARGV.shift)
+					args[:user] = ARGV.shift
 				when "-r", "--refresh"
 					@cmd = :Refresh
 				when "-U", "--default-user"
-					@cmd = :UserDefault
-					nil
+					@cmd = :DefaultUser
+					args[:user] = ARGV.shift
 				when "-y", "--init-year"
 					@cmd = :YearInit
 					args[:year] = Validate.year(ARGV.shift.to_i)

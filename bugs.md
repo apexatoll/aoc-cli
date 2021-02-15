@@ -1,7 +1,7 @@
 # To Do
 <!--- Finish errors [x]-->
 - Format errors consistently []
-- Help screen []
-- flag to open in browser reddit []
-- Attempts to sql db []
-- set default user []
+<!--- Help screen [x]-->
+<!--- flag to open in browser reddit [x]-->
+<!--- Attempts to sql db [x]-->
+<!--- set default user [x]-->

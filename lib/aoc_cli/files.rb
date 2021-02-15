@@ -11,18 +11,21 @@ module AocCli
 			def is_set?(key:nil, val:nil)
 				read.split("\n").grep(/#{key}=>#{val}/).any?
 			end
-			protected
+			def mod_line(key:, val:)
+				is_set?(key:key) ?
+					write(f:read.gsub(/(?<=^#{key}=>).*$/, 
+						  val.to_s)) :
+					write(f:"#{key}=>#{val}\n", m:"a")
+			end
 			def get_line(key:)
 				read.scan(/(?<=#{key}=>).*$/)&.first
 			end
+			def get_bool(key:)
+				get_line(key:key) == "true" ? true : false
+			end
+			protected
 			def set_line(key:, val:)
 				write(f:"#{key}=>#{val}\n", m:"a")
-			end
-			def mod_line(key:, val:)
-				is_set?(key:key) ?
-					write(f:read.gsub(/^(?<=#{key}=>).*$/, 
-						  val.to_s)) :
-					write(f:"#{key}=>#{val}\n", m:"a")
 			end
 			private
 			def read

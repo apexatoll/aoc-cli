@@ -77,7 +77,12 @@ module AocCli
 			end
 		end
 		class Database < Config
+			def self.dir
+				"#{super}/db"
+			end
 			def self.cfg(name)
+				FileUtils.mkdir_p(dir) unless Dir
+					.exist?(dir)
 				"#{dir}/#{name}.db"
 			end
 			def self.root(name)

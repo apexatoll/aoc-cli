@@ -112,18 +112,20 @@ module AocCli
 			end
 		end
 		class Reddit
-			attr_reader :year, :day, :uniq
+			attr_reader :year, :day, :uniq, :browser
 			def initialize(y:Metafile.get(:year), 
-						   d:Metafile.get(:day))
+						   d:Metafile.get(:day),
+						   b:false)
 				@year = Validate.year(y)
 				@day  = Validate.day(d)
 				@uniq = Database::Query
 					.new(path:Paths::Database.root("reddit"))
 					.select(t:"'#{year}'", data:{day:"'#{day}'"})
 					.flatten[1]
+				@browser = b
 			end
 			def open
-				system("#{cmd} #{link}")
+				system("#{browser ? "open" : cmd} #{link}")
 			end
 			def cmd
 				["ttrv", "rtv"]

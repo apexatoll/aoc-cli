@@ -67,7 +67,7 @@ module AocCli
 			end
 			class Incorrect < Response
 				def react
-					Files::Database::Log
+					Database::Log
 						.new(attempt:attempt)
 						.incorrect(high:high, low:low)
 				end

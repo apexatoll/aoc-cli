@@ -7,7 +7,7 @@ module AocCli
 				@user, @key = args[:user], args[:key]
 			end
 			def exec
-				Files::Cookie.new(u:user).store(k:key)
+				Files::Cookie.new(u:user).store(key:key)
 				self
 			end
 			def respond
@@ -51,7 +51,7 @@ module AocCli
 				Day::Init
 					.new(u:user, y:year, d:day)
 					.mkdir.write
-				Day::Files
+				Day::Pages
 					.new(u:user, y:year, d:day)
 					.write
 				self
@@ -80,9 +80,6 @@ module AocCli
 					.respond
 				self
 			end
-			def respond
-				"REsponse"
-			end
 			def defaults
 				{user:Metafile.get(:user),
 				 year:Metafile.get(:year),
@@ -91,27 +88,73 @@ module AocCli
 			end
 		end
 		class OpenReddit
-			attr_reader :year, :day
+			attr_reader :year, :day, :browser
 			def initialize(args)
-				@year = args[:year] ||= Metafile.get(:year)
-				@day  = args[:day]  ||= Metafile.get(:day)
+				args  = defaults.merge(args).compact
+				@year = Validate.year(args[:year])
+				@day  = Validate.day(args[:day])
+				@browser = args[:browser]
 			end
 			def exec
-				Day::Reddit.new(y:year, d:day).open
+				Day::Reddit.new(y:year, d:day, b:browser).open
 				self
 			end
-			def respond
+			def defaults
+				{year:Metafile.get(:year),
+				 day:Metafile.get(:day),
+				 browser:Files::Config
+					.new.get_bool(key:"browser")}
 			end
 		end
-		class SetDefaultUser
+		class DefaultUser
+			attr_reader :user, :mode
 			def initialize(args)
-				@user = Validate.user(args[:user])
+				@user = args[:user]
+				@mode = user.nil? ? :get : :set
 			end
 			def exec
-				Files::Config.new.mod_line(key:"default")
+				case mode
+				when :get then get_default
+				when :set then set_default end
+				self
 			end
-			def respond
-				puts "Default account succesfully changed to #{user.yellow}"
+			def get_default
+				puts "Current default alias: "\
+					 "#{(Files::Config.new
+						.get_line(key:"default") || "main")
+						.to_s.yellow}"
+			end
+			def set_default
+				Files::Config.new.mod_line(
+					key:"default", 
+					val:Validate.user(user))
+				puts "Default account succesfully changed to "\
+					 "#{user.yellow}"
+			end
+		end
+		class DefaultReddit
+			attr_reader :value, :mode
+			def initialize(args)
+				@value = args[:value]
+				@mode = value.nil? ? :get : :set
+			end
+			def exec
+				case mode
+				when :get then get_default
+				when :set then set_default
+				end
+			end
+			def get_default
+				puts "Always open Reddit in browser? "\
+					 "#{Files::Config.new
+						.get_bool(key:"browser")
+						.to_s.yellow}"
+			end
+			def set_default
+				Files::Config.new.mod_line(
+					key:"browser", val:value)
+				puts "Reddit browser setting changed to "\
+					 "#{value.yellow}"
 			end
 		end
 		class Refresh
@@ -122,12 +165,8 @@ module AocCli
 			def exec
 				case dir
 				when :DAY  then Day.refresh
-				when :ROOT then Year.refresh
-				end
-				#when :ROOT then Year::Stars.new.write.update_meta
+				when :ROOT then Year.refresh end
 				self
-			end
-			def respond
 			end
 		end
 		class DayAttempts

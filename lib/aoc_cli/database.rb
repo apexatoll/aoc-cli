@@ -3,8 +3,7 @@ module AocCli
 		class Query
 			require 'sqlite3'
 			attr_reader :db
-			def initialize(name:, 
-						   path:Paths::Database.cfg(db:name))
+			def initialize(path:)
 				@db = SQLite3::Database.open(path)
 			end
 			def select(t:, cols:"*", data:)
@@ -32,7 +31,8 @@ module AocCli
 			attr_reader :attempt, :db
 			def initialize(attempt:)
 				@attempt = attempt
-				@db = Query.new(db:"attempts.db")
+				@db = Query.new(path:Paths::Database
+					.cfg("attempts"))
 					.table(t:attempt.user, cols:cols)
 			end
 			def correct
