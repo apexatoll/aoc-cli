@@ -171,7 +171,7 @@ module AocCli
 				self
 			end
 		end
-		class DayAttempts
+		class AttemptsTable
 			attr_reader :user, :year, :day, :part
 			def initialize(args)
 				args = defaults.merge(args).compact
@@ -181,19 +181,24 @@ module AocCli
 				@part = args[:part]
 			end
 			def exec
-				Day::AttemptsTable
-					.new(u:user, y:year, d:day, p:part)
-					.show
+				Tables::Attempts
+					.new(u:user, y:year, d:day, p:part).show
 				self
-			end
-			def respond
-
 			end
 			def defaults
 				{user:Metafile.get(:user),
 				 year:Metafile.get(:year),
 				  day:Metafile.get(:day),
 				 part:Metafile.get(:part)}
+			end
+		end
+		class StatsTable
+			attr_reader :mode
+			def initialize(args)
+				@mode = Metafile.type == :ROOT ? :year : :day
+			end
+			def exec
+				Tables::Stats.new
 			end
 		end
 	end

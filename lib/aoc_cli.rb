@@ -1,6 +1,7 @@
 require 'colorize'
 require 'json'
 require 'sqlite3'
+
 require_relative 'aoc_cli/errors'
 require_relative 'aoc_cli/interface'
 require_relative "aoc_cli/version"
@@ -12,6 +13,7 @@ require_relative 'aoc_cli/day'
 require_relative 'aoc_cli/solve'
 require_relative 'aoc_cli/database'
 require_relative 'aoc_cli/paths'
+require_relative 'aoc_cli/tables'
 
 module AocCli
 	Metafile = AocCli::Files::Metafile
