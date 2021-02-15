@@ -64,5 +64,42 @@ module AocCli
 				 "high"=>:INT}
 			end
 		end
+		class PuzzleStats
+			attr_reader :user, :year, :day, :part, :time, :db
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
+						   p:Metafile.get(:part))
+				@user = Validate.user(u)
+				@year = Validate.year(y)
+				@day  = Validate.day(d)
+				@part = Validate.part(p)
+				@time = Time.now
+				@db   = Query.new(path:Paths::Database.cfg("#{user}"))
+							 .table(t:"stats", cols:cols)
+			end
+			def init
+				db.insert(t:"stats", val:data)
+			end
+			def data
+				["'#{year}'",
+				 "'#{day}'",
+				 "'#{part}'",
+				 "'#{time}'",
+				 "'0'",
+				 "NULL"]
+			end
+			def cols
+				    {year: :INT, 
+				      day: :INT, 
+				     part: :INT, 
+				  dl_time: :TEXT,
+				 attempts: :INT,
+				 end_time: :TEXT}
+			end
+		end
+		class PuzzleComplete < PuzzleStats
+			
+		end
 	end
 end 

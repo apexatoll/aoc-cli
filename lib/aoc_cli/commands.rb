@@ -50,7 +50,9 @@ module AocCli
 			def exec
 				Day::Init
 					.new(u:user, y:year, d:day)
-					.mkdir.write
+					.mkdir
+					.write
+					.init_db
 				Day::Pages
 					.new(u:user, y:year, d:day)
 					.write

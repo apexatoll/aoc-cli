@@ -147,6 +147,7 @@ From the day subdirectory you can attempt to solve puzzles by running the comman
 aoc -s <answer>
 ```
 
+You will then receive one of three responses
 
 
 

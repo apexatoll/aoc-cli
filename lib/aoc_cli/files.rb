@@ -60,17 +60,17 @@ module AocCli
 				hash.map {|k, v| "#{k}=>#{v}\n"}
 					.each{|l| File.write(path, l, mode:"a")}
 			end
+			def self.part(d:)
+				JSON.parse(read(dir:root_dir)
+					.scan(/(?<=stars=>).*$/)&.first)[d.to_s]
+					.to_i + 1
+			end
 			private
 			def self.read(dir:".")
 				File.read("#{Validate.init(dir)}/.meta")
 			end
 			def self.root_dir
 				type == :ROOT ? "." : ".."
-			end
-			def self.part(d:)
-				JSON.parse(read(dir:root_dir)
-					.scan(/(?<=stars=>).*$/)&.first)[d.to_s]
-					.to_i + 1
 			end
 			def self.year(u:, y:)
 				<<~meta
