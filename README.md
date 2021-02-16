@@ -17,10 +17,13 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
 ## Installation
 
+- aoc-cli uses Pandoc, make sure it is [installed](https://pandoc.org/installing.html)
+- Homebrew users can run `brew install pandoc`
+
 Install gem
 
 ```bash
-$ gem install aoc_cli`
+$ gem install aoc_cli
 ```
 
 Manual install
@@ -54,7 +57,7 @@ This is unique to your account, and allows aoc-cli to interact with the AoC serv
 - Run the following command
 
 ```bash
-aoc -k "your key" 
+aoc -k $your_key
 
 ```
 
@@ -135,7 +138,7 @@ aoc -y 2020 -u $alias
 
 This command will create necessary metafiles, download the year calendar and fill it with your current progress (if any). This is stored in a markdown file in the year directory.
 
-By default, your stats in the leaderboard are also added to this file. To turn this off add the line `include_leaderboard=>false` to your config file.
+By default, your stats in the leaderboard are also added to this file. 
 
 
 ## Initialising a Day
@@ -225,7 +228,7 @@ To view the stats for the year as a whole run the same command from the year dir
 
 You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
 
-If one is installed, aoc-cli will default to opening the thread within a reddit-clu such as RTV or TTRV. If one isn't found however, the thread will be opened within your default browser.
+If one is installed, aoc-cli will default to opening the thread within a reddit-cli such as RTV or TTRV. If one isn't found however, the thread will be opened within your default browser.
 
 To always open megathread in your browser run
 
