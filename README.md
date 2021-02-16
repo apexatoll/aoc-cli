@@ -251,15 +251,28 @@ Do not send endless attempts - only send when you are comfortable with your answ
  
 
 ## All Flags
-| flag short | flag long    | action               |
-|------------|--------------|----------------------|
-| `-a`       | '--attempts' | Print attempts table |
 
-- `-a` `--attempts` 
-
-
-
-
+| Flag Short | Flag Long      | Action                                    |
+|------------|----------------|-------------------------------------------|
+| `-a`       | `--attempts`   | Print attempts table                      |
+| `-b`       | `--in-browser` | Open reddit in browser                    |
+| `-d`       | `--init-day`   | Initialise day subdirectory               |
+| `-h`       | `--help`       | Show help screen                          |
+| `-k`       | `--key`        | Store session key                         |
+| `-p`       | `--part`       | Specify part for aoc command              |
+| `-r`       | `--refresh`    | Refresh calendar (year dir)               |
+|            |                | Refresh puzzle (day subdir)               |
+| `-s`       | `--solve`      | Solve puzzle                              |
+| `-u`       | `--user`       | Specify alias for aoc command             |
+| `-y`       | `--init-year`  | Initialise year directory                 |
+| `-B`       | `--browser`    | View reddit browser setting (no argument) |
+|            |                | Set reddit browser (with argument)        |
+| `-D`       | `--day`        | Specify day for aoc command               |
+| `-R`       | `--reddit`     | Open solution megathread                  |
+| `-S`       | `--stats`      | Print stats table                         |
+| `-U`       | `--default`    | View default alias (no argument)          |
+|            |                | Set default alias (with argument)         |
+| `-Y`       | `--year`       | Specify year for aoc command              |
 
 
 ## Acknowledgments
