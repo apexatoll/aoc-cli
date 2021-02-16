@@ -75,45 +75,49 @@ module AocCli
 			end
 			def parse_args
 				while ARGV.size > 0
-				case  ARGV.shift
-				when "-a", "--attempts"
-					@cmd = :DayAttempts
-				when "-b", "--browser"
-					args[:browser] = true
-				when "-B", "--browser"
-					@cmd = :DefaultReddit
-					args[:value] = ARGV.shift
-				when "-d", "--init-day"
-					@cmd = :DayInit
-					args[:day]  = Validate.day(ARGV.shift.to_i)
-				when "-D", "--day"
-					args[:day]  = Validate.day(ARGV.shift.to_i)
-				when "-k", "--key"
-					@cmd = :KeyStore
-					args[:key]  = Validate.set_key(ARGV.shift)
-				when "-p", "--part"
-					args[:part] = Validate.part(ARGV.shift.to_i)
-				when "-R", "--reddit"
-					@cmd = :OpenReddit
-				when "-s", "--solve"
-					@cmd = :DaySolve
-					args[:ans]  = Validate.ans(ARGV.shift)
-				when "-u", "--user"
-					args[:user] = ARGV.shift
-				when "-r", "--refresh"
-					@cmd = :Refresh
-				when "-U", "--default-user"
-					@cmd = :DefaultUser
-					args[:user] = ARGV.shift
-				when "-y", "--init-year"
-					@cmd = :YearInit
-					args[:year] = Validate.year(ARGV.shift.to_i)
-				when "-Y"
-					args[:year] = Validate.year(ARGV.shift.to_i)
-				when "-h", "--help"
-					abort Help.print
-				else raise E::FlagInv
-				end end
+					case ARGV.shift
+					when "-a", "--attempts"
+						@cmd = :AttemptsTable
+					when "-b", "--browser"
+						args[:browser] = true
+					when "-d", "--init-day"
+						@cmd = :DayInit
+						args[:day]  = Validate.day(ARGV.shift.to_i)
+					when "-h", "--help"
+						abort Help.print
+					when "-k", "--key"
+						@cmd = :KeyStore
+						args[:key]  = Validate.set_key(ARGV.shift)
+					when "-p", "--part"
+						args[:part] = Validate.part(ARGV.shift.to_i)
+					when "-r", "--refresh"
+						@cmd = :Refresh
+					when "-s", "--solve"
+						@cmd = :DaySolve
+						args[:ans]  = Validate.ans(ARGV.shift)
+					when "-u", "--user"
+						args[:user] = ARGV.shift
+					when "-y", "--init-year"
+						@cmd = :YearInit
+						args[:year] = Validate.year(ARGV.shift.to_i)
+					when "-B", "--browser"
+						@cmd = :DefaultReddit
+						args[:value] = ARGV.shift
+					when "-D", "--day"
+						args[:day]  = Validate.day(ARGV.shift.to_i)
+					when "-R", "--reddit"
+						@cmd = :OpenReddit
+					when "-S", "--stats"
+						@cmd = :StatsTable
+					when "-U", "--default-user"
+						@cmd = :DefaultUser
+						args[:user] = ARGV.shift
+					when "-Y", "--year"
+						args[:year] = Validate.year(ARGV.shift.to_i)
+					else raise E::FlagInv
+					end 
+				end
+				raise E::NoCmd if cmd.nil?
 				self
 			end
 		end
@@ -145,8 +149,7 @@ module AocCli
 			def self.part(part)
 				raise E::PartNil  if part.nil?
 				raise E::PuzzComp if part.to_i == 3
-				raise E::PartInv  if part.to_i < 1 ||
-					part.to_i > 2
+				raise E::PartInv  if part.to_i < 1 || part.to_i > 2
 				part
 			end
 			def self.set_key(key)
@@ -168,14 +171,12 @@ module AocCli
 				day
 			end
 			def self.init(dir)
-				raise E::NotInit unless File
-					.exist?("#{dir}/.meta")
+				raise E::NotInit unless File.exist?("#{dir}/.meta")
 				dir
 			end
 			def self.not_init(dir:, year:)
-				raise E::AlrInit if File
-					.exist?("#{dir}/.meta") && 
-						Metafile.get(:year) != year.to_s
+				raise E::AlrInit if File.exist?("#{dir}/.meta") && 
+					Metafile.get(:year) != year.to_s
 				dir
 			end
 		end

@@ -12,8 +12,7 @@ module AocCli
 				@day  = Validate.day(d)
 				@part = Validate.part(p)
 				@db   = Database::Query
-					.new(path:Paths::Database
-					.cfg("attempts"))
+					.new(path:Paths::Database.cfg(user))
 			end
 			def show
 				puts rows.count > 0 ? table : 
@@ -38,12 +37,11 @@ module AocCli
 			end
 			def rows
 				@rows ||= attempts
-					.map{|a| [parse_ans(a), parse_time(a),
-							  parse_hint(a)]}
+					.map{|a| [parse_ans(a), parse_time(a), parse_hint(a)]}
 			end
 			def attempts 
 				db.select(
-					t:user, 
+					t:"attempts", 
 					cols:"time, answer, high, low, correct", 
 					data:{year:year, day:day, part:part})
 			end
@@ -62,58 +60,79 @@ module AocCli
 				attempt[3] == 1 ? "high" : "-"
 			end
 		end
-		class StatsYear
-			attr_reader :user, :year, :db
-			def initialize(u:Metafile.get(:user),
-						   y:Metafile.get(:year))
-				@user = Validate.user(u)
-				@year = Validate.year(y)
-				@db = Database::Query
-					.new(path:Paths::Database.cfg("#{user}"))
+		module Stats
+			class Year
+				attr_reader :user, :year, :db
+				def initialize(u:Metafile.get(:user),
+							   y:Metafile.get(:year))
+					@user = Validate.user(u)
+					@year = Validate.year(y)
+					@db = Database::Query
+						.new(path:Paths::Database.cfg(user))
+				end
+				def print
+					puts rows.count > 0 ? table : 
+						"You have not completed any puzzles yet"
+				end
+				def rows
+					@rows ||= stats.map{|s| [s[0], s[1], s[2], s[3]]}
+				end
+				def table
+					tab = Terminal::Table.new(
+						:headings  => headings,
+						:rows      => rows,
+						:title     => title)
+					tab.style = {
+						:border    => :unicode, 
+						:alignment => :center}
+					tab
+				end
+				def title
+					"Year #{year}"
+				end
+				def headings
+					["Day", "Part", "Attempts", "Time (h:m:s)"]
+				end
+				def stats
+					@stats ||= db.select(
+						t:"stats", 
+						cols:"day, part, attempts, elapsed",
+						data:where)
+				end
+				def where
+					{year:"'#{year}'",
+					 correct:"'1'"}
+				end
 			end
-			def print
-				puts rows.count > 0 ? table : 
-					"You have not completed any puzzles yet"
-			end
-			def rows
-				@rows ||= stats.map{|s| [s[0], s[1], s[2], s[3]]}
-			end
-			def table
-				tab = Terminal::Table.new(
-					:headings  => headings,
-					:rows      => rows,
-					:title     => title)
-				tab.style = {
-					:border    => :unicode, 
-					:alignment => :center}
-				tab
-			end
-			def title
-				"Year #{year}"
-			end
-			def headings
-				["Day", "Part", "Attempts", "Time"]
-			end
-			def stats
-				@stats ||= db.select(
-					t:"stats", 
-					cols:"day, part, attempts, elapsed",
-					data:where)
-			end
-			def where
-				{year:year,
-				 complete:1}
+			class Day < Year
+				attr_reader :day
+				def initialize(u:Metafile.get(:user),
+							   y:Metafile.get(:year), 
+							   d:Metafile.get(:day))
+					super(u:u, y:y)
+					@day = Validate.day(d)
+				end
+				def rows
+					@rows ||= stats.map{|s| [s[0], s[1], s[2]]}
+				end
+				def title
+					"Year #{year}: Day #{day}"
+				end
+				def headings
+					["Part", "Attempts", "Time (h:m:s)"]
+				end
+				def stats
+					@stats ||= db.select(
+						t:"stats", 
+						cols:"part, attempts, elapsed",
+						data:where)
+				end
+				def where
+					{year:"'#{year}'",
+					  day:"'#{day}'",
+					 correct:"'1'"}
+				end
 			end
 		end
-		#class StatsDay
-			#def initialize()
-			
-			#end
-			#def print
-
-			#end
-		#end
 	end
 end
-#AocCli::Tables::StatsYear.new(u: "test", y: 2019, d: 5, p: 2, attempts: 3)
-AocCli::Tables::StatsYear.new(u: "test", y: 2019).print

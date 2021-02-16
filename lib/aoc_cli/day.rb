@@ -21,12 +21,12 @@ module AocCli
 			end
 			def write
 				File.write(paths.local(f:"meta"), 
-						   Metafile.day(u:user, y:year, d:day))
+						Metafile.day(u:user, y:year, d:day))
 				@part = Metafile.part(d:day)
 				self
 			end
 			def init_db
-				Database::PuzzleStats.new(d:day, p:part).init if part < 3
+				Database::Stats::Init.new(d:day, p:part).init if part < 3
 				self
 			end
 		end

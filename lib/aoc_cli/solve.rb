@@ -45,9 +45,16 @@ module AocCli
 			end
 			class Correct < Response
 				def react
+					log = 
+					Database::Log
+						.new(attempt:attempt)
+						.correct
+					Database::Stats::Complete
+						.new(n:log.count_attempts)
+						.update
 					Year.refresh
 					Day.refresh
-					Files::Database::Log.new(attempt:attempt).correct
+					Database::Stats::Init.new.init 
 				end
 				def respond
 					response = "#{"Correct!".bold.green} "

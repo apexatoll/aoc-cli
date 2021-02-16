@@ -193,12 +193,22 @@ module AocCli
 			end
 		end
 		class StatsTable
-			attr_reader :mode
+			attr_reader :user, :year, :day
 			def initialize(args)
-				@mode = Metafile.type == :ROOT ? :year : :day
+				args = defaults.merge(args).compact
+				@user = args[:user]
+				@year = args[:year]
+				@day  = args[:day]
 			end
 			def exec
-				Tables::Stats.new
+				day.nil? ?
+					Tables::Stats::Year.new(u:user, y:year).print :
+					Tables::Stats::Day.new(u:user, y:year, d:day).print
+			end
+			def defaults
+				{ user:Metafile.get(:user),
+				  year:Metafile.get(:year),
+				   day:Metafile.get(:day) }
 			end
 		end
 	end

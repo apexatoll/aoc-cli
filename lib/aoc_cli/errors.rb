@@ -160,5 +160,12 @@ module AocCli
 				error
 			end
 		end
+		class NoCmd < StandardError
+			def message
+				<<~error
+				#{ERROR}: Flags passed but no command specified
+				error
+			end
+		end
 	end 
 end

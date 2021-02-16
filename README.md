@@ -36,15 +36,17 @@ $ rake build install
 
 ### Finding your Session Key
 
-- To use aoc-cli you must first store your unique session cookie. To do this, log into the Advent of Code website as usual and load any page. 
-- Open developer tools and open the network tab. Refresh the page and you should see a file that contains your session cookie.
-- It will look something like:
+To use aoc-cli you must first store your unique session cookie. To do this, log into the Advent of Code website as usual and load any page. 
+
+Open developer tools and open the network tab. Refresh the page and you should see a file that contains your session cookie.
+
+It will look something like:
 
 ```
 session=<ALPHANUMERIC STRING>
 ```
 
-- This is unique to your account, and allows aoc-cli to interact with the AoC server do not share this!
+This is unique to your account, and allows aoc-cli to interact with the AoC server do not share this!
 
 
 ### Storing your Session Key
