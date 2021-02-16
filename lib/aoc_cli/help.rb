@@ -1,5 +1,16 @@
+def title(title)
+	"#{title.bold}"
+end
+def flag(short, full)
+	str = "    #{short.yellow.bold} [#{full.blue.italic}]"
+	full.length > 6 ?
+		str += "\t"  :
+		str += "\t\t"
+	str
+end
 puts <<~help
-Advent of Code - cli, Feb 2021: version 0.1.0
+Advent of Code - cli, version 0.1.0
+#{"C. Welham Feb 2021".italic}
 
 #{title("Usage")}
 #{"    aoc".bold + " -flag".italic.yellow + " value".bold.blue}

@@ -5,8 +5,8 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				#rescue StandardError => e
-					#abort e.message
+				rescue StandardError => e
+					abort e.message
 			end
 			def run(opts:)
 				cmd = Object
@@ -19,16 +19,6 @@ module AocCli
 		class Help
 			def self.print
 				require_relative "help.rb"
-			end
-			def self.title(title)
-				"#{title.bold}"
-			end
-			def self.flag(short, full)
-				str = "    #{short.yellow.bold} [#{full.blue.italic}]"
-				full.length > 6 ?
-					str += "\t"  :
-					str += "\t\t"
-				str
 			end
 		end
 		class Opts
