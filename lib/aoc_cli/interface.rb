@@ -37,7 +37,7 @@ module AocCli
 						@cmd = :DayInit
 						args[:day]  = Validate.day(ARGV.shift.to_i)
 					when "-h", "--help"
-						abort Help.print
+						exit Help.print
 					when "-k", "--key"
 						@cmd = :KeyStore
 						args[:key]  = Validate.set_key(ARGV.shift)

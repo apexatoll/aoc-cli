@@ -251,6 +251,11 @@ Do not send endless attempts - only send when you are comfortable with your answ
  
 
 ## All Flags
+| flag short | flag long    | action               |
+|------------|--------------|----------------------|
+| `-a`       | '--attempts' | Print attempts table |
+
+- `-a` `--attempts` 
 
 
 
