@@ -2,9 +2,7 @@
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/demo2.gif)
 
-aoc-cli is a command-line interface built in Ruby for Advent of Code puzzles.
-
-aoc-cli has many features and allows for complete interaction with AoC from within the terminal.
+A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
 
 ## Main Features
