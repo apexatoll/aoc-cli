@@ -45,8 +45,7 @@ module AocCli
 			end
 			class Correct < Response
 				def react
-					log = 
-					Database::Log
+					log = Database::Log
 						.new(attempt:attempt)
 						.correct
 					Database::Stats::Complete

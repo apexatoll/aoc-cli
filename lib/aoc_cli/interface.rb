@@ -5,8 +5,8 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				rescue StandardError => e
-					abort e.message
+				#rescue StandardError => e
+					#abort e.message
 			end
 			def run(opts:)
 				cmd = Object

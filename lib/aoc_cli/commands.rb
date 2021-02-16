@@ -52,7 +52,7 @@ module AocCli
 					.new(u:user, y:year, d:day)
 					.mkdir
 					.write
-					.init_db
+					#.init_db
 				Day::Pages
 					.new(u:user, y:year, d:day)
 					.write

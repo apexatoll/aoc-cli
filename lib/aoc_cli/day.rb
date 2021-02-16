@@ -22,11 +22,6 @@ module AocCli
 			def write
 				File.write(paths.local(f:"meta"), 
 						Metafile.day(u:user, y:year, d:day))
-				@part = Metafile.part(d:day)
-				self
-			end
-			def init_db
-				Database::Stats::Init.new(d:day, p:part).init if part < 3
 				self
 			end
 		end
@@ -50,22 +45,27 @@ module AocCli
 					.new(u:user, y:year, d:day, f:files).load
 			end
 			def download(page:, to:paths.cache_and_local(f:page))
-				Object.const_get("AocCli::Day::Data::#{page}")
+				dl = Object.const_get("AocCli::Day::Data::#{page}")
 					.new(u:user, y:year, d:day)
 					.write(to:to)
+				dl.init_db if dl.class
+					.instance_methods
+					.include?(:init_db)
 			end
 		end
 		module Data
 			class DayObject < Init
-				attr_reader :user, :year, :day, :data, :paths
+				attr_reader :user, :year, :day, :data, :paths, :part
 				def initialize(u:Metafile.get(:user), 
 							   y:Metafile.get(:year),
 							   d:Metafile.get(:day))
 					super(u:u, y:y, d:d)
+					@part = Metafile.part(d:day)
 					@data  = parse(raw: fetch)
 				end
 				def write(to:paths.cache_and_local(f:page))
 					to.each{|path| File.write(path, data)}
+					self
 				end
 				private
 				def fetch
@@ -81,6 +81,12 @@ module AocCli
 						.md
 						.gsub(/(?<=\])\[\]/, "")
 						.gsub(/\n.*<!--.*-->.*\n/, "")
+				end
+				def init_db
+					Database::Stats::Init
+						.new(d:day, p:part)
+						.init if part < 3
+					self
 				end
 			end
 			class Input < DayObject
