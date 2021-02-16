@@ -18,53 +18,16 @@ module AocCli
 		end
 		class Help
 			def self.print
-			<<~help
-			aoc-cli - v0.1.0 2021
-
-			#{title("Usage")}
-				#{"  aoc" + " -flag".italic + " value".bold}
-
-				#{title("Setup")}
-				 - Store session cookie keys to access AoC
-				#{flag("-k", "--key")}Store a session cookie to use the cli.
-				#{flag("-u", "--user")}Set alias for key (default: "main")
-
-				#{title("Year directory")}
-				 - Initialise a year directory to use aoc-cli.
-				 - The -u flag can be used to intiailise with a specific alias
-				 - If no alias is passed, the default key is used
-
-				#{flag("-y","--year")}Initialise directory and fetch calendar
-				#{flag("-u", "--user")}Specify alias for initialisation
-				#{flag("-d","--day")}Create day subdirectory and fetch puzzle and input
-				#{flag("-r", "--refresh")}Refresh calendar
-				
-				#{title("Day subdirectory")}
-				 - Solve AoC puzzles
-				#{flag("-s", "--solve")}Attempt puzzle
-				#{flag("-r", "--refresh")}Refresh puzzle
-				#{flag("-R", "--reddit")}Open Reddit solution megathread
-
-				#{title("Configuration")}
-				 - Pass with a value to update setting
-				 - Pass without an argument to display current setting. 
-				 
-				#{flag("-C", "--colour")}Use coloured outputs (default: true)
-				#{flag("-B", "--browser")}Always open Reddit in browser (default: false)
-				#{flag("-U", "--default")}Default key alias to use (default: "main")
-				
-				Year, day, user and part options for commands are set automatically with metafile information when the year and days are initiailised and commands are run from the appropriate directories. These options can be passed manually for commands (not recommended)
-				help
+				require_relative "help.rb"
 			end
 			def self.title(title)
 				"#{title.bold}"
 			end
 			def self.flag(short, full)
-				str = "\t#{short.yellow.bold} [#{full.blue.italic}]"
-				full.length <= 8 ?
-					str += "\t\t\t  " :
-					full.length <= 16 ? 
-						str += "\t\t  " : str += "\t  "
+				str = "    #{short.yellow.bold} [#{full.blue.italic}]"
+				full.length > 6 ?
+					str += "\t"  :
+					str += "\t\t"
 				str
 			end
 		end

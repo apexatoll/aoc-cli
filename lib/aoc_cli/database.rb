@@ -89,8 +89,7 @@ module AocCli
 					@day  = Validate.day(d)
 					@part = p
 					@now  = Time.now
-					@db   = 
-						Query.new(path:Paths::Database.cfg("#{user}"))
+					@db   = Query.new(path:Paths::Database.cfg(user))
 							 .table(t:"stats", cols:cols)
 				end
 				def cols
