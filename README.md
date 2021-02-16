@@ -87,7 +87,7 @@ To see which alias is currently deafult run `aoc -U` or `aoc --default`
 - You can update the default alias by running 
 
 ```bash
-aoc -U new_default_alias
+aoc -U $new_default_alias
 ```
 
 For example:
@@ -147,7 +147,7 @@ You can now get day data!
 To fetch puzzle instructions and inputs you can run the following command from within the year directory
 
 ```bash
-aoc -d $day
+aoc -d $day_number
 ```
 
 This command performs the following actions
@@ -157,9 +157,7 @@ This command performs the following actions
 - Fetches raw puzzle input
 - The time you downloaded the puzzle is logged
 
-All puzzles and inputs are cached in aoc-cli on a per-user basis. 
-
-This means that if you have previously initialised this day under this alias before, your puzzle and input will be transferred from the cache rather than downloading from the aoc server.
+All puzzles and inputs are cached in aoc-cli on a per-user basis. This means that if you have previously initialised this day under this alias before, your puzzle and input will be transferred from the cache locally rather than downloading from the aoc server.
 
 
 ## Solving Puzzles
@@ -176,18 +174,16 @@ You will then receive one of three responses
 2. The answer is not correct
 3. You have time to wait before submitting an answer
 
-If your answer is correct, aoc-cli will automatically update the puzzle instructions and your calendar file. Additionally aoc-cli will calculate how long and how many attempts it took to solve the puzzle and (see the Tables section)
+If your answer is correct, aoc-cli will automatically update the puzzle instructions and your calendar file. Additionally aoc-cli will calculate how long and how many attempts it took to solve the puzzle (see the Tables section)
 
 Incorrect attempts will be logged along with any hint as to whether your answer was too high or too low. 
-
-You can see your previous attemtpts by running the command `aoc -a [--attempts]` from the day directory. 
 
 If you have sent multiple incorrect attempts AoC will ask you to wait before trying again - be patient!
 
 
 ## Tables
 
-aoc-cli uses local databases to store information about your progress with puzzles. There are two main databases of use:
+aoc-cli uses a local database to store information about your progress with puzzles. There are two main databases of use:
 
 1. Your attempts
 2. Your stats
@@ -201,7 +197,7 @@ Previous attempts for a puzzle can be viewed from the day directory by the use o
 aoc -a 
 ```
 
-To specify which data to show from outside the day subdirectory you can use the command
+To specify which attempts to show from outside the day subdirectory you can use the command
 
 ```bash
 aoc -a -u $user_alias -Y $year -D $day -p $part
@@ -209,6 +205,7 @@ aoc -a -u $user_alias -Y $year -D $day -p $part
 
 Data is shown in a formatted table with incorrect attempts shown in red and the correct answer in green.
 
+![](https://github.com/apexatoll/aoc-files/blob/master/attempts.png)
 
 ### Stats
 
@@ -222,15 +219,15 @@ To view this, run the following command from the day subdirectory
 aoc -S 
 ```
 
-To view the stats for the year as a whole run the same command from the year directory
+To view the stats for the year as a whole run the same command from the year directory. Flags can be also be added manually for showing data for other users, years and days in a similar way to that of the attempts table
 
-Flags can be added manually for showing data for other users, years and days in a similar way to that of the attempts table
-
+![](https://github.com/apexatoll/aoc-files/blob/master/stats.png)
 
 ## Reddit Integration
 
-- You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
-- By default aoc-cli will open this within a reddit cli (such as ttrv or rtv) if installed or within your browser if not
+You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
+
+If one is installed, aoc-cli will default to opening the thread within a reddit-clu such as RTV or TTRV. If one isn't found however, the thread will be opened within your default browser.
 
 To always open megathread in your browser run
 
