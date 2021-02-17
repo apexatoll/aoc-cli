@@ -2,7 +2,7 @@ module AocCli
 	module Tools
 		class Request
 			require 'curb'
-			attr_reader :user, :year, :day, :base, :page
+			attr_reader :user, :year, :day, :base, :page, :ua
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year),
 						   d:Metafile.get(:day), p:)
@@ -11,18 +11,19 @@ module AocCli
 				@day  = d
 				@page = p
 				@base = "https://adventofcode.com/#{year}"
+				@ua   = "github.com/apexatoll/aoc-cli"
 			end
 			protected
 			def get
 				Curl.get(url) do |h| 
 					h.headers['Cookie']     = cookie
-					h.headers['User-Agent'] = "apex-aoc-cli"
+					h.headers['User-Agent'] = ua
 				end.body
 			end
 			def post(data:)
 				Curl.post(url, data) do |h| 
 					h.headers['Cookie']     = cookie
-					h.headers['User-Agent'] = "apex-aoc-cli"
+					h.headers['User-Agent'] = ua
 				end.body
 			end
 			private
