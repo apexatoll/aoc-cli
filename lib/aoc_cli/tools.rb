@@ -14,12 +14,16 @@ module AocCli
 			end
 			protected
 			def get
-				Curl.get(url){|h| h.headers['Cookie'] = cookie}
-					.body
+				Curl.get(url) do |h| 
+					h.headers['Cookie']     = cookie
+					h.headers['User-Agent'] = "apex-aoc-cli"
+				end.body
 			end
 			def post(data:)
-				Curl.post(url, data){|h| h.headers['Cookie'] =
-					 cookie}.body
+				Curl.post(url, data) do |h| 
+					h.headers['Cookie']     = cookie
+					h.headers['User-Agent'] = "apex-aoc-cli"
+				end.body
 			end
 			private
 			def cookie
