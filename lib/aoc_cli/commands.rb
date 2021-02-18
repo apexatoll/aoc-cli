@@ -211,5 +211,22 @@ module AocCli
 				   day:Metafile.get(:day) }
 			end
 		end
+		class CalendarTable
+			attr_reader :user, :year
+			def initialize(args)
+				args = defaults.merge(args).compact
+				@user = Validate.user(args[:user])
+				@year = Validate.year(args[:year])
+			end
+			def exec
+				Tables::Calendar
+					.new(u:user, y:year)
+					.print
+			end
+			def defaults
+				{ user:Metafile.get(:user),
+				  year:Metafile.get(:year) }
+			end
+		end
 	end
 end

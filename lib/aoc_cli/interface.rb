@@ -33,6 +33,8 @@ module AocCli
 						@cmd = :AttemptsTable
 					when "-b", "--browser"
 						args[:browser] = true
+					when "-c", "--calendar"
+						@cmd = :CalendarTable
 					when "-d", "--init-day"
 						@cmd = :DayInit
 						args[:day]  = Validate.day(ARGV.shift.to_i)

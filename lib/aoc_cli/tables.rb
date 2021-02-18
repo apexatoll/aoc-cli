@@ -1,3 +1,4 @@
+require 'aoc_cli'
 module AocCli
 	module Tables
 		class Attempts
@@ -134,5 +135,41 @@ module AocCli
 				end
 			end
 		end
+		class Calendar
+			attr_reader :user, :year, :db
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year))
+				@user = Validate.user(u)
+				@year = Validate.year(y)
+				@db   = Database::Query
+					.new(path:Paths::Database.cfg(user))
+			end
+			def rows
+				@rows ||= stars.map{|s| [s[1], parse_stars(s[2])]}
+			end
+			def print
+				puts table
+			end
+			def table
+				tab = Terminal::Table.new(
+					:rows      => rows,
+					:title     => title)
+				tab.style = {
+					:border    => :unicode, 
+					:alignment => :center}
+				tab
+			end
+			def title
+				"#{user}: #{year}"
+			end
+			def parse_stars(day)
+				day.to_i == 0 ?
+					".." : ("*" * day.to_i).ljust(2, ".")
+			end
+			def stars
+				@stars ||= db.select(t:"calendar", data:{year:year})
+			end
+		end
 	end
 end
+#AocCli::Tables::Calendar.new(u: "google", y: 2019).print

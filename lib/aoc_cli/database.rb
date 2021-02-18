@@ -1,3 +1,4 @@
+require 'aoc_cli'
 module AocCli
 	module Database
 		class Query
@@ -155,5 +156,41 @@ module AocCli
 				end
 			end
 		end
+		module Calendar
+			class Init
+				attr_reader :user, :year, :db, :stars
+				def initialize(u:Metafile.get(:user),
+							   y:Metafile.get(:year), 
+							   stars:)
+					@user = Validate.user(u)
+					@year = Validate.year(y)
+					@stars = stars
+					@db   = Query
+						.new(path:Paths::Database.cfg(user))
+						.table(t:"calendar", cols:cols)
+				end
+				def cols
+					{ year: :INT,
+					   day: :INT,
+					 stars: :TEXT }
+				end
+				def n_stars(day)
+					stars.keys.include?(day) ? stars[day] : 0
+				end
+				def day_data(day)
+					["'#{year}'", "'#{day}'", "'#{n_stars(day)}'"]
+				end
+				def insert
+					1.upto(25){|day| 
+						db.insert(t:"calendar", 
+								  val:day_data(day))}
+				end
+			end
+		end
 	end 
 end
+
+#user  = "google"
+#year  = 2019
+#stars = {7 => 2,6 => 2,5 => 1,4 => 2,3 => 2,2 => 2,1 => 1}
+#AocCli::Database::Calendar.new(u: user, y: year, stars: stars).insert
