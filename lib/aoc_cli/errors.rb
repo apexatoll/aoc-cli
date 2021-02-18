@@ -112,7 +112,7 @@ module AocCli
 			def message
 				<<~error
 				#{ERROR}: No session key value.
-				Use the #{"-k".yellow} or #{"--key".yellow} flags
+				Use the #{"-k".yellow} or #{"--key".yellow} flags to store the key
 				error
 			end
 		end
@@ -123,7 +123,7 @@ module AocCli
 			end
 			def message
 				<<~error
-				#{ERROR}: The key #{user.yellow} already exists in your config file
+				#{ERROR}: The key #{key.yellow} already exists in your config file
 				error
 			end
 		end
@@ -168,12 +168,10 @@ module AocCli
 			end
 		end
 		class KeyInv < StandardError
-			attr_reader :key
-			def initialize(key)
-				@key = key
-			end
 			def message
 				<<~error
+				#{ERROR}: Invalid key
+				Double check your session key. It should start with "session=" and be 96 characters (a-f, 0-9)
 				error
 			end
 		end

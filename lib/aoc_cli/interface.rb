@@ -79,14 +79,12 @@ module AocCli
 		class Validate
 			def self.user(user)
 				raise E::UserNil if user.nil?
-				raise E::UserInv.new(user) unless Files::Config
-					.new.is_set?(key:"cookie=>#{user}")
+				raise E::UserInv.new(user) unless user_in_config?(user)
 				user
 			end
 			def self.set_user(user)
 				raise E::UserNil if user.nil?
-				raise E::UserDup if Files::Config.new
-					.is_set?(key:"cookie=>#{user}")
+				raise E::UserDup if user_in_config?(user)
 				user
 			end
 			def self.year(year)
@@ -109,14 +107,13 @@ module AocCli
 			end
 			def self.set_key(key)
 				raise E::KeyNil if key.nil?
-				raise E::KeyDup if Files::Config
-					.new.is_set?(val:key)
+				raise E::KeyDup.new(key) if Files::Config.new.is_set?(val:key)
+				raise E::KeyInv unless valid_key?(key)
 				key
 			end
-			def self.get_key(key)
+			def self.key(key)
 				raise E::KeyNil if key.nil?
-				#raise E::KeyInv unless //
-				#/session=(?:[a-e0-9]){}/
+				raise E::KeyInv unless valid_key?(key)
 				key
 			end
 			def self.ans(ans)
@@ -135,6 +132,13 @@ module AocCli
 				raise E::AlrInit if File.exist?("#{dir}/.meta") && 
 					Metafile.get(:year) != year.to_s
 				dir
+			end
+			private
+			def self.valid_key?(key)
+				/session=(?:[a-f0-9]){96}/.match?(key)
+			end
+			def self.user_in_config?(user)
+				Files::Config.new.is_set?(key:"cookie=>#{user}")
 			end
 		end
 	end 

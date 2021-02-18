@@ -36,7 +36,10 @@ module AocCli
 				puts "Year #{year} initialised"
 			end
 			def defaults
-				{user:Files::Config.new.def_acc}
+				{
+					user:Files::Config.new.def_acc
+					#git:Files::Config
+				}
 			end
 		end
 		class DayInit

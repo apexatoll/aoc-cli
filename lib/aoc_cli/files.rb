@@ -15,10 +15,10 @@ module AocCli
 				is_set?(key:key) ?
 					write(f:read.gsub(/(?<=^#{key}=>).*$/, 
 						  val.to_s)) :
-					write(f:"#{key}=>#{val}\n", m:"a")
+					write(f:"#{key} => #{val}\n", m:"a")
 			end
 			def get_line(key:)
-				read.scan(/(?<=#{key}=>).*$/)&.first
+				read.scan(/(?<=#{key}\s?=>).*$/)&.first
 			end
 			def get_bool(key:)
 				get_line(key:key) == "true" ? true : false
@@ -42,11 +42,12 @@ module AocCli
 				super()
 			end
 			def store(key:)
+				puts user
 				set_line(key:"cookie=>#{Validate.set_user(user)}",
 						 val:Validate.set_key(key))
 			end
 			def key
-				get_line(key:"cookie=>#{user}")
+				Validate.key(get_line(key:"cookie=>#{user}"))
 			end
 		end
 		class Metafile
