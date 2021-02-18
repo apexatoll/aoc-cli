@@ -24,7 +24,7 @@ module AocCli
 				@user, @year = args[:user], args[:year]
 			end
 			def exec
-				Year::Init
+				Year::Meta
 					.new(u:user, y:year)
 					.write
 				Year::Stars
@@ -33,7 +33,7 @@ module AocCli
 				self
 			end
 			def respond
-				puts "Year initialised"
+				puts "Year #{year} initialised"
 			end
 			def defaults
 				{user:Files::Config.new.def_acc}
@@ -51,8 +51,7 @@ module AocCli
 				Day::Init
 					.new(u:user, y:year, d:day)
 					.mkdir
-					.write
-					#.init_db
+					.meta
 				Day::Pages
 					.new(u:user, y:year, d:day)
 					.write

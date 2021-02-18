@@ -2,7 +2,7 @@ module AocCli
 	module Day
 		def self.refresh
 			puts "- Updating puzzle...".yellow
-			Init.new.write
+			Init.new.meta
 			Data::Puzzle.new.write
 		end
 		class Init
@@ -19,7 +19,7 @@ module AocCli
 				Dir.mkdir(Validate.day_dir(paths.day_dir))
 				self
 			end
-			def write
+			def meta
 				File.write(paths.local(f:"meta"), 
 						Metafile.day(u:user, y:year, d:day))
 				self

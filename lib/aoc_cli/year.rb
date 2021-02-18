@@ -2,10 +2,10 @@ module AocCli
 	module Year
 		def self.refresh
 			puts "- Updating calendar...".blue
-			Year::Init.new.write
-			Year::Stars.new.write.update_meta
+			Year::Meta.new.meta
+			Year::CalFile.new.write.update_meta
 		end
-		class Init
+		class Meta
 			attr_reader :user, :year, :paths
 			def initialize(u:Files::Config.new.def_acc,
 						   y:Metafile.get(:year), dir:".")
@@ -18,13 +18,19 @@ module AocCli
 					Metafile.year(u:user, y:year))
 			end
 		end
-		class Stars < Init
+		class Git
+			require 'git'
+			def initialize()
+
+			end
+		end
+		class CalFile < Meta
 			attr_reader :stats, :cal
 			def initialize(u:Metafile.get(:user), 
 						   y:Metafile.get(:year))
 				super(u:u, y:y)
-				@stats = Data::Stats.new(u:user, y:year)
-				@cal   = Data::Calendar.new(u:user, y:year)
+				@stats = Requests::Stats.new(u:user, y:year)
+				@cal   = Requests::Calendar.new(u:user, y:year)
 					.fill(stars:stats.stars)
 			end
 			def write
@@ -47,8 +53,8 @@ module AocCli
 				text
 			end
 		end
-		module Data
-			class YearObject < Init
+		module Requests
+			class Request < Meta
 				attr_reader :data
 				def initialize(u:Metafile.get(:user),
 							   y:Metafile.get(:year))
@@ -60,7 +66,7 @@ module AocCli
 					Tools::Get.new(u:user, y:year, p:page).plain.split("\n")
 				end
 			end
-			class Calendar < YearObject
+			class Calendar < Request
 				def page
 					:Calendar
 				end
@@ -74,7 +80,7 @@ module AocCli
 					self
 				end
 			end
-			class Stats < YearObject
+			class Stats < Request
 				def page
 					:Stats
 				end

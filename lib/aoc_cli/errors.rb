@@ -167,5 +167,15 @@ module AocCli
 				error
 			end
 		end
+		class KeyInv < StandardError
+			attr_reader :key
+			def initialize(key)
+				@key = key
+			end
+			def message
+				<<~error
+				error
+			end
+		end
 	end 
 end

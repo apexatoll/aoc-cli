@@ -115,6 +115,8 @@ module AocCli
 			end
 			def self.get_key(key)
 				raise E::KeyNil if key.nil?
+				#raise E::KeyInv unless //
+				#/session=(?:[a-e0-9]){}/
 				key
 			end
 			def self.ans(ans)

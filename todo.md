@@ -1,12 +1,15 @@
 ## Todo
 
-- Better key validation
-- Auto generate config file
-- Update default key if none set
-- List current users
-- Show progress calendar from anywhere
-- Auto git init?
-- turn off calendar/leaderboard
-
-
-/session=(?:[a-e0-9]){}/
+- Better key validation [  ]
+- Auto generate config file [  ]
+- Update default key if none set [  ]
+- List current users [  ]
+- Show progress calendar from anywhere [  ]
+	- Need to initialise calendar on year init [  ]
+	- Need to update db when solve is correct  [  ]
+- Auto git init? [  ]
+	- Update dependencies [  ]
+- turn off calendar/leaderboard [  ]
+- better flags for reddit [  ]
+- Update help screen [  ]
+- Update readme [  ]
