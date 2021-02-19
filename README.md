@@ -18,7 +18,6 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 ## Installation
 
 - aoc-cli uses Pandoc, make sure it is [installed](https://pandoc.org/installing.html)
-- Homebrew users can run `brew install pandoc`
 
 Install gem
 
@@ -26,7 +25,13 @@ Install gem
 $ gem install aoc_cli
 ```
 
-Manual install
+### MacOS
+
+- To install pandoc, run `brew install pandoc`
+- Another requirement for the ruby gem is the installation of Xcode development tools: `xcode-select --install`
+- If the installation still fails, try `sudo xcode-select -switch /`
+
+### Manual install
 
 ```bash
 $ git clone "https://github.com/apexatoll/aoc-cli"
