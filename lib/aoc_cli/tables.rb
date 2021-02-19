@@ -44,7 +44,7 @@ module AocCli
 				db.select(
 					t:"attempts", 
 					cols:"time, answer, high, low, correct", 
-					data:{year:year, day:day, part:part})
+					where:{year:year, day:day, part:part})
 			end
 			def parse_ans(attempt)
 				attempt[4] == 1 ? 
@@ -98,7 +98,7 @@ module AocCli
 					@stats ||= db.select(
 						t:"stats", 
 						cols:"day, part, attempts, elapsed",
-						data:where)
+						where:where)
 				end
 				def where
 					{year:"'#{year}'",
@@ -126,7 +126,7 @@ module AocCli
 					@stats ||= db.select(
 						t:"stats", 
 						cols:"part, attempts, elapsed",
-						data:where)
+						where:where)
 				end
 				def where
 					{year:"'#{year}'",
@@ -167,7 +167,7 @@ module AocCli
 					".." : ("*" * day.to_i).ljust(2, ".")
 			end
 			def stars
-				@stars ||= db.select(t:"calendar", data:{year:year})
+				@stars ||= db.select(t:"calendar", where:{year:year})
 			end
 		end
 	end

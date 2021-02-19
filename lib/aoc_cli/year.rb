@@ -2,12 +2,12 @@ module AocCli
 	module Year
 		def self.refresh
 			puts "- Updating calendar...".blue
-			Year::Meta.new.meta
-			Year::CalFile.new.write.update_meta
+			Year::Meta.new.write
+			Year::Progress.new.write
 		end
 		class Meta
 			attr_reader :user, :year, :paths
-			def initialize(u:Files::Config.new.def_acc,
+			def initialize(u:Files::Config.new.default_alias,
 						   y:Metafile.get(:year), dir:".")
 				@user  = Validate.user(u)
 				@year  = Validate.year(y)
@@ -18,39 +18,29 @@ module AocCli
 					Metafile.year(u:user, y:year))
 			end
 		end
-		class Git
-			require 'git'
-			def initialize()
-
+		class Progress < Meta
+			def stats
+				@stats ||= Requests::Stats.new(u:user, y:year)
 			end
-		end
-		class CalFile < Meta
-			attr_reader :stats, :cal
-			def initialize(u:Metafile.get(:user), 
-						   y:Metafile.get(:year))
-				super(u:u, y:y)
-				@stats = Requests::Stats.new(u:user, y:year)
-				@cal   = Requests::Calendar.new(u:user, y:year)
+			def cal
+				@cal ||= Requests::Calendar.new(u:user, y:year)
 					.fill(stars:stats.stars)
 			end
+			def file
+				Files::Calendar.new(stats:stats, cal:cal).file
+			end
+			def write?
+				Files::Setting.new
+					.bool(key:"calendar_file", default:true)
+			end
 			def write
-				File.write(paths.local(f:"Stars"), file)
+				File.write(paths.local(f:"Stars"), file) if write?
 				self
 			end
-			def update_meta
-				Metafile.add(path:paths.local(f:"meta"), hash:{
-					stars:stats.stars.to_json, 
-					total:stats.total_stars})
-			end
-			private
-			def file
-				text = <<~file
-					Year #{year}: #{stats.total_stars}/50 *
-					#{"-" * (cal.data[0].to_s.length + 2)}
-					#{cal.data.join("\n")}\n
-				file
-				text += stats.data.join("\n") if stats.total_stars > 0
-				text
+			def db
+				Database::Calendar::Init
+					.new(u:user, y:year, stars:stats.stars)
+					.insert
 			end
 		end
 		module Requests
@@ -98,6 +88,24 @@ module AocCli
 				def total_stars
 					stars.values.reduce(:+).to_i || 0
 				end
+			end
+		end
+		class GitWrap
+			require 'git'
+			def initialize()
+			end
+			def init
+				git = Git.init
+				File.write(".gitignore", ignore)
+				git.add(".gitignore")
+			end
+			def ignore
+				<<~ignore
+				*.md
+				**/*.md
+				.meta
+				**/.meta
+				ignore
 			end
 		end
 	end 

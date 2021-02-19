@@ -1,0 +1,18 @@
+//aoc-cli example config
+//See the github repo for more information on configuring aoc-cli
+//https://github.com/apexatoll/aoc-cli
+
+//General
+//unicode_tables=>true
+
+//User Settings 
+//default_acc=>main
+
+//Year Settings
+//cal_file=>true
+//init_git=>false
+//lb_file=>false
+//lb_stats_in_cal=>true
+
+//Day Settings
+//reddit_in_browser=>false

@@ -1,4 +1,4 @@
-require 'aoc_cli'
+#require 'aoc_cli'
 module AocCli
 	module Database
 		class Query
@@ -7,10 +7,10 @@ module AocCli
 			def initialize(path:)
 				@db = SQLite3::Database.open(path)
 			end
-			def select(t:, cols:"*", data:)
+			def select(t:, cols:"*", where:)
 				db.execute(
 				"SELECT #{cols} FROM #{t} "\
-				"WHERE #{data.map{|k, v| "#{k} = #{v}"}.join(" AND ")}")
+				"WHERE #{where.map{|k, v| "#{k} = #{v}"}.join(" AND ")}")
 			end
 			def table(t:, cols:)
 				db.execute(
@@ -70,7 +70,7 @@ module AocCli
 				  high: :INT }
 			end
 			def count_attempts
-				db.select(t:"attempts", data:where).count
+				db.select(t:"attempts", where:where).count
 			end
 			def where
 				{ year:attempt.year,
@@ -151,7 +151,7 @@ module AocCli
 				def dl_time
 					@dl_time ||= Time
 						.parse(db
-						.select(t:"stats", cols:"dl_time", data:where)
+						.select(t:"stats", cols:"dl_time", where:where)
 						.flatten.first)
 				end
 			end
@@ -180,17 +180,40 @@ module AocCli
 				def day_data(day)
 					["'#{year}'", "'#{day}'", "'#{n_stars(day)}'"]
 				end
-				def insert
-					1.upto(25){|day| 
-						db.insert(t:"calendar", 
-								  val:day_data(day))}
+				def table_exist?
+					db.select(t:"calendar", where:{year:"'#{year}'"}).count > 0
 				end
+				def insert
+					unless table_exist?
+						1.upto(25){|day| 
+							db.insert(t:"calendar", 
+									  val:day_data(day))}
+					end
+				end
+			end
+			class Part
+				attr_reader :user, :year, :day, :db
+				def initialize(u:Metafile.get(:user),
+							   y:Metafile.get(:year),
+							   d:Metafile.get(:day))
+					@user = Validate.user(u)
+					@year = Validate.year(y)
+					@day  = Validate.day(d)
+					@db   = Query.new(path:Paths::Database.cfg(user))
+				end
+				def get
+					db.select(t:"calendar", cols:"stars", where:where)
+						.flatten.first.to_i + 1
+				end
+				def where
+					{ year:"'#{year}'",
+					   day:"'#{day}'" }
+				end
+			end
+			class Increment
+				
 			end
 		end
 	end 
 end
-
-#user  = "google"
-#year  = 2019
-#stars = {7 => 2,6 => 2,5 => 1,4 => 2,3 => 2,2 => 2,1 => 1}
-#AocCli::Database::Calendar.new(u: user, y: year, stars: stars).insert
+#puts AocCli::Database::Calendar::Part.new(u: "google", y: 2020, d: 25).get

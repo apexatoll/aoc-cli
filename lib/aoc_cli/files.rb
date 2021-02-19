@@ -1,24 +1,25 @@
+#require 'aoc_cli'
 module AocCli
 	module Files
 		class Config
-			require 'fileutils'
 			def initialize
 				Paths::Config.create
 			end
-			def def_acc
-				get_line(key:"default") || "main"
+			def default_alias
+				is_set?(key:"default") ? get_line(key:"default") : nil || 
+				is_set?(key:"cookie=>main") ? "main" : nil ||
+				get_line(key:"cookie")&.gsub(/=>.*/, "")
 			end
 			def is_set?(key:nil, val:nil)
-				read.split("\n").grep(/#{key}=>#{val}/).any?
+				read.split("\n").grep(/(?<!\/\/)#{key}=>#{val}/).any?
 			end
 			def mod_line(key:, val:)
 				is_set?(key:key) ?
-					write(f:read.gsub(/(?<=^#{key}=>).*$/, 
-						  val.to_s)) :
+					write(f:read.gsub(/(?<=^#{key}=>).*$/, val.to_s)) :
 					write(f:"#{key} => #{val}\n", m:"a")
 			end
 			def get_line(key:)
-				read.scan(/(?<=#{key}\s?=>).*$/)&.first
+				read.scan(/(?:(?<=(?<!\/\/)#{key}=>)).*$/)&.first
 			end
 			def get_bool(key:)
 				get_line(key:key) == "true" ? true : false
@@ -33,6 +34,16 @@ module AocCli
 			end
 			def write(f:, m:"w")
 				File.write(Paths::Config.path, f, mode:m)
+			end
+		end
+		class Setting < Config
+			def bool(key:, default:)
+				is_set?(key:key) ?
+					get_bool(key:key) : default
+			end
+			def string
+				is_set?(key:key) ?
+					get_line(key:key) : default
 			end
 		end
 		class Cookie < Config
@@ -61,18 +72,18 @@ module AocCli
 				hash.map {|k, v| "#{k}=>#{v}\n"}
 					.each{|l| File.write(path, l, mode:"a")}
 			end
-			def self.part(d:)
-				JSON.parse(read(dir:root_dir)
-					.scan(/(?<=stars=>).*$/)&.first)[d.to_s]
-					.to_i + 1
+			def self.part(u:Metafile.get(:user),
+						  y:Metafile.get(:year),
+						  d:)
+				Database::Calendar::Part.new(d:d).get
 			end
 			private
 			def self.read(dir:".")
 				File.read("#{Validate.init(dir)}/.meta")
 			end
-			def self.root_dir
-				type == :ROOT ? "." : ".."
-			end
+			#def self.root_dir
+				#type == :ROOT ? "." : ".."
+			#end
 			def self.year(u:, y:)
 				<<~meta
 				dir=>ROOT
@@ -86,9 +97,37 @@ module AocCli
 				user=>#{u}
 				year=>#{y}
 				day=>#{d}
-				part=>#{part(d:d)}
+				part=>#{part(u:u, y:y, d:d)}
 				meta
+			end
+		end
+		class Calendar
+			attr_reader :cal, :stats, :year
+			def initialize(y:Metafile.get(:year),
+						   cal:nil, stats:nil)
+				@year = Validate.year(y)
+				@cal = cal
+				@stats = stats
+			end
+			def include_stats?
+				Setting.new.bool(key:"lb_in_calendar", default:true)
+			end
+			def title
+				"Year #{year}: #{stats.total_stars}/50 *"
+			end
+			def underline
+				"-" * (cal.data[0].to_s.length + 2)
+			end
+			def file
+				<<~file
+					#{title}
+					#{underline}
+					#{cal.data.join("\n")}\n
+					#{stats.data.join("\n") if stats.total_stars > 0 &&
+						include_stats?}
+				file
 			end
 		end
 	end 
 end
+#puts AocCli::Files::Calendar.new.include_stats?

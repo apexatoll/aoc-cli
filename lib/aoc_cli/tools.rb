@@ -11,19 +11,19 @@ module AocCli
 				@day  = d
 				@page = p
 				@base = "https://adventofcode.com/#{year}"
-				@ua   = "github.com/apexatoll/aoc-cli"
+				#@ua   = "github.com/apexatoll/aoc-cli"
 			end
 			protected
 			def get
 				Curl.get(url) do |h| 
 					h.headers['Cookie']     = cookie
-					h.headers['User-Agent'] = ua
+					#h.headers['User-Agent'] = ua
 				end.body
 			end
 			def post(data:)
 				Curl.post(url, data) do |h| 
 					h.headers['Cookie']     = cookie
-					h.headers['User-Agent'] = ua
+					#h.headers['User-Agent'] = ua
 				end.body
 			end
 			private
@@ -90,6 +90,33 @@ module AocCli
 				@input = Request
 					.new(u:u, y:y, d:d, p:p)
 					.post(data:data)
+			end
+		end
+		class Reddit
+			attr_reader :year, :day, :uniq, :browser
+			def initialize(y:Metafile.get(:year), 
+						   d:Metafile.get(:day),
+						   b:false)
+				@year = Validate.year(y)
+				@day  = Validate.day(d)
+				@uniq = Database::Query
+					.new(path:Paths::Database.root("reddit"))
+					.select(t:"'#{year}'", where:{day:"'#{day}'"})
+					.flatten[1]
+				@browser = b
+			end
+			def open
+				system("#{browser ? "open" : cmd} #{link}")
+			end
+			def cmd
+				["ttrv", "rtv"]
+					.map{|cli| cli unless `which #{cli}`.empty?}
+					.reject{|cmd| cmd.nil?}&.first || "open"
+			end
+			def link
+				"https://www.reddit.com/r/"\
+				"adventofcode/comments/#{uniq}/"\
+				"#{year}_day_#{day}_solutions"
 			end
 		end
 	end 

@@ -122,32 +122,32 @@ module AocCli
 				File.read(paths.cache_path(f:f))
 			end
 		end
-		class Reddit
-			attr_reader :year, :day, :uniq, :browser
-			def initialize(y:Metafile.get(:year), 
-						   d:Metafile.get(:day),
-						   b:false)
-				@year = Validate.year(y)
-				@day  = Validate.day(d)
-				@uniq = Database::Query
-					.new(path:Paths::Database.root("reddit"))
-					.select(t:"'#{year}'", data:{day:"'#{day}'"})
-					.flatten[1]
-				@browser = b
-			end
-			def open
-				system("#{browser ? "open" : cmd} #{link}")
-			end
-			def cmd
-				["ttrv", "rtv"]
-					.map{|cli| cli unless `which #{cli}`.empty?}
-					.reject{|cmd| cmd.nil?}&.first || "open"
-			end
-			def link
-				"https://www.reddit.com/r/"\
-				"adventofcode/comments/#{uniq}/"\
-				"#{year}_day_#{day}_solutions"
-			end
-		end
+		#class Reddit
+			#attr_reader :year, :day, :uniq, :browser
+			#def initialize(y:Metafile.get(:year), 
+						   #d:Metafile.get(:day),
+						   #b:false)
+				#@year = Validate.year(y)
+				#@day  = Validate.day(d)
+				#@uniq = Database::Query
+					#.new(path:Paths::Database.root("reddit"))
+					#.select(t:"'#{year}'", where:{day:"'#{day}'"})
+					#.flatten[1]
+				#@browser = b
+			#end
+			#def open
+				#system("#{browser ? "open" : cmd} #{link}")
+			#end
+			#def cmd
+				#["ttrv", "rtv"]
+					#.map{|cli| cli unless `which #{cli}`.empty?}
+					#.reject{|cmd| cmd.nil?}&.first || "open"
+			#end
+			#def link
+				#"https://www.reddit.com/r/"\
+				#"adventofcode/comments/#{uniq}/"\
+				#"#{year}_day_#{day}_solutions"
+			#end
+		#end
 	end
 end

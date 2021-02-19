@@ -5,8 +5,8 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				rescue StandardError => e
-					abort e.message
+				#rescue StandardError => e
+					#abort e.message
 			end
 			def run(opts:)
 				cmd = Object
@@ -33,10 +33,17 @@ module AocCli
 						@cmd = :AttemptsTable
 					when "-b", "--browser"
 						args[:browser] = true
+					when "-B", "--browser"
+						@cmd = :DefaultReddit
+						args[:value] = ARGV.shift
 					when "-c", "--calendar"
 						@cmd = :CalendarTable
+					when "-C", "--calendar"
+						@cmd = :PrintCal
 					when "-d", "--init-day"
 						@cmd = :DayInit
+						args[:day]  = Validate.day(ARGV.shift.to_i)
+					when "-D", "--day"
 						args[:day]  = Validate.day(ARGV.shift.to_i)
 					when "-h", "--help"
 						exit Help.print
@@ -47,26 +54,21 @@ module AocCli
 						args[:part] = Validate.part(ARGV.shift.to_i)
 					when "-r", "--refresh"
 						@cmd = :Refresh
+					when "-R", "--reddit"
+						@cmd = :OpenReddit
 					when "-s", "--solve"
 						@cmd = :DaySolve
 						args[:ans]  = Validate.ans(ARGV.shift)
+					when "-S", "--stats"
+						@cmd = :StatsTable
 					when "-u", "--user"
+						args[:user] = ARGV.shift
+					when "-U", "--default-user"
+						@cmd = :DefaultUser
 						args[:user] = ARGV.shift
 					when "-y", "--init-year"
 						@cmd = :YearInit
 						args[:year] = Validate.year(ARGV.shift.to_i)
-					when "-B", "--browser"
-						@cmd = :DefaultReddit
-						args[:value] = ARGV.shift
-					when "-D", "--day"
-						args[:day]  = Validate.day(ARGV.shift.to_i)
-					when "-R", "--reddit"
-						@cmd = :OpenReddit
-					when "-S", "--stats"
-						@cmd = :StatsTable
-					when "-U", "--default-user"
-						@cmd = :DefaultUser
-						args[:user] = ARGV.shift
 					when "-Y", "--year"
 						args[:year] = Validate.year(ARGV.shift.to_i)
 					else raise E::FlagInv
@@ -107,7 +109,8 @@ module AocCli
 			end
 			def self.set_key(key)
 				raise E::KeyNil if key.nil?
-				raise E::KeyDup.new(key) if Files::Config.new.is_set?(val:key)
+				raise E::KeyDup.new(key) if Files::Config
+					.new.is_set?(val:key)
 				raise E::KeyInv unless valid_key?(key)
 				key
 			end

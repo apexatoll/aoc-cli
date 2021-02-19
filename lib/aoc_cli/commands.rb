@@ -24,22 +24,16 @@ module AocCli
 				@user, @year = args[:user], args[:year]
 			end
 			def exec
-				Year::Meta
-					.new(u:user, y:year)
-					.write
-				Year::Stars
-					.new(u:user, y:year)
-					.write.update_meta
+				Year::Meta.new(u:user, y:year).write
+				Year::GitWrap.new.init
+				Year::Progress.new(u:user, y:year).write.db
 				self
 			end
 			def respond
 				puts "Year #{year} initialised"
 			end
 			def defaults
-				{
-					user:Files::Config.new.def_acc
-					#git:Files::Config
-				}
+				{ user:Files::Config.new.default_alias }
 			end
 		end
 		class DayInit
@@ -100,7 +94,7 @@ module AocCli
 				@browser = args[:browser]
 			end
 			def exec
-				Day::Reddit.new(y:year, d:day, b:browser).open
+				Tools::Reddit.new(y:year, d:day, b:browser).open
 				self
 			end
 			def defaults
@@ -123,10 +117,11 @@ module AocCli
 				self
 			end
 			def get_default
-				puts "Current default alias: "\
-					 "#{(Files::Config.new
-						.get_line(key:"default") || "main")
-						.to_s.yellow}"
+				puts "Default alias: #{Files::Config.new.default_alias.yellow}"
+				#user = Files::Config.new.default_alias
+				#puts user ? 
+					#"Default alias: #{Validate.user(user).yellow}" : 
+					#"No keys are stored!"
 			end
 			def set_default
 				Files::Config.new.mod_line(
@@ -228,6 +223,26 @@ module AocCli
 			def defaults
 				{ user:Metafile.get(:user),
 				  year:Metafile.get(:year) }
+			end
+		end
+		class PrintCal
+			attr_reader :path, :year
+			def initialize(args)
+				args  = defaults.merge(args).compact
+				@year = Validate.year(args[:year])
+			end
+			def path
+				case Metafile.type
+				when :DAY  then "../#{year}.md"
+				when :ROOT then "#{year}.md"
+				end
+			end
+			def exec
+				system("cat #{path} | less")
+				puts
+			end
+			def defaults
+				{year:Metafile.get(:year)}
 			end
 		end
 	end
