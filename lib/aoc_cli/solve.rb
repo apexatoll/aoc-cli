@@ -16,10 +16,8 @@ module AocCli
 				@answer = Validate.ans(a)
 			end
 			def raw
-				@raw ||= Tools::Post
-					.new(u:user, y:year, d:day, 
-						 data:{level:part, answer:answer})
-					.plain
+				@raw ||= Tools::Post.new(u:user, y:year, d:day, 
+					 data:{level:part, answer:answer}).plain
 			end
 			def check
 				case raw
@@ -29,8 +27,7 @@ module AocCli
 				end
 			end
 			def respond
-				Object
-					.const_get("AocCli::Solve::Respond::#{check}")
+				Respond.const_get(check)
 					.new(attempt:self)
 					.respond
 					.react
@@ -45,44 +42,34 @@ module AocCli
 			end
 			class Correct < Response
 				def react
-					log = Database::Log
-						.new(attempt:attempt)
-						.correct
-					Database::Stats::Complete
-						.new(n:log.count_attempts)
-						.update
+					Database.correct(attempt:attempt)
 					Year.refresh
-					Day.refresh
-					Database::Stats::Init.new.init 
+					Day.refresh(files:[:Puzzle])
 				end
 				def respond
-					response = "#{"Correct!".bold.green} "
-					response += case attempt.part
-						when "1" then next_part
-						when "2" then complete end
-					puts response
+					puts <<~response
+					#{"Correct!".bold.green} #{ 
+					case attempt.part
+					when "1" then "Downloading part two..."
+					when "2" then "This day is now complete!".green
+					end }
+					response
 					self
-				end
-				private 
-				def next_part
-					"Downloading part two.."
-				end
-				def complete
-					"This day is now complete!".green
 				end
 			end
 			class Incorrect < Response
 				def react
-					Database::Log
+					Database::Attempt
 						.new(attempt:attempt)
 						.incorrect(high:high, low:low)
 				end
 				def respond
-					response =  "#{"Incorrect".red.bold}: "\
-						"You guessed - #{attempt.answer.to_s.red}\n"
-					response += "This answer is too high\n" if high
-					response += "This answer is too low\n"  if low
-					puts response
+					puts <<~response
+					#{"Incorrect".red.bold}: You guessed - #{attempt
+						.answer.to_s.red} #{
+					"\nThis answer is too high" if high
+					"\nThis answer is too low"  if low }
+					response
 					self
 				end
 				def high
@@ -94,9 +81,9 @@ module AocCli
 			end
 			class Wait < Response
 				def respond
-					response = "#{"Please wait".yellow.bold}: "\
-								"You have #{time.to_s} to wait"
-					puts response
+					puts <<~response
+					#{"Please wait".yellow.bold}: #{time.to_s} 
+					response
 					self
 				end
 				def time

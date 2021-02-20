@@ -160,7 +160,7 @@ module AocCli
 				error
 			end
 		end
-		class NoCmd < StandardError
+		class CmdNil < StandardError
 			def message
 				<<~error
 				#{ERROR}: Flags passed but no command specified
@@ -172,6 +172,13 @@ module AocCli
 				<<~error
 				#{ERROR}: Invalid key
 				Double check your session key. It should start with "session=" and be 96 characters (a-f, 0-9)
+				error
+			end
+		end
+		class ConfigExist < StandardError
+			def message
+				<<~error
+				#{ERROR}: A config file already exists in #{Paths::Config.path.blue}
 				error
 			end
 		end

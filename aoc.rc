@@ -2,17 +2,18 @@
 //See the github repo for more information on configuring aoc-cli
 //https://github.com/apexatoll/aoc-cli
 
-//General
-//unicode_tables=>true
+[General]
+//Print table in unicode rather than ascii
+unicode_tables=>true
+//Always open Reddit in browser rather than use a Reddit CLI
+reddit_in_browser=>false
 
-//User Settings 
-//default_acc=>main
-
-//Year Settings
-//cal_file=>true
-//init_git=>false
-//lb_file=>false
-//lb_stats_in_cal=>true
-
-//Day Settings
-//reddit_in_browser=>false
+[Initialise Year]
+//Create a calendar file 
+calendar_file=>true
+//Initialise a git repo
+init_git=>false
+//Automatically add md files (calendar and puzzles) to gitignore
+ignore_md_files=>true
+//Include leaderboard stats in calendar file
+lb_stats_in_cal=>true

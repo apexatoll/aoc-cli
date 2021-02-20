@@ -9,16 +9,17 @@ def flag(short, full)
 	str
 end
 puts <<~help
-Advent of Code - cli, version 0.1.0
-#{"C. Welham Feb 2021".italic}
+Advent of Code - cli, version 1.0.0 #{"C. Welham Feb 2021".italic}
 
 #{title("Usage")}
 #{"    aoc".bold + " -flag".italic.yellow + " value".bold.blue}
 
 #{title("Setup")}
 - Store session cookie keys to access AoC
-#{flag("-k", "--key")}Store a session cookie to use the cli.
-#{flag("-u", "--user")}Set alias for key (default: "main")
+#{flag("-k","--key")}Store a session cookie to use the cli.
+#{flag("-u","--user")}Set alias for key (default: "main")
+#{flag("-U","--default")}Get/set default alias
+#{flag("-h","--help")}Print this screen
 
 #{title("Year Directory")}
 - Initialise a year directory to use aoc-cli.
@@ -31,11 +32,13 @@ Advent of Code - cli, version 0.1.0
 #{title("Day Subdirectory")}
 - These commands can be run from the day subdirectory
 #{flag("-s","--solve")}Attempt puzzle
-#{flag("-r","--refresh")}Refresh puzzle
-#{flag("-a","--attempts")}Prints previous attempt table
 #{flag("-p","--part")}Specify part (attempts)
+#{flag("-r","--refresh")}Refresh puzzle
+
+#{title("Reddit")}
+- Defaults to a Reddit CLI if one is installed
 #{flag("-R","--reddit")}Open Reddit solution megathread
-#{flag("-b","--browser")}Open Reddit thread in browser 
+#{flag("-B","--browser")}Open Reddit thread in browser 
 
 #{title("Manual Usage")}
 - AocCli uses metadata so that these flags do not need to be entered.
@@ -48,6 +51,14 @@ Advent of Code - cli, version 0.1.0
 #{title("Configuration")}
 - Pass with a value to update setting
 - Pass without an argument to display current setting. 
-#{flag("-B","--browser")}Always open Reddit in browser (default: false)
-#{flag("-U","--default")}Default key alias to use (default: "main")
+#{flag("-U","--default")}Default key alias to use 
+#{flag("-G","--gen-config")}Creates an example config file
+
+#{title("Tables")}
+- Print stats in a terminal-friendly table
+#{flag("-a","--attempts")}Prints previous attempts for puzzle (part needed)
+#{flag("-c","--simple-cal")}Prints your progress
+#{flag("-C","--fancy-cal")}Prints your calendar file
+#{flag("-S","--stats")}Prints your stats (time taken, number of attempts)
+
 help

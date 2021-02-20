@@ -1,16 +1,29 @@
 module AocCli
 	module Paths
-		class Config
-			def self.create
-				FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-				File.write(path, "", mode:"a") unless File
-					.exist?(path)
+		require 'fileutils'
+		class Year
+			attr_reader :user, :year
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year))
+				@user = Validate.user(u)
+				@year = Validate.year(y)
 			end
-			def self.dir
-				"#{Dir.home}/.config/aoc-cli"
+			def in_year?
+				File.exist?("./.meta") ? 
+					Metafile.type == :ROOT : true
 			end
-			def self.path
-				"#{dir}/aoc.rc"
+			def year_dir
+				in_year? ? "." : ".."
+			end
+			def local(f:)
+				"#{Validate.not_init(dir:year_dir, 
+					year:year)}/#{filename(f:f)}"
+			end
+			def filename(f:)
+				case f.to_sym
+				when :Stars then "#{year}.md"
+				when :meta  then ".meta"
+				end
 			end
 		end
 		class Day
@@ -20,6 +33,9 @@ module AocCli
 				@user = Validate.user(u)
 				@year = Validate.year(y)
 				@day  = Validate.day(d)
+			end
+			def create_cache
+				FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
 			end
 			def filename(f:)
 				case f.to_sym
@@ -51,29 +67,16 @@ module AocCli
 				[cache_path(f:f), local(f:f)]
 			end
 		end
-		class Year
-			attr_reader :user, :year
-			def initialize(u:Metafile.get(:user),
-						   y:Metafile.get(:year))
-				@user = Validate.user(u)
-				@year = Validate.year(y)
+		class Config
+			def self.create
+				FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+				File.write(path, "", mode:"a") unless File.exist?(path)
 			end
-			def in_year?
-				File.exist?("./.meta") ? 
-					Metafile.type == :ROOT : true
+			def self.dir
+				"#{Dir.home}/.config/aoc-cli"
 			end
-			def year_dir
-				in_year? ? "." : ".."
-			end
-			def local(f:)
-				"#{Validate.not_init(dir:year_dir, 
-					year:year)}/#{filename(f:f)}"
-			end
-			def filename(f:)
-				case f.to_sym
-				when :Stars then "#{year}.md"
-				when :meta  then ".meta"
-				end
+			def self.path
+				"#{dir}/aoc.rc"
 			end
 		end
 		class Database < Config

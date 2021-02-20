@@ -1,12 +1,7 @@
 module AocCli
 	module Day
-		def self.refresh
-			puts "- Updating puzzle...".yellow
-			Init.new.meta
-			Data::Puzzle.new.write
-		end
 		class Init
-			attr_reader :year, :day, :user, :paths, :part
+			attr_reader :user, :year, :day, :paths
 			def initialize(u:Metafile.get(:user), 
 						   y:Metafile.get(:year), 
 						   d:Metafile.get(:day))
@@ -21,133 +16,102 @@ module AocCli
 			end
 			def meta
 				File.write(paths.local(f:"meta"), 
-						Metafile.day(u:user, y:year, d:day))
+					Metafile.day(u:user, y:year, d:day))
 				self
 			end
 		end
 		class Pages < Init
-			attr_reader :cache, :files
+			attr_reader :files, :use_cache
 			def initialize(u:Metafile.get(:user), 
 						   y:Metafile.get(:year),
 						   d:Metafile.get(:day), 
-						   f:[:Input, :Puzzle])
+						   f:[:Input, :Puzzle],
+						   use_cache:true)
 				super(u:u, y:y, d:d)
 				@files = f
+				@use_cache = use_cache
 			end
-			def write
-				cache.each{|page, data| data ? 
-					File.write(paths.local(f:page), data) : 
-					download(page:page)}
+			def load
+				files.each do |file| use_cache && cache[file] ?
+					copy(file:file) : download(page:file) end
 			end
-			private
 			def cache
-				@cache ||= Cache
-					.new(u:user, y:year, d:day, f:files).load
+				@cache ||= Cache.new(d:day, f:files).query
 			end
-			def download(page:, to:paths.cache_and_local(f:page))
-				dl = Object.const_get("AocCli::Day::Data::#{page}")
+			def copy(file:)
+				File.write(paths.local(f:file), cache[file])
+			end
+			def download(page:)
+				req = Requests.const_get(page)
 					.new(u:user, y:year, d:day)
-					.write(to:to)
-				dl.init_db if dl.class
-					.instance_methods
-					.include?(:init_db)
+					.write(to:paths.cache_and_local(f:page))
+				req.init_stats if page == :Puzzle
 			end
 		end
-		module Data
-			class DayObject < Init
-				attr_reader :user, :year, :day, :data, :paths, :part
+		class Cache < Pages
+			def initialize(u:Metafile.get(:user), 
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
+						   f:[:Input, :Puzzle])
+				super(u:u, y:y, d:d, f:f)
+				paths.create_cache
+			end
+			def query
+				files.map{|file| [file, read(file:file)]}.to_h
+			end
+			private
+			def read(file:)
+				File.exist?(paths.cache_path(f:file)) ?
+					File.read(paths.cache_path(f:file)) : nil
+			end
+		end
+		module Requests
+			class Request < Init
+				attr_reader :data, :part
 				def initialize(u:Metafile.get(:user), 
 							   y:Metafile.get(:year),
 							   d:Metafile.get(:day))
 					super(u:u, y:y, d:d)
+					@data = parse(raw:fetch)
 					@part = Metafile.part(d:day)
-					@data  = parse(raw: fetch)
 				end
-				def write(to:paths.cache_and_local(f:page))
-					to.each{|path| File.write(path, data)}
-					self
+				def write(to:)
+					to.each{|path| File.write(path, data)}; self
 				end
 				private
 				def fetch
 					Tools::Get.new(u:user, y:year, d:day, p:page)
 				end
 			end
-			class Puzzle < DayObject
+			class Puzzle < Request
 				def page
 					:Puzzle
 				end
-				def parse(raw:)
+				def parse(raw:fetch)
 					raw.chunk(f:"<article", t:"<\/article", f_off:2)
 						.md
 						.gsub(/(?<=\])\[\]/, "")
 						.gsub(/\n.*<!--.*-->.*\n/, "")
 				end
-				def init_db
+				def init_stats
 					Database::Stats::Init
 						.new(d:day, p:part)
 						.init if part < 3
-					self
 				end
 			end
-			class Input < DayObject
+			class Input < Request
 				def page
 					:Input
 				end
-				def parse(raw:)
+				def parse(raw:fetch)
 					raw.raw
 				end
 			end
 		end
-		class Cache < Pages
-			require 'fileutils'
-			def initialize(u:Metafile.get(:user), 
-						   y:Metafile.get(:year),
-						   d:Metafile.get(:day),
-						   f:[:Input, :Puzzle])
-				super(u:u, y:y, d:d, f:f)
-				FileUtils.mkdir_p(paths.cache_dir) unless Dir
-					.exist?(paths.cache_dir)
-			end
-			def load
-				files.map{|f| [f, read_file(f:f)]}.to_h
-			end
-			private
-			def read_file(f:)
-				cached?(f:f) ? read(f:f) : nil
-			end
-			def cached?(f:)
-				File.exist?(paths.cache_path(f:f))
-			end
-			def read(f:)
-				File.read(paths.cache_path(f:f))
-			end
+		def self.refresh(files:[:Input, :Puzzle])
+			puts "- Updating puzzle...".yellow
+			Init.new.meta
+			Pages.new(f:files, use_cache:false).load
 		end
-		#class Reddit
-			#attr_reader :year, :day, :uniq, :browser
-			#def initialize(y:Metafile.get(:year), 
-						   #d:Metafile.get(:day),
-						   #b:false)
-				#@year = Validate.year(y)
-				#@day  = Validate.day(d)
-				#@uniq = Database::Query
-					#.new(path:Paths::Database.root("reddit"))
-					#.select(t:"'#{year}'", where:{day:"'#{day}'"})
-					#.flatten[1]
-				#@browser = b
-			#end
-			#def open
-				#system("#{browser ? "open" : cmd} #{link}")
-			#end
-			#def cmd
-				#["ttrv", "rtv"]
-					#.map{|cli| cli unless `which #{cli}`.empty?}
-					#.reject{|cmd| cmd.nil?}&.first || "open"
-			#end
-			#def link
-				#"https://www.reddit.com/r/"\
-				#"adventofcode/comments/#{uniq}/"\
-				#"#{year}_day_#{day}_solutions"
-			#end
-		#end
 	end
 end

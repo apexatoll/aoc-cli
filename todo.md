@@ -1,35 +1,36 @@
 ## Todo
 
-- Better key validation [x]
-- Auto generate config file [ ]
-- Update default key if none set [x]
-- List current users [ ]
-- Show progress calendar from anywhere [ ]
-	- Need to initialise calendar on year init [x]
-	- Need to update db when solve is correct  [ ]
-- Auto git init? [x]
-	- Add config options [ ]
-	- Update dependencies [ ]
-- turn off calendar/leaderboard [ ]
-- better flags for reddit [ ]
-- Update help screen [ ]
+<!--- Better key validation [x]-->
+<!--- Auto generate config file [x]-->
+<!--- Update default key if none set [x]-->
+<!--- List current users [x]-->
+<!--- Show progress calendar from anywhere [x]-->
+	<!--- Need to initialise calendar on year init [x]-->
+	<!--- Need to update db when solve is correct  [x]-->
+<!--- Auto git init? [x]-->
+	<!--- Add config options [x]-->
+	<!--- Update dependencies [x]-->
+<!--- turn off calendar/leaderboard [x]-->
+<!--- better flags for reddit [x]-->
+<!--- Update help screen [x]-->
 - Update readme [ ]
-- separate cookie file [ ]
-- Refactor [ ]
+<!--- Changelog [x]-->
+<!--- Refactor [x]-->
+<!--- Error for printcal if cal off [x]-->
 
 ## Config Settings
 
 ### General
-- unicode_tables => true
+<!--- unicode_tables => true-->
 
 ### User Settings 
 - default_acc => 
 
 ### Year Settings
 - init_git => false
-- calendar_file => true
-- lb_in_calendar => true
+<!--- calendar_file => true-->
+<!--- lb_in_calendar => true-->
 - leaderboard_lb => false
 
 ### Day Settings
-- reddit_in_browser => false
+<!--- reddit_in_browser => false-->

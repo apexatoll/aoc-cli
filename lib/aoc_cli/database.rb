@@ -1,6 +1,10 @@
-#require 'aoc_cli'
 module AocCli
 	module Database
+		def self.correct(attempt:)
+			attempt = Attempt.new(attempt:attempt).correct
+			Stats::Complete.new(n:attempt.count_attempts).update
+			Calendar::Part.new.increment
+		end
 		class Query
 			require 'sqlite3'
 			attr_reader :db
@@ -32,12 +36,11 @@ module AocCli
 				self
 			end
 		end
-		class Log
+		class Attempt
 			attr_reader :attempt, :db
 			def initialize(attempt:)
 				@attempt = attempt
-				@db = Query.new(path:Paths::Database
-					.cfg("#{attempt.user}"))
+				@db = Query.new(path:Paths::Database.cfg(attempt.user))
 					.table(t:"attempts", cols:cols)
 			end
 			def correct
@@ -45,8 +48,8 @@ module AocCli
 				self
 			end
 			def incorrect(high:, low:)
-				db.insert(t:"attempts", val:data.push(0)
-					.push(parse_hint(high:high, low:low)))
+				db.insert(t:"attempts", 
+					val:data << 0 << parse_hint(high:high, low:low))
 				self
 			end
 			def parse_hint(high:, low:)
@@ -149,8 +152,7 @@ module AocCli
 						.map{|t| t.to_i.to_s.rjust(2, "0")}.join(":")
 				end
 				def dl_time
-					@dl_time ||= Time
-						.parse(db
+					@dl_time ||= Time.parse(db
 						.select(t:"stats", cols:"dl_time", where:where)
 						.flatten.first)
 				end
@@ -205,15 +207,14 @@ module AocCli
 					db.select(t:"calendar", cols:"stars", where:where)
 						.flatten.first.to_i + 1
 				end
+				def increment
+					db.update(t:"calendar", val:{stars:get}, where:where)
+				end
 				def where
 					{ year:"'#{year}'",
 					   day:"'#{day}'" }
 				end
 			end
-			class Increment
-				
-			end
 		end
 	end 
 end
-#puts AocCli::Database::Calendar::Part.new(u: "google", y: 2020, d: 25).get

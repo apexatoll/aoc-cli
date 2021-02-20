@@ -1,64 +1,105 @@
-#require 'aoc_cli'
 module AocCli
 	module Files
-		class Config
-			def initialize
-				Paths::Config.create
+		module Config
+			class Tools
+				def self.is_set?(key:nil, val:nil)
+					read.split("\n").grep(/(?<!\/\/)#{key}=>#{val}/).any?
+				end
+				def self.get_all(key:)
+					read.scan(/(?:(?<=(?<!\/\/)#{key}=>)).*$/)
+				end
+				def self.get_line(key:)
+					get_all(key:key)&.first
+					#read.scan(/(?:(?<=(?<!\/\/)#{key}=>)).*$/)&.first
+				end
+				def self.get_bool(key:)
+					get_line(key:key) == "true" ? true : false
+				end
+				def self.mod_line(key:, val:)
+					is_set?(key:key) ?
+						write(f:read.gsub(/(?<=^#{key}=>).*$/, val.to_s)) :
+						write(f:"#{key}=>#{val}\n", m:"a")
+				end
+				def self.set_line(key:, val:)
+					write(f:"#{key}=>#{val}\n", m:"a")
+				end
+				private
+				def self.read
+					Paths::Config.create
+					File.read(Paths::Config.path)
+				end
+				def self.write(f:, m:"w")
+					Paths::Config.create
+					File.write(Paths::Config.path, f, mode:m)
+				end
 			end
-			def default_alias
-				is_set?(key:"default") ? get_line(key:"default") : nil || 
-				is_set?(key:"cookie=>main") ? "main" : nil ||
-				get_line(key:"cookie")&.gsub(/=>.*/, "")
+			class Prefs < Tools
+				def self.default_alias
+					is_set?(key:"default") ? get_line(key:"default") :
+						is_set?(key:"cookie=>main") ? "main" :
+							list_aliases.first || "main"
+				end
+				def self.list_aliases
+					get_all(key:"cookie")&.map{|a| a.gsub(/=>.*/, "")}
+				end
+				def self.bool(key:)
+					is_set?(key:key) ?  
+						get_bool(key:key) : defaults[key]
+				end
+				def self.string(key:)
+					is_set?(key:key) ? 
+						get_line(key:key) : defaults[key]
+				end
+				private
+				def self.defaults
+					{ calendar_file:true,
+					  ignore_md_files:true,
+					  init_git:false,
+					  lb_in_calendar:true,
+					  reddit_in_browser:false,
+					  unicode_tables:true
+					}
+				end
 			end
-			def is_set?(key:nil, val:nil)
-				read.split("\n").grep(/(?<!\/\/)#{key}=>#{val}/).any?
+			class Cookie < Tools
+				def self.store(user:, key:)
+					set_line(key:"cookie=>#{Validate.set_user(user)}",
+							 val:Validate.set_key(key))
+				end
+				def self.key(user:)
+					Validate.key(get_line(key:"cookie=>#{Validate
+						.user(user)}"))
+				end
 			end
-			def mod_line(key:, val:)
-				is_set?(key:key) ?
-					write(f:read.gsub(/(?<=^#{key}=>).*$/, val.to_s)) :
-					write(f:"#{key} => #{val}\n", m:"a")
-			end
-			def get_line(key:)
-				read.scan(/(?:(?<=(?<!\/\/)#{key}=>)).*$/)&.first
-			end
-			def get_bool(key:)
-				get_line(key:key) == "true" ? true : false
-			end
-			protected
-			def set_line(key:, val:)
-				write(f:"#{key}=>#{val}\n", m:"a")
-			end
-			private
-			def read
-				File.read(Paths::Config.path)
-			end
-			def write(f:, m:"w")
-				File.write(Paths::Config.path, f, mode:m)
-			end
-		end
-		class Setting < Config
-			def bool(key:, default:)
-				is_set?(key:key) ?
-					get_bool(key:key) : default
-			end
-			def string
-				is_set?(key:key) ?
-					get_line(key:key) : default
-			end
-		end
-		class Cookie < Config
-			attr_reader :user
-			def initialize(u:)
-				@user = u
-				super()
-			end
-			def store(key:)
-				puts user
-				set_line(key:"cookie=>#{Validate.set_user(user)}",
-						 val:Validate.set_key(key))
-			end
-			def key
-				Validate.key(get_line(key:"cookie=>#{user}"))
+			class Example
+				def self.write
+					File.write(Validate.no_config, file)
+				end
+				def self.file
+					<<~file
+					//aoc-cli example config
+					//See the github repo for more information on configuring aoc-cli
+					//https://github.com/apexatoll/aoc-cli
+					
+					[General]
+					//Print table in unicode rather than ascii
+					unicode_tables=>true
+					//Open Reddit in browser rather than use a Reddit CLI
+					reddit_in_browser=>false
+					
+					[Initialise Year]
+					//Create a calendar file 
+					calendar_file=>true
+					//Initialise a git repo
+					init_git=>false
+					//Add calendar and puzzle files to gitignore
+					ignore_md_files=>true
+					//Add .meta files to gitignore
+					ignore_meta_files=>true
+					//Include leaderboard stats in calendar file
+					lb_stats_in_cal=>true
+					file
+				end
 			end
 		end
 		class Metafile
@@ -68,22 +109,13 @@ module AocCli
 			def self.type
 				get("dir").to_sym
 			end
-			def self.add(hash:, path:".meta")
-				hash.map {|k, v| "#{k}=>#{v}\n"}
-					.each{|l| File.write(path, l, mode:"a")}
-			end
-			def self.part(u:Metafile.get(:user),
-						  y:Metafile.get(:year),
-						  d:)
+			def self.part(d:)
 				Database::Calendar::Part.new(d:d).get
 			end
 			private
 			def self.read(dir:".")
 				File.read("#{Validate.init(dir)}/.meta")
 			end
-			#def self.root_dir
-				#type == :ROOT ? "." : ".."
-			#end
 			def self.year(u:, y:)
 				<<~meta
 				dir=>ROOT
@@ -97,20 +129,17 @@ module AocCli
 				user=>#{u}
 				year=>#{y}
 				day=>#{d}
-				part=>#{part(u:u, y:y, d:d)}
+				part=>#{part(d:d)}
 				meta
 			end
 		end
 		class Calendar
 			attr_reader :cal, :stats, :year
-			def initialize(y:Metafile.get(:year),
-						   cal:nil, stats:nil)
-				@year = Validate.year(y)
-				@cal = cal
-				@stats = stats
+			def initialize(y:Metafile.get(:year), cal:, stats:)
+				@year, @cal, @stats  = Validate.year(y), cal, stats
 			end
-			def include_stats?
-				Setting.new.bool(key:"lb_in_calendar", default:true)
+			def include_leaderboard?
+				Prefs.bool(key:"lb_in_calendar")
 			end
 			def title
 				"Year #{year}: #{stats.total_stars}/50 *"
@@ -118,16 +147,15 @@ module AocCli
 			def underline
 				"-" * (cal.data[0].to_s.length + 2)
 			end
-			def file
+			def make
 				<<~file
 					#{title}
 					#{underline}
 					#{cal.data.join("\n")}\n
 					#{stats.data.join("\n") if stats.total_stars > 0 &&
-						include_stats?}
+						include_leaderboard?}
 				file
 			end
 		end
 	end 
 end
-#puts AocCli::Files::Calendar.new.include_stats?

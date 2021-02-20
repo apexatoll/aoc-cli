@@ -1,0 +1,31 @@
+PATH
+  remote: .
+  specs:
+    aoc_cli (0.2.0)
+      colorize
+      curb
+      pandoc-ruby
+      sqlite3
+      terminal-table
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colorize (0.8.1)
+    curb (0.9.11)
+    pandoc-ruby (2.1.4)
+    rake (13.0.3)
+    sqlite3 (1.4.2)
+    terminal-table (3.0.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
+    unicode-display_width (1.7.0)
+
+PLATFORMS
+  x86_64-darwin-18
+
+DEPENDENCIES
+  aoc_cli!
+  rake (~> 13.0)
+
+BUNDLED WITH
+   2.2.3

@@ -4,6 +4,8 @@
 
 A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
+## New to 1.0.0
+
 
 ## Main Features
 - Download puzzles as markdown and raw inputs directly from the command line
@@ -11,6 +13,7 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 - Track progress through your calendar file which is automatically updated as you progress
 - View data about how you answer puzzles, for example your previous attempts, how long it takes to solve a puzzle successfully and how many attempts it took you
 - Inputs and puzzles are cached locally to prevent strain on AoC server
+- Automatic git initialisation
 - Hot keys to open solution megathreads in Reddit if you get stuck
 - Support for multiple AoC accounts by use of session-key aliases
 
@@ -19,6 +22,7 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
 - aoc-cli uses Pandoc, make sure it is [installed](https://pandoc.org/installing.html)
 - Homebrew users can run `brew install pandoc`
+- Mac OS users need to make sure developer tools is installed (thank you yspreen)
 
 Install gem
 
@@ -45,7 +49,7 @@ Open developer tools and open the network tab. Refresh the page and you should s
 It will contain a field that looks something like:
 
 ```
-cookie: session=ALPHANUMERIC STRING
+cookie: session=HEXADECIMAL_STRING
 ```
 
 This is unique to your account, and allows aoc-cli to interact with the AoC server - do not share this!
@@ -61,11 +65,11 @@ aoc -k $your_key
 
 ```
 
-- AoC-cli stores this key under the alias 'main' by default. 
+- AoC-cli stores this key under the alias 'main' if no custom alias is specified
 - To store the key under a different alias use the `-u` or `--user` flags followed by the desired alias.
 - Session keys are stored in the aoc config file located at `~/.config/aoc-cli/aoc.rc`.
 
-- Keys can be stored manually in your config file using the format:
+Keys can also be stored manually in your config file using the format:
 
 ```bash
 cookie=>$alias=>$key
@@ -74,14 +78,12 @@ cookie=>$alias=>$key
 For example:
 
 ```bash
-cookie=>account2=>1234abc
+cookie=>account2=>session=123abc
 ```
 
 ### Default Alias
 
 aoc-cli allows for multiple keys to be stored within the config file. 
-
-By default, the key under the "main" alias is used when initialising year directories and another alias is not specified
 
 To see which alias is currently deafult run `aoc -U` or `aoc --default`
 
@@ -91,16 +93,31 @@ To see which alias is currently deafult run `aoc -U` or `aoc --default`
 aoc -U $new_default_alias
 ```
 
-For example:
+By default, aoc-cli will determine the default alias in the following order of precedence
+
+- The alias explicitly set by `default=>$alias` in your config file or by using the `-U` command
+- The `main` alias (if it exists)
+- The first key in your config file
+
+### Use Case
+
+Say for example you wanted to learn a new language and decided to try out Advent of Code from scratch to get stuck in. You could set up a new account and grab the session key, which for example is `abc123`
+
+Lets use Ruby as our new language. You could then store this new key under the alias `ruby`
 
 ```bash
-aoc -U account2
+aoc -k session=abc123 -u ruby
 ```
 
+You could then set `ruby` as your default alias so that you do not have to specify `-u ruby` explicitly when initialising a year directory each time
+
+```bash
+aoc -U ruby
+```
 Alternatively you could add the following line to your config file
 
 ```bash
-default=>account2
+default=>ruby
 ```
 
 ## Usage
@@ -118,7 +135,7 @@ There are two types of directories
 
 To begin using the cli you must first initialise the year directory. 
 
-aoc-cli will intialise within your current working directory, so first create a directory for the year and cd into it
+aoc-cli will intialise within your current working directory, so first create a directory for the year and change directory into it
 
 ```bash
 mkdir 2020
@@ -130,7 +147,7 @@ cd 2020
 aoc -y 2020
 ```
 
-This will set the session key for the year directory to the default alias. To use a different AoC account run:
+This will set the session key for the year directory to the default alias. To use a different alias run:
 
 ```bash
 aoc -y 2020 -u $alias
@@ -138,7 +155,7 @@ aoc -y 2020 -u $alias
 
 This command will create necessary metafiles, download the year calendar and fill it with your current progress (if any). This is stored in a markdown file in the year directory.
 
-By default, your stats in the leaderboard are also added to this file. 
+By default, your stats in the leaderboard are also added to this file. This can be changed - see Configuration
 
 
 ## Initialising a Day
@@ -158,7 +175,7 @@ This command performs the following actions
 - Fetches raw puzzle input
 - The time you downloaded the puzzle is logged
 
-All puzzles and inputs are cached in aoc-cli on a per-user basis. This means that if you have previously initialised this day under this alias before, your puzzle and input will be transferred from the cache locally rather than downloading from the aoc server.
+All puzzles and inputs are cached in aoc-cli on a per-user basis. This means that if you have previously initialised this day under the same alias before, your puzzle and input will be transferred from the cache locally rather than downloading from the aoc server.
 
 
 ## Solving Puzzles
@@ -188,7 +205,7 @@ aoc-cli uses a local database to store information about your progress with puzz
 
 1. Your attempts
 2. Your stats
-
+3. Your progress in the year
 
 ### Attempts
 
@@ -208,6 +225,8 @@ Data is shown in a formatted table with incorrect attempts shown in red and the 
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/attempts.png)
 
+You need to specify the part explicitly using `-p` or `--part` to view attempts for puzzles that are already completed 
+
 ### Stats
 
 aoc-cli also tracks data related to your performance in puzzles, namely:
@@ -224,17 +243,20 @@ To view the stats for the year as a whole run the same command from the year dir
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/stats.png)
 
+### Progress
+
+To view your progress in the year you can run the command 
+
+
 ## Reddit Integration
 
 You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
 
-If one is installed, aoc-cli will default to opening the thread within a reddit-cli such as RTV or TTRV. If one isn't found however, the thread will be opened within your default browser.
+If one is installed, aoc-cli will default to opening the thread within a reddit-cli such as rtv [](link) or [](link). 
 
-To always open megathread in your browser run
+If one isn't found however, the thread will be opened within your default browser.
 
-```bash
-aoc -B true
-```
+
 
 ## Vim Integration
 
@@ -250,6 +272,24 @@ Executing leader + ac would then run your program and send the answer to the ser
 
 Do not send endless attempts - only send when you are comfortable with your answer!
  
+## Configuration
+
+aoc-cli can be configured using a file in `~/.config/aoc-cli/aoc.rc`
+
+To generate an example configuration file you can run `aoc -G` or `aoc --gen-config`. (Note this will throw an error if `~/.config/aoc-cli/aoc.rc` already exists)
+
+aoc-cli config settings are added in the format 
+
+```bash
+setting_name=>setting
+```
+
+### List of Configurable Options
+| flag          | Options    | Description                                        | Default |
+|---------------|------------|----------------------------------------------------|---------|
+| calendar_file | true/false | Create a markdown calendar file                    | true    |
+| init_git      | true/false | Initialise a git repository on year initialisation | false   |
+
 
 ## All Flags
 
@@ -274,7 +314,6 @@ Do not send endless attempts - only send when you are comfortable with your answ
 | `-U`       | `--default`    | View default alias (no argument)          |
 |            |                | Set default alias (with argument)         |
 | `-Y`       | `--year`       | Specify year for aoc command              |
-
 
 ## Acknowledgments
 

@@ -1,14 +1,14 @@
 module AocCli
 	module Year
 		def self.refresh
-			puts "- Updating calendar...".blue
+			puts "- Updating calendar...".yellow
 			Year::Meta.new.write
 			Year::Progress.new.write
 		end
 		class Meta
 			attr_reader :user, :year, :paths
-			def initialize(u:Files::Config.new.default_alias,
-						   y:Metafile.get(:year), dir:".")
+			def initialize(u:Prefs.default_alias,
+						   y:Metafile.get(:year))
 				@user  = Validate.user(u)
 				@year  = Validate.year(y)
 				@paths = Paths::Year.new(u:user, y:year)
@@ -27,17 +27,16 @@ module AocCli
 					.fill(stars:stats.stars)
 			end
 			def file
-				Files::Calendar.new(stats:stats, cal:cal).file
+				Files::Calendar.new(stats:stats, cal:cal).make
 			end
 			def write?
-				Files::Setting.new
-					.bool(key:"calendar_file", default:true)
+				Prefs.bool(key:"calendar_file")
 			end
 			def write
 				File.write(paths.local(f:"Stars"), file) if write?
 				self
 			end
-			def db
+			def init_calendar_db
 				Database::Calendar::Init
 					.new(u:user, y:year, stars:stats.stars)
 					.insert
@@ -53,7 +52,8 @@ module AocCli
 				end
 				private
 				def fetch
-					Tools::Get.new(u:user, y:year, p:page).plain.split("\n")
+					Tools::Get.new(u:user, y:year, p:page)
+						.plain.split("\n")
 				end
 			end
 			class Calendar < Request
@@ -92,19 +92,19 @@ module AocCli
 		end
 		class GitWrap
 			require 'git'
-			def initialize()
-			end
-			def init
-				git = Git.init
+			attr_reader :git
+			def initialize
+				@git = Git.init 
 				File.write(".gitignore", ignore)
 				git.add(".gitignore")
 			end
+			def ignore_md?
+				Prefs.bool(key:"ignore_md_files")
+			end
 			def ignore
 				<<~ignore
-				*.md
-				**/*.md
 				.meta
-				**/.meta
+				**/.meta #{"\n*.md\n**/*.md" if ignore_md?}
 				ignore
 			end
 		end

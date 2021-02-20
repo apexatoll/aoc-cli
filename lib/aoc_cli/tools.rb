@@ -28,7 +28,7 @@ module AocCli
 			end
 			private
 			def cookie
-				Files::Cookie.new(u:user).key
+				Files::Config::Cookie.key(user:user)
 			end
 			def url
 				case page.to_sym
@@ -75,11 +75,8 @@ module AocCli
 		end
 		class Get < Convert
 			def initialize(u:Metafile.get(:user),
-						   y:Metafile.get(:year),
-						   d:nil, p:)
-				@input = Request
-					.new(u:u, y:y, d:d, p:p)
-					.get
+						   y:Metafile.get(:year), d:nil, p:)
+				@input = Request.new(u:u, y:y, d:d, p:p).get
 			end
 		end
 		class Post < Convert
@@ -95,8 +92,8 @@ module AocCli
 		class Reddit
 			attr_reader :year, :day, :uniq, :browser
 			def initialize(y:Metafile.get(:year), 
-						   d:Metafile.get(:day),
-						   b:false)
+						   d:Metafile.get(:day), 
+						   b:Prefs.bool(key:"reddit_in_browser"))
 				@year = Validate.year(y)
 				@day  = Validate.day(d)
 				@uniq = Database::Query

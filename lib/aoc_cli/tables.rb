@@ -1,34 +1,46 @@
-require 'aoc_cli'
 module AocCli
 	module Tables
-		class Attempts
+		class Table
 			require 'terminal-table'
-			attr_reader :user, :year, :day, :part, :db
-			def initialize(u:Metafile.get(:user),
-						   y:Metafile.get(:year),
-						   d:Metafile.get(:day),
-						   p:Metafile.get(:part))
+			attr_reader :user, :year, :table, :cols, :where
+			def initialize(u:Metafile.get(:user), y:Metafile.get(:year))
 				@user = Validate.user(u)
 				@year = Validate.year(y)
-				@day  = Validate.day(d)
-				@part = Validate.part(p)
-				@db   = Database::Query
+			end
+			def border
+				Prefs.bool(key:"unicode_tables") ? :unicode : :ascii
+			end
+			def data
+				Database::Query
 					.new(path:Paths::Database.cfg(user))
+					.select(t:table, cols:cols, where:where)
 			end
-			def show
-				puts rows.count > 0 ? table : 
-					"You have not attempted this puzzle yet!"
+			def print
+				puts rows.count > 0 ? make : nil_message
 			end
-			private
-			def table
+			def make
 				tab = Terminal::Table.new(
 					:headings  => headings,
 					:rows      => rows,
 					:title     => title)
 				tab.style = {
-					:border    => :unicode, 
+					:border    => border, 
 					:alignment => :center}
 				tab
+			end
+		end
+		class Attempts < Table
+			attr_reader :day, :part 
+			def initialize(u:Metafile.get(:user),
+						   y:Metafile.get(:year),
+						   d:Metafile.get(:day),
+						   p:Metafile.get(:part))
+				super(u:u, y:y)
+				@day   = Validate.day(d)
+				@part  = Validate.part(p)
+				@table = :attempts
+				@cols  = "time, answer, high, low, correct"
+				@where = {year:year, day:day, part:part}
 			end
 			def title
 				"#{year} - Day #{day}:#{part}".bold
@@ -37,56 +49,32 @@ module AocCli
 				["Answer", "Time", "Hint"]
 			end
 			def rows
-				@rows ||= attempts
-					.map{|a| [parse_ans(a), parse_time(a), parse_hint(a)]}
+				@rows ||= data.map do |d|
+					[parse_ans(d), parse_time(d), parse_hint(d)]
+				end
 			end
-			def attempts 
-				db.select(
-					t:"attempts", 
-					cols:"time, answer, high, low, correct", 
-					where:{year:year, day:day, part:part})
+			def parse_ans(row)
+				row[4] == 1 ?  row[1].to_s.green : row[1].to_s.red
 			end
-			def parse_ans(attempt)
-				attempt[4] == 1 ? 
-					attempt[1].to_s.green :
-					attempt[1].to_s.red
-			end
-			def parse_time(attempt)
-				DateTime
-					.strptime(attempt[0], "%Y-%m-%d %H:%M:%S %Z")
+			def parse_time(row)
+				DateTime.strptime(row[0], "%Y-%m-%d %H:%M:%S %Z")
 					.strftime("%H:%M - %d/%m/%y")
 			end
-			def parse_hint(attempt)
-				attempt[2] == 1 ? "low" : 
-				attempt[3] == 1 ? "high" : "-"
+			def parse_hint(row)
+				row[2] == 1 ? "low" : row[3] == 1 ? "high" : "-"
+			end
+			def nil_message
+				"You have not attempted this puzzle yet!"
 			end
 		end
 		module Stats
-			class Year
-				attr_reader :user, :year, :db
+			class Year < Table
 				def initialize(u:Metafile.get(:user),
 							   y:Metafile.get(:year))
-					@user = Validate.user(u)
-					@year = Validate.year(y)
-					@db = Database::Query
-						.new(path:Paths::Database.cfg(user))
-				end
-				def print
-					puts rows.count > 0 ? table : 
-						"You have not completed any puzzles yet"
-				end
-				def rows
-					@rows ||= stats.map{|s| [s[0], s[1], s[2], s[3]]}
-				end
-				def table
-					tab = Terminal::Table.new(
-						:headings  => headings,
-						:rows      => rows,
-						:title     => title)
-					tab.style = {
-						:border    => :unicode, 
-						:alignment => :center}
-					tab
+					super(u:u, y:y)
+					@table = :stats
+					@cols  = "day, part, attempts, elapsed"
+					@where = {year:"'#{year}'", correct:"'1'"}
 				end
 				def title
 					"Year #{year}"
@@ -94,15 +82,11 @@ module AocCli
 				def headings
 					["Day", "Part", "Attempts", "Time (h:m:s)"]
 				end
-				def stats
-					@stats ||= db.select(
-						t:"stats", 
-						cols:"day, part, attempts, elapsed",
-						where:where)
+				def rows
+					@rows ||= data.map{|d| [d[0], d[1], d[2], d[3]]}
 				end
-				def where
-					{year:"'#{year}'",
-					 correct:"'1'"}
+				def nil_message
+					"You have not completed any puzzles yet"
 				end
 			end
 			class Day < Year
@@ -112,9 +96,10 @@ module AocCli
 							   d:Metafile.get(:day))
 					super(u:u, y:y)
 					@day = Validate.day(d)
-				end
-				def rows
-					@rows ||= stats.map{|s| [s[0], s[1], s[2]]}
+					@cols = "part, attempts, elapsed"
+					@where = { year:"'#{year}'", 
+							   day:"'#{day}'", 
+							   correct:"'1'" }
 				end
 				def title
 					"Year #{year}: Day #{day}"
@@ -122,54 +107,31 @@ module AocCli
 				def headings
 					["Part", "Attempts", "Time (h:m:s)"]
 				end
-				def stats
-					@stats ||= db.select(
-						t:"stats", 
-						cols:"part, attempts, elapsed",
-						where:where)
-				end
-				def where
-					{year:"'#{year}'",
-					  day:"'#{day}'",
-					 correct:"'1'"}
+				def rows
+					@rows ||= data.map{|d| [d[0], d[1], d[2]]}
 				end
 			end
 		end
-		class Calendar
-			attr_reader :user, :year, :db
+		class Calendar < Table
 			def initialize(u:Metafile.get(:user),
 						   y:Metafile.get(:year))
-				@user = Validate.user(u)
-				@year = Validate.year(y)
-				@db   = Database::Query
-					.new(path:Paths::Database.cfg(user))
-			end
-			def rows
-				@rows ||= stars.map{|s| [s[1], parse_stars(s[2])]}
-			end
-			def print
-				puts table
-			end
-			def table
-				tab = Terminal::Table.new(
-					:rows      => rows,
-					:title     => title)
-				tab.style = {
-					:border    => :unicode, 
-					:alignment => :center}
-				tab
+				super(u:u, y:y)
+				@table = :calendar
+				@cols  = "*"
+				@where = {year:year}
 			end
 			def title
 				"#{user}: #{year}"
 			end
-			def parse_stars(day)
-				day.to_i == 0 ?
-					".." : ("*" * day.to_i).ljust(2, ".")
+			def headings
+				["Day", "Stars"]
 			end
-			def stars
-				@stars ||= db.select(t:"calendar", where:{year:year})
+			def rows
+				@rows ||= data.map{|d| [d[1], parse_stars(d[2])]}
+			end
+			def parse_stars(day)
+				day.to_i == 0 ? ".." : ("*" * day.to_i).ljust(2, ".")
 			end
 		end
 	end
 end
-#AocCli::Tables::Calendar.new(u: "google", y: 2019).print

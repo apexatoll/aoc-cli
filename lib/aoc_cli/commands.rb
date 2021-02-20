@@ -7,33 +7,34 @@ module AocCli
 				@user, @key = args[:user], args[:key]
 			end
 			def exec
-				Files::Cookie.new(u:user).store(key:key)
+				Files::Config::Cookie.store(user:user, key:key)
 				self
 			end
 			def respond
 				puts "Key added successfully"
 			end
 			def defaults
-				{user:Files::Config.new.def_acc}
+				{ user:Prefs.default_alias }
 			end
 		end
 		class YearInit
-			attr_reader :user, :year
+			attr_reader :user, :year, :git
 			def initialize(args)
 				args = defaults.merge(args).compact
-				@user, @year = args[:user], args[:year]
+				@user, @year, @git = args[:user], args[:year], args[:git]
 			end
 			def exec
 				Year::Meta.new(u:user, y:year).write
-				Year::GitWrap.new.init
-				Year::Progress.new(u:user, y:year).write.db
+				Year::Progress.new(u:user, y:year).write.init_calendar_db
+				Year::GitWrap.new if git
 				self
 			end
 			def respond
 				puts "Year #{year} initialised"
 			end
 			def defaults
-				{ user:Files::Config.new.default_alias }
+				{ user:Prefs.default_alias,
+				   git:Prefs.bool(key:"init_git") }
 			end
 		end
 		class DayInit
@@ -45,18 +46,13 @@ module AocCli
 				@day  = args[:day]
 			end
 			def exec
-				Day::Init
-					.new(u:user, y:year, d:day)
-					.mkdir
-					.meta
-				Day::Pages
-					.new(u:user, y:year, d:day)
-					.write
+				Day::Init.new(u:user, y:year, d:day).mkdir.meta
+				Day::Pages.new(u:user, y:year, d:day).load
 				self
 			end
 			def defaults
-				{user:Metafile.get(:user), 
-				 year:Metafile.get(:year)}
+				{ user:Metafile.get(:user), 
+				  year:Metafile.get(:year) }
 			end
 			def respond
 				puts "Day #{day} initialised"
@@ -98,71 +94,48 @@ module AocCli
 				self
 			end
 			def defaults
-				{year:Metafile.get(:year),
-				 day:Metafile.get(:day),
-				 browser:Files::Config
-					.new.get_bool(key:"browser")}
+				{ year:Metafile.get(:year),
+				  day:Metafile.get(:day),
+				  browser:Prefs.bool(key:"reddit_in_browser") }
 			end
 		end
-		class DefaultUser
+		class DefaultAlias
 			attr_reader :user, :mode
 			def initialize(args)
 				@user = args[:user]
 				@mode = user.nil? ? :get : :set
 			end
 			def exec
-				case mode
-				when :get then get_default
-				when :set then set_default end
+				set if mode == :set && alias_valid
 				self
 			end
-			def get_default
-				puts "Default alias: #{Files::Config.new.default_alias.yellow}"
-				#user = Files::Config.new.default_alias
-				#puts user ? 
-					#"Default alias: #{Validate.user(user).yellow}" : 
-					#"No keys are stored!"
-			end
-			def set_default
-				Files::Config.new.mod_line(
-					key:"default", 
-					val:Validate.user(user))
-				puts "Default account succesfully changed to "\
-					 "#{user.yellow}"
-			end
-		end
-		class DefaultReddit
-			attr_reader :value, :mode
-			def initialize(args)
-				@value = args[:value]
-				@mode = value.nil? ? :get : :set
-			end
-			def exec
+			def respond
 				case mode
-				when :get then get_default
-				when :set then set_default
-				end
+				when :get then current
+				when :set then update end
 			end
-			def get_default
-				puts "Always open Reddit in browser? "\
-					 "#{Files::Config.new
-						.get_bool(key:"browser")
-						.to_s.yellow}"
+			private
+			def set
+				Files::Config::Tools
+					.mod_line(key:"default", val:Validate.user(user)) 
 			end
-			def set_default
-				Files::Config.new.mod_line(
-					key:"browser", val:value)
-				puts "Reddit browser setting changed to "\
-					 "#{value.yellow}"
+			def current
+				puts <<~aliases
+				Default alias: #{Prefs.default_alias.yellow}
+				All aliases: #{Prefs.list_aliases.map{|a| a.blue}
+					.join(", ")}
+				aliases
+			end
+			def alias_valid
+				Validate.key(Files::Config::Cookie.key(user:user))
+			end
+			def update
+				puts "Default alias changed to: #{user.yellow}"
 			end
 		end
 		class Refresh
-			attr_reader :dir
-			def initialize(args)
-				@dir = Metafile.type
-			end
 			def exec
-				case dir
+				case Metafile.type
 				when :DAY  then Day.refresh
 				when :ROOT then Year.refresh end
 				self
@@ -178,8 +151,7 @@ module AocCli
 				@part = args[:part]
 			end
 			def exec
-				Tables::Attempts
-					.new(u:user, y:year, d:day, p:part).show
+				Tables::Attempts.new(u:user, y:year, d:day, p:part).print
 				self
 			end
 			def defaults
@@ -216,9 +188,7 @@ module AocCli
 				@year = Validate.year(args[:year])
 			end
 			def exec
-				Tables::Calendar
-					.new(u:user, y:year)
-					.print
+				Tables::Calendar.new(u:user, y:year).print
 			end
 			def defaults
 				{ user:Metafile.get(:user),
@@ -238,11 +208,22 @@ module AocCli
 				end
 			end
 			def exec
-				system("cat #{path} | less")
-				puts
+				Prefs.bool(key:"calendar_file") ?
+					system("cat #{path} | less") :
+					puts("You have disabled calendar files")
 			end
 			def defaults
 				{year:Metafile.get(:year)}
+			end
+		end
+		class GenerateConfig
+			def initialize(args) end
+			def exec
+				Files::Config::Example.write
+				self
+			end
+			def respond
+				puts "Default config written to #{Paths::Config.path.blue}"
 			end
 		end
 	end

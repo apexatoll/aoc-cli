@@ -5,15 +5,15 @@ module AocCli
 				ARGV.size > 0 ? 
 					run(opts:Opts.new.parse_args) : 
 					puts(Help.print)
-				#rescue StandardError => e
-					#abort e.message
+				rescue StandardError => e
+					abort e.message
 			end
 			def run(opts:)
-				cmd = Object
-					.const_get("AocCli::Commands::#{opts.cmd}")
+				cmd = Commands.const_get(Validate.cmd(opts.cmd))
 					.new(opts.args)
 					.exec
-				cmd.respond if cmd.class.instance_methods.include?(:respond)
+				cmd.respond if cmd.class
+					.instance_methods.include?(:respond)
 			end
 		end
 		class Help
@@ -31,27 +31,27 @@ module AocCli
 					case ARGV.shift
 					when "-a", "--attempts"
 						@cmd = :AttemptsTable
-					when "-b", "--browser"
-						args[:browser] = true
 					when "-B", "--browser"
-						@cmd = :DefaultReddit
-						args[:value] = ARGV.shift
-					when "-c", "--calendar"
+						@cmd = :OpenReddit
+						args[:browser] = true
+					when "-c", "--simple-cal"
 						@cmd = :CalendarTable
-					when "-C", "--calendar"
+					when "-C", "--fancy-cal"
 						@cmd = :PrintCal
 					when "-d", "--init-day"
 						@cmd = :DayInit
 						args[:day]  = Validate.day(ARGV.shift.to_i)
 					when "-D", "--day"
-						args[:day]  = Validate.day(ARGV.shift.to_i)
+						args[:day]  = ARGV.shift.to_i
+					when "-G", "--gen-config"
+						@cmd = :GenerateConfig
 					when "-h", "--help"
 						exit Help.print
 					when "-k", "--key"
 						@cmd = :KeyStore
 						args[:key]  = Validate.set_key(ARGV.shift)
 					when "-p", "--part"
-						args[:part] = Validate.part(ARGV.shift.to_i)
+						args[:part] = ARGV.shift.to_i
 					when "-r", "--refresh"
 						@cmd = :Refresh
 					when "-R", "--reddit"
@@ -63,22 +63,25 @@ module AocCli
 						@cmd = :StatsTable
 					when "-u", "--user"
 						args[:user] = ARGV.shift
-					when "-U", "--default-user"
-						@cmd = :DefaultUser
+					when "-U", "--default"
+						@cmd = :DefaultAlias
 						args[:user] = ARGV.shift
 					when "-y", "--init-year"
 						@cmd = :YearInit
 						args[:year] = Validate.year(ARGV.shift.to_i)
 					when "-Y", "--year"
-						args[:year] = Validate.year(ARGV.shift.to_i)
+						args[:year] = ARGV.shift.to_i
 					else raise E::FlagInv
 					end 
 				end
-				raise E::NoCmd if cmd.nil?
 				self
 			end
 		end
 		class Validate
+			def self.cmd(cmd)
+				raise E::CmdNil if cmd.nil?
+				cmd
+			end
 			def self.user(user)
 				raise E::UserNil if user.nil?
 				raise E::UserInv.new(user) unless user_in_config?(user)
@@ -136,12 +139,16 @@ module AocCli
 					Metafile.get(:year) != year.to_s
 				dir
 			end
+			def self.no_config
+				raise E::ConfigExist if File.exist?(Paths::Config.path)
+				Paths::Config.path
+			end
 			private
 			def self.valid_key?(key)
 				/session=(?:[a-f0-9]){96}/.match?(key)
 			end
 			def self.user_in_config?(user)
-				Files::Config.new.is_set?(key:"cookie=>#{user}")
+				Files::Config::Tools.is_set?(key:"cookie=>#{user}")
 			end
 		end
 	end 
