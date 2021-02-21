@@ -14,7 +14,7 @@ module AocCli
 				puts "Key added successfully"
 			end
 			def defaults
-				{ user:Prefs.default_alias }
+				{ user:"main" }
 			end
 		end
 		class YearInit
@@ -134,6 +134,8 @@ module AocCli
 			end
 		end
 		class Refresh
+			def initialize(args)
+			end
 			def exec
 				case Metafile.type
 				when :DAY  then Day.refresh

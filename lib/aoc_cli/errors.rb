@@ -171,7 +171,7 @@ module AocCli
 			def message
 				<<~error
 				#{ERROR}: Invalid key
-				Double check your session key. It should start with "session=" and be 96 characters (a-f, 0-9)
+				Double check your session key. It should start with "session=" 
 				error
 			end
 		end

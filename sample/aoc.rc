@@ -1,0 +1,21 @@
+//aoc-cli example config
+//See the github repo for more information on configuring aoc-cli
+//https://github.com/apexatoll/aoc-cli
+
+[General]
+//Print table in unicode rather than ascii
+unicode_tables=>true
+//Open Reddit in browser rather than use a Reddit CLI
+reddit_in_browser=>false
+
+[Initialise Year]
+//Create a calendar file 
+calendar_file=>true
+//Initialise git repo on year initialisation
+init_git=>false
+//Add calendar and puzzle files to gitignore
+ignore_md_files=>true
+//Add .meta files to gitignore
+ignore_meta_files=>true
+//Include leaderboard stats in calendar file
+lb_in_calendar=>true

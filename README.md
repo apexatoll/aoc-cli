@@ -4,8 +4,16 @@
 
 A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
-## New to 1.0.0
-
+## New to 0.1.0
+- Calendar progress tables
+- Quick-print calendar from any directory
+- Configuration expansion
+	- Auto-generate config file
+	- Turn on/off creation of calendar file
+	- Turn on/off leaderboard stats in calendar file
+	- Basic git integration
+- Better key validation
+- Better default alias handling
 
 ## Main Features
 - Download puzzles as markdown and raw inputs directly from the command line
@@ -71,13 +79,13 @@ aoc -k $your_key
 
 Keys can also be stored manually in your config file using the format:
 
-```bash
+```
 cookie=>$alias=>$key
 ```
 
 For example:
 
-```bash
+```
 cookie=>account2=>session=123abc
 ```
 
@@ -245,18 +253,43 @@ To view the stats for the year as a whole run the same command from the year dir
 
 ### Progress
 
-To view your progress in the year you can run the command 
+To view your progress in the year you can run the commands
 
+```bash
+aoc -c (--simple-cal)
+```
+
+This will print a simple table showing your stars for each day. This is created on year initialisation and updated as you complete puzzles
+
+If you have calendar_file set to true in your configuration (default setting), you can quickly print your calendar file by using the command 
+
+```bash
+aoc -C (--fancy-cal)
+```
+
+![calendars](https://github.com/apexatoll/aoc-files/blob/master/calendars.gif)
 
 ## Reddit Integration
 
+![reddit](https://github.com/apexatoll/aoc-files/blob/master/reddit.gif)
+
 You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
 
-If one is installed, aoc-cli will default to opening the thread within a reddit-cli such as rtv [](link) or [](link). 
+If one is installed, aoc-cli will default to opening the thread within a
+reddit-cli such as [rtv](https://github.com/michael-lazar/rtv) or [ttrv](https://github.com/tildeclub/ttrv). 
 
 If one isn't found however, the thread will be opened within your default browser.
 
+To open the reddit megathread in your browser, regardless of whether you have a CLI installed, run `aoc -B`
 
+## Git Integration
+
+aoc-cli currently supports basic integration with git. At present aoc-cli can:
+- Initialise a git directory on year initialisation
+- Create a gitignore file
+	- Configurable to add markdown and metafiles by default
+
+These settings can be configured in your config file (see configuration)
 
 ## Vim Integration
 
@@ -274,51 +307,60 @@ Do not send endless attempts - only send when you are comfortable with your answ
  
 ## Configuration
 
-aoc-cli can be configured using a file in `~/.config/aoc-cli/aoc.rc`
+aoc-cli can be configured using a the config file at `~/.config/aoc-cli/aoc.rc`
 
 To generate an example configuration file you can run `aoc -G` or `aoc --gen-config`. (Note this will throw an error if `~/.config/aoc-cli/aoc.rc` already exists)
 
-aoc-cli config settings are added in the format 
+There is also an example aoc.rc file in the `sample` directory of this repo
 
-```bash
+Settings are added to the aoc-cli config file in the format
+
+```
 setting_name=>setting
 ```
 
+Lines can be commented out of the rc file by prefixing with `//`
+
 ### List of Configurable Options
-| flag          | Options    | Description                                        | Default |
-|---------------|------------|----------------------------------------------------|---------|
-| calendar_file | true/false | Create a markdown calendar file                    | true    |
-| init_git      | true/false | Initialise a git repository on year initialisation | false   |
+
+| Flag              | Type   | Description                                                   | Default |
+|-------------------|--------|---------------------------------------------------------------|---------|
+| calendar_file     | bool   | Write calendar as a markdown file                             | true    |
+| default           | string | Default alias                                                 | main    |
+| ignore_md_files   | bool   | Auto add md files (calendar and puzzles) to gitignore         | true    |
+| ignore_meta_files | bool   | Auto add meta files to gitignore                              | true    |
+| init_git          | bool   | Initialise a git repository on year initialisation            | false   |
+| lb_in_calendar    | bool   | Include leaderboard stats in calendar file                    | true    |
+| reddit_in_browser | bool   | Always open reddit links in browser                           | false   |
+| unicode_tables    | bool   | Display tables in unicode format. Otherwise ascii format used | true    |
 
 
 ## All Flags
 
-| Flag Short | Flag Long      | Action                                    |
-|------------|----------------|-------------------------------------------|
-| `-a`       | `--attempts`   | Print attempts table                      |
-| `-b`       | `--in-browser` | Open reddit in browser                    |
-| `-d`       | `--init-day`   | Initialise day subdirectory               |
-| `-h`       | `--help`       | Show help screen                          |
-| `-k`       | `--key`        | Store session key                         |
-| `-p`       | `--part`       | Specify part for aoc command              |
-| `-r`       | `--refresh`    | Refresh calendar (year dir)               |
-|            |                | Refresh puzzle (day subdir)               |
-| `-s`       | `--solve`      | Solve puzzle                              |
-| `-u`       | `--user`       | Specify alias for aoc command             |
-| `-y`       | `--init-year`  | Initialise year directory                 |
-| `-B`       | `--browser`    | View reddit browser setting (no argument) |
-|            |                | Set reddit browser (with argument)        |
-| `-D`       | `--day`        | Specify day for aoc command               |
-| `-R`       | `--reddit`     | Open solution megathread                  |
-| `-S`       | `--stats`      | Print stats table                         |
-| `-U`       | `--default`    | View default alias (no argument)          |
-|            |                | Set default alias (with argument)         |
-| `-Y`       | `--year`       | Specify year for aoc command              |
+| Flag Short | Flag Long      | Action                                               |
+|------------|----------------|------------------------------------------------------|
+| `-a`       | `--attempts`   | Print attempts table                                 |
+| `-B`       | `--browser`    | View reddit megathread in your browser               |
+| `-c`       | `--simple-cal` | Print simplified calendar progress                   |
+| `-C`       | `--fancy-cal`  | Print styled calendar (requires calendar_file=>true) |
+| `-d`       | `--init-day`   | Initialise day subdirectory                          |
+| `-D`       | `--day`        | Manual day specification for aoc command             |
+| `-G`       | `--gen-config` | Write example config file                            |
+| `-h`       | `--help`       | Show help screen                                     |
+| `-k`       | `--key`        | Store session key                                    |
+| `-p`       | `--part`       | Manual part specification for aoc command            |
+| `-r`       | `--refresh`    | Refresh calendar (year dir)                          |
+|            |                | Refresh puzzle (day subdir)                          |
+| `-R`       | `--reddit`     | Open solution megathread                             |
+| `-s`       | `--solve`      | Solve puzzle                                         |
+| `-S`       | `--stats`      | Print stats table                                    |
+| `-u`       | `--user`       | Specify alias for aoc command                        |
+| `-U`       | `--default`    | View default alias, list all aliases (no argument)   |
+| `-y`       | `--init-year`  | Initialise year directory                            |
+| `-Y`       | `--year`       | Specify year for aoc command                         |
 
 ## Acknowledgments
 
 I am in no way affiliated with AoC, but I would like to take this opportunity to thank the creator Eric Wastl for the taking the time and great effort to produce these fantastic puzzles!
-
-Please note that requests are hard-coded to be throttled to a maximum of 1 HTTP request per 5 seconds. This is to ensure that the AoC server is not overloaded with requests. Please do not try and change this - it is to protect the server!
 
 Please let me know if there are any bugs or issues with the cli within the issues section - I will try to address them as quickly as I can

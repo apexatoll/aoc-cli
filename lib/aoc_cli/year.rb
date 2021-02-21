@@ -101,10 +101,13 @@ module AocCli
 			def ignore_md?
 				Prefs.bool(key:"ignore_md_files")
 			end
+			def ignore_meta?
+				Prefs.bool(key:"ignore_meta_files")
+			end
 			def ignore
 				<<~ignore
-				.meta
-				**/.meta #{"\n*.md\n**/*.md" if ignore_md?}
+				#{".meta\n**/.meta" if ignore_meta?}#{
+				  "\n*.md\n**/*.md" if ignore_md?}
 				ignore
 			end
 		end

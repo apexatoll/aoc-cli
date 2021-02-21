@@ -89,7 +89,7 @@ module AocCli
 			end
 			def self.set_user(user)
 				raise E::UserNil if user.nil?
-				raise E::UserDup if user_in_config?(user)
+				raise E::UserDup.new(user) if user_in_config?(user)
 				user
 			end
 			def self.year(year)
@@ -112,8 +112,8 @@ module AocCli
 			end
 			def self.set_key(key)
 				raise E::KeyNil if key.nil?
-				raise E::KeyDup.new(key) if Files::Config
-					.new.is_set?(val:key)
+				raise E::KeyDup.new(key) if Files::Config::Tools
+					.is_set?(val:"#{key}(\b|$)")
 				raise E::KeyInv unless valid_key?(key)
 				key
 			end

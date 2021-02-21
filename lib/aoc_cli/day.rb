@@ -96,7 +96,14 @@ module AocCli
 				def init_stats
 					Database::Stats::Init
 						.new(d:day, p:part)
-						.init if part < 3
+						.init if part < 3 && !stats_exist?
+				end
+				def stats_exist?
+					Database::Query
+						.new(path:Paths::Database.cfg(user))
+						.select(t:"stats", 
+								where:{year:year, day:day, part:part})
+						.count > 0
 				end
 			end
 			class Input < Request

@@ -44,16 +44,17 @@ module AocCli
 				end
 				def self.bool(key:)
 					is_set?(key:key) ?  
-						get_bool(key:key) : defaults[key]
+						get_bool(key:key) : defaults[key.to_sym]
 				end
 				def self.string(key:)
 					is_set?(key:key) ? 
-						get_line(key:key) : defaults[key]
+						get_line(key:key) : defaults[key.to_sym]
 				end
 				private
 				def self.defaults
 					{ calendar_file:true,
 					  ignore_md_files:true,
+					  ignore_meta_files:true,
 					  init_git:false,
 					  lb_in_calendar:true,
 					  reddit_in_browser:false,
@@ -90,14 +91,14 @@ module AocCli
 					[Initialise Year]
 					//Create a calendar file 
 					calendar_file=>true
-					//Initialise a git repo
+					//Initialise git repo on year initialisation
 					init_git=>false
 					//Add calendar and puzzle files to gitignore
 					ignore_md_files=>true
 					//Add .meta files to gitignore
 					ignore_meta_files=>true
 					//Include leaderboard stats in calendar file
-					lb_stats_in_cal=>true
+					lb_in_calendar=>true
 					file
 				end
 			end
