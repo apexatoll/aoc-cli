@@ -4,7 +4,7 @@
 
 A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
-## New to 0.1.0
+## New to 0.2.0
 - Calendar progress tables
 - Quick-print calendar from any directory
 - Configuration expansion
@@ -14,6 +14,7 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 	- Basic git integration
 - Better key validation
 - Better default alias handling
+- General bug fixes
 
 ## Main Features
 - Download puzzles as markdown and raw inputs directly from the command line
@@ -124,7 +125,7 @@ aoc -U ruby
 ```
 Alternatively you could add the following line to your config file
 
-```bash
+```
 default=>ruby
 ```
 
@@ -149,7 +150,7 @@ aoc-cli will intialise within your current working directory, so first create a 
 mkdir 2020
 cd 2020
 ```
-- Initialise the year directory using the command 
+Initialise the year directory using the command 
 
 ```bash
 aoc -y 2020
@@ -165,6 +166,7 @@ This command will create necessary metafiles, download the year calendar and fil
 
 By default, your stats in the leaderboard are also added to this file. This can be changed - see Configuration
 
+aoc-cli can also intialise a git directory on year intialisation (turned off by default)
 
 ## Initialising a Day
 
@@ -209,18 +211,20 @@ If you have sent multiple incorrect attempts AoC will ask you to wait before try
 
 ## Tables
 
-aoc-cli uses a local database to store information about your progress with puzzles. There are two main databases of use:
+aoc-cli uses a local database to store information about your progress with puzzles. This tracks data on:
 
 1. Your attempts
 2. Your stats
 3. Your progress in the year
+
+This data can be visualised in terminal-friendly tables
 
 ### Attempts
 
 Previous attempts for a puzzle can be viewed from the day directory by the use of the command
 
 ```bash
-aoc -a 
+aoc -a (--attempts)
 ```
 
 To specify which attempts to show from outside the day subdirectory you can use the command
@@ -241,13 +245,15 @@ aoc-cli also tracks data related to your performance in puzzles, namely:
 - The time taken to complete a puzzle
 - How many attempts it took
 
-To view this, run the following command from the day subdirectory
+To view stats on a specific puzzle run the following command from the day subdirectory
 
 ```bash
-aoc -S 
+aoc -S (--stats)
 ```
 
-To view the stats for the year as a whole run the same command from the year directory. Flags can be also be added manually for showing data for other users, years and days in a similar way to that of the attempts table
+To view the stats for the year as a whole run the same command from the year directory. 
+
+Flags can be also be added manually for showing data for other users, years and days in a similar way to that of the attempts table
 
 ![](https://github.com/apexatoll/aoc-files/blob/master/stats.png)
 
@@ -273,14 +279,14 @@ aoc -C (--fancy-cal)
 
 ![reddit](https://github.com/apexatoll/aoc-files/blob/master/reddit.gif)
 
-You can run the command `aoc -R` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
+You can run the command `aoc -R (--reddit)` from the day subdirectory, or by manual flags to open the solution megathread for the specified day in Reddit
 
 If one is installed, aoc-cli will default to opening the thread within a
 reddit-cli such as [rtv](https://github.com/michael-lazar/rtv) or [ttrv](https://github.com/tildeclub/ttrv). 
 
 If one isn't found however, the thread will be opened within your default browser.
 
-To open the reddit megathread in your browser, regardless of whether you have a CLI installed, run `aoc -B`
+To open the reddit megathread in your browser, regardless of whether you have a CLI installed, run `aoc -B (--browser)`
 
 ## Git Integration
 
@@ -302,8 +308,6 @@ autocmd filetype ruby nmap <silent><leader>ac :! aoc -s $(ruby %)<CR>
 ```
 
 Executing leader + ac would then run your program and send the answer to the server for verification (as long as your program only outputs an answer and no other text). 
-
-Do not send endless attempts - only send when you are comfortable with your answer!
  
 ## Configuration
 

@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
 	spec.require_paths = ["lib"]
 	spec.add_dependency("colorize")
 	spec.add_dependency("curb")
+	spec.add_dependency("git")
 	spec.add_dependency("pandoc-ruby")
 	spec.add_dependency("sqlite3")
 	spec.add_dependency("terminal-table")
-	#spec.add_dependency("ruby-git")
 end

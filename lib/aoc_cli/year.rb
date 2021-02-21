@@ -1,7 +1,7 @@
 module AocCli
 	module Year
 		def self.refresh
-			puts "- Updating calendar...".yellow
+			puts "- Updating calendar...".blue
 			Year::Meta.new.write
 			Year::Progress.new.write
 		end

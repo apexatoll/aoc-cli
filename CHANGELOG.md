@@ -4,7 +4,7 @@
 	- Add user-agent
 
 ## 20-02-21 
-###1.0.0
+###0.2.0
 	- Add calendar tables
 		- Star progress now based off this database rather than meta json
 	- Add cat of calendar from any directory

@@ -11,19 +11,19 @@ module AocCli
 				@day  = d
 				@page = p
 				@base = "https://adventofcode.com/#{year}"
-				#@ua   = "github.com/apexatoll/aoc-cli"
+				@ua   = "github.com/apexatoll/aoc-cli"
 			end
 			protected
 			def get
 				Curl.get(url) do |h| 
 					h.headers['Cookie']     = cookie
-					#h.headers['User-Agent'] = ua
+					h.headers['User-Agent'] = ua
 				end.body
 			end
 			def post(data:)
 				Curl.post(url, data) do |h| 
 					h.headers['Cookie']     = cookie
-					#h.headers['User-Agent'] = ua
+					h.headers['User-Agent'] = ua
 				end.body
 			end
 			private

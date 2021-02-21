@@ -61,10 +61,11 @@ module AocCli
 					.strftime("%H:%M - %d/%m/%y")
 			end
 			def parse_hint(row)
-				row[2] == 1 ? "low" : row[3] == 1 ? "high" : "-"
+				row[3] == 1 ? "low" : 
+					row[2] == 1 ? "high" : "-"
 			end
 			def nil_message
-				"You have not attempted this puzzle yet!"
+				"You have not attempted part #{part} yet!"
 			end
 		end
 		module Stats

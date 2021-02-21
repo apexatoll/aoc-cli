@@ -116,7 +116,7 @@ module AocCli
 			end
 		end
 		def self.refresh(files:[:Input, :Puzzle])
-			puts "- Updating puzzle...".yellow
+			puts "- Updating puzzle...".blue
 			Init.new.meta
 			Pages.new(f:files, use_cache:false).load
 		end

@@ -3,8 +3,7 @@ module AocCli
 		class Query
 			def initialize
 				ARGV.size > 0 ? 
-					run(opts:Opts.new.parse_args) : 
-					puts(Help.print)
+					run(opts:Opts.new.parse_args) : Help.print
 				rescue StandardError => e
 					abort e.message
 			end

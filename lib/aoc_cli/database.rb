@@ -47,13 +47,13 @@ module AocCli
 				db.insert(t:"attempts", val:data << 1 << 0 << 0)
 				self
 			end
-			def incorrect(high:, low:)
+			def incorrect(low:, high:)
 				db.insert(t:"attempts", 
-					val:data << 0 << parse_hint(high:high, low:low))
+					val:data << 0 << parse_hint(low:low, high:high))
 				self
 			end
-			def parse_hint(high:, low:)
-				[ high ? 1 : 0, low ? 1 : 0 ]
+			def parse_hint(low:, high:)
+				[ low ? 1 : 0, high ? 1 : 0 ]
 			end
 			def data
 				[ "'#{Time.now}'",

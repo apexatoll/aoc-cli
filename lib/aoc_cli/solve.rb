@@ -67,8 +67,9 @@ module AocCli
 					puts <<~response
 					#{"Incorrect".red.bold}: You guessed - #{attempt
 						.answer.to_s.red} #{
-					"\nThis answer is too high" if high
-					"\nThis answer is too low"  if low }
+					high ? "(too high)" : 
+					low  ? "(too low)"  : ""}
+					#{"Please wait".yellow} #{wait_time} before answering again
 					response
 					self
 				end
@@ -77,6 +78,10 @@ module AocCli
 				end
 				def low
 					/too low/.match?(attempt.raw)
+				end
+				def wait_time
+					attempt.raw.scan(/(?:(one minute|\d+ minutes))/)
+						.first.first.to_s
 				end
 			end
 			class Wait < Response
