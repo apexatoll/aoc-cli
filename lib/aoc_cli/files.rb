@@ -53,6 +53,7 @@ module AocCli
 				private
 				def self.defaults
 					{ calendar_file:true,
+					  day_dir_prefix:"",
 					  ignore_md_files:true,
 					  ignore_meta_files:true,
 					  init_git:false,

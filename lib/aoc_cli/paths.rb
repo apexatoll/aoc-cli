@@ -37,6 +37,9 @@ module AocCli
 			def create_cache
 				FileUtils.mkdir_p(cache_dir) unless Dir.exist?(cache_dir)
 			end
+			def prefix
+				Prefs.string(key:"day_dir_prefix")
+			end
 			def filename(f:)
 				case f.to_sym
 				when :Input  then "input"
@@ -48,7 +51,9 @@ module AocCli
 				Metafile.type == :DAY 
 			end
 			def day_dir
-				day.to_i < 10 ? "0#{day}" : day.to_s
+				day.to_i < 10 ? 
+					"#{prefix}0#{day}" : 
+					"#{prefix}#{day}"
 			end
 			def local_dir
 				in_day? ? "." : "#{day_dir}"

@@ -330,6 +330,7 @@ Lines can be commented out of the rc file by prefixing with `//`
 | Flag              | Type   | Description                                                   | Default |
 |-------------------|--------|---------------------------------------------------------------|---------|
 | calendar_file     | bool   | Write calendar as a markdown file                             | true    |
+| day_dir_prefix    | string | Add prefix to day subdirectory nam                            | nil     |
 | default           | string | Default alias                                                 | main    |
 | ignore_md_files   | bool   | Auto add md files (calendar and puzzles) to gitignore         | true    |
 | ignore_meta_files | bool   | Auto add meta files to gitignore                              | true    |
