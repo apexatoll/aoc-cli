@@ -4,6 +4,10 @@
 
 A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
+## New to 0.2.1 
+- Day subdir prefix functionality
+- Duplicate incorrect attempts prevented
+
 ## New to 0.2.0
 - Calendar progress tables
 - Quick-print calendar from any directory
