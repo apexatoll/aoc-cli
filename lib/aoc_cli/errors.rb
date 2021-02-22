@@ -182,5 +182,94 @@ module AocCli
 				error
 			end
 		end
+		class AtmptDup < StandardError
+			attr_reader :answer
+			def initialize(answer)
+				@answer = answer
+			end
+			def message
+				<<~error
+				#{ERROR}: You have already tried #{answer.red}
+				To see previous attempts run #{"aoc -a".yellow}
+				error
+			end
+		end
 	end 
+	class Validate
+		E = Errors
+		def self.cmd(cmd)
+			raise E::CmdNil if cmd.nil?
+			cmd
+		end
+		def self.user(user)
+			raise E::UserNil if user.nil?
+			raise E::UserInv.new(user) unless user_in_config?(user)
+			user
+		end
+		def self.set_user(user)
+			raise E::UserNil if user.nil?
+			raise E::UserDup.new(user) if user_in_config?(user)
+			user
+		end
+		def self.year(year)
+			raise E::YearNil if year.nil?
+			raise E::YearInv.new(year) if year.to_i < 2015 ||
+				year.to_i > 2020
+			year
+		end
+		def self.day(day)
+			raise E::DayNil if day.nil? || day == 0
+			raise E::DayInv.new(day) if day.to_i < 1 ||
+				day.to_i > 25
+			day
+		end
+		def self.part(part)
+			raise E::PartNil  if part.nil?
+			raise E::PuzzComp if part.to_i == 3
+			raise E::PartInv  if part.to_i < 1 || part.to_i > 2
+			part
+		end
+		def self.set_key(key)
+			raise E::KeyNil if key.nil?
+			raise E::KeyDup.new(key) if Files::Config::Tools
+				.is_set?(val:"#{key}(\b|$)")
+			raise E::KeyInv unless valid_key?(key)
+			key
+		end
+		def self.key(key)
+			raise E::KeyNil if key.nil?
+			raise E::KeyInv unless valid_key?(key)
+			key
+		end
+		def self.ans(attempt:, ans:)
+			raise E::AnsNil if ans.nil?
+			raise E::AtmptDup.new(ans) if Database::Attempt
+				.new(attempt:attempt).duplicate?(ans:ans)
+			ans
+		end
+		def self.day_dir(day)
+			raise E::DayExist.new(day) if Dir.exist?(day)
+			day
+		end
+		def self.init(dir)
+			raise E::NotInit unless File.exist?("#{dir}/.meta")
+			dir
+		end
+		def self.not_init(dir:, year:)
+			raise E::AlrInit if File.exist?("#{dir}/.meta") && 
+				Metafile.get(:year) != year.to_s
+			dir
+		end
+		def self.no_config
+			raise E::ConfigExist if File.exist?(Paths::Config.path)
+			Paths::Config.path
+		end
+		private
+		def self.valid_key?(key)
+			/session=(?:[a-f0-9]){96}/.match?(key)
+		end
+		def self.user_in_config?(user)
+			Files::Config::Tools.is_set?(key:"cookie=>#{user}")
+		end
+	end
 end

@@ -1,5 +1,4 @@
 require 'colorize'
-require 'sqlite3'
 
 require_relative 'aoc_cli/errors'
 require_relative 'aoc_cli/interface'
@@ -17,6 +16,4 @@ require_relative 'aoc_cli/tables'
 module AocCli
 	Metafile = AocCli::Files::Metafile
 	Prefs    = AocCli::Files::Config::Prefs
-	Validate = AocCli::Interface::Validate
-	E = AocCli::Errors
 end

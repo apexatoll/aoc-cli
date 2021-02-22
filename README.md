@@ -74,7 +74,7 @@ aoc -k $your_key
 
 ```
 
-- AoC-cli stores this key under the alias 'main' if no custom alias is specified
+- aoc-cli stores this key under the alias 'main' if no custom alias is specified
 - To store the key under a different alias use the `-u` or `--user` flags followed by the desired alias.
 - Session keys are stored in the aoc config file located at `~/.config/aoc-cli/aoc.rc`.
 
@@ -94,7 +94,7 @@ cookie=>account2=>session=123abc
 
 aoc-cli allows for multiple keys to be stored within the config file. 
 
-To see which alias is currently deafult run `aoc -U` or `aoc --default`
+To see which alias is currently default run `aoc -U` or `aoc --default`
 
 - You can update the default alias by running 
 
@@ -138,7 +138,6 @@ There are two types of directories
 	- These contain your calendar and all day subdirectories
 2. Day subdirectories
 	- These contain the puzzles, your input and your code
-
 
 ## Initialising the Year
 
@@ -187,6 +186,7 @@ This command performs the following actions
 
 All puzzles and inputs are cached in aoc-cli on a per-user basis. This means that if you have previously initialised this day under the same alias before, your puzzle and input will be transferred from the cache locally rather than downloading from the aoc server.
 
+NB: if you wish to add a prefix to your day subdirectory names, you can add `day_dir_prefix=>$prefix` to your config file
 
 ## Solving Puzzles
 
@@ -196,15 +196,18 @@ From the day subdirectory you can attempt to solve puzzles by running the comman
 aoc -s $answer
 ```
 
-You will then receive one of three responses
+You will then receive one of four responses
 
 1. The answer is correct
 2. The answer is not correct
-3. You have time to wait before submitting an answer
+3. You have already tried this incorrect answer
+4. You have time to wait before submitting an answer
 
 If your answer is correct, aoc-cli will automatically update the puzzle instructions and your calendar file. Additionally aoc-cli will calculate how long and how many attempts it took to solve the puzzle (see the Tables section)
 
 Incorrect attempts will be logged along with any hint as to whether your answer was too high or too low. 
+
+Trying to answer with the same incorrect answer for the second time will throw an error
 
 If you have sent multiple incorrect attempts AoC will ask you to wait before trying again - be patient!
 
@@ -299,7 +302,7 @@ These settings can be configured in your config file (see configuration)
 
 ## Vim Integration
 
-if you use vim you may wish to set a keybinding to automatically run your code and submit it for validation once you have solved a puzzle.
+If you use vim you may wish to set a keybinding to automatically run your code and submit it for validation once you have solved a puzzle.
 
 Using Ruby as an example, you could add the following line to your .vimrc:
 
@@ -311,7 +314,7 @@ Executing leader + ac would then run your program and send the answer to the ser
  
 ## Configuration
 
-aoc-cli can be configured using a the config file at `~/.config/aoc-cli/aoc.rc`
+aoc-cli can be configured using the config file at `~/.config/aoc-cli/aoc.rc`
 
 To generate an example configuration file you can run `aoc -G` or `aoc --gen-config`. (Note this will throw an error if `~/.config/aoc-cli/aoc.rc` already exists)
 

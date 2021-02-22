@@ -18,3 +18,8 @@
 		- Turn on/off leaderboard stats in calendar file
 	- Git integration
 	- General refactor
+
+## 22-02-21
+### 0.2.1
+	- Add day_dir_prefix option
+	- Add functionality to prevent duplicate incorrect attempts

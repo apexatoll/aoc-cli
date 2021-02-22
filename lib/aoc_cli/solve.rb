@@ -13,7 +13,10 @@ module AocCli
 				@year   = Validate.year(y)
 				@day    = Validate.day(d)
 				@part   = Validate.part(p)
-				@answer = Validate.ans(a)
+				@answer = Validate.ans(attempt:self, ans:a)
+			end
+			def exists?
+				Database::Attempt.new(attempt:self)
 			end
 			def raw
 				@raw ||= Tools::Post.new(u:user, y:year, d:day, 
