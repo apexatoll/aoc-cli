@@ -23,3 +23,9 @@
 ### 0.2.1
 	- Add day_dir_prefix option
 	- Add functionality to prevent duplicate incorrect attempts
+
+## 22-02-21
+### 0.2.2
+	- Year refresh now creates the calendar table if it does not exist
+	- Update terminal-table version requirements
+	- Add version flag

@@ -64,6 +64,8 @@ module AocCli
 					when "-U", "--default"
 						@cmd = :DefaultAlias
 						args[:user] = ARGV.shift
+					when "-v", "--version"
+						abort "aoc-cli(#{VERSION})"
 					when "-y", "--init-year"
 						@cmd = :YearInit
 						args[:year] = Validate.year(ARGV.shift.to_i)

@@ -4,11 +4,31 @@
 
 A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
-## New to 0.2.1 
+## Main Features
+- Download puzzles as markdown and raw inputs directly from the command line
+- Submit answers for puzzles and receive feedback
+- Track progress through your calendar file which is automatically updated as you progress
+- View data about how you answer puzzles, for example your previous attempts, how long it takes to solve a puzzle successfully and how many attempts it took you
+- Inputs and puzzles are cached locally to prevent strain on AoC server
+- Automatic git initialisation
+- Hot keys to open solution megathreads in Reddit if you get stuck
+- Support for multiple AoC accounts by use of session-key aliases
+
+### Note to Existing Users
+- If you are having any issues with the calendar table, run `aoc -r` in your year directory to update and refresh your directory
+
+## Whats New
+
+### New to 0.2.2
+- Year refresh now creates the calendar table if it does not exist
+- Update terminal-table version requirements
+- Add version flag
+
+### New to 0.2.1 
 - Day subdir prefix functionality
 - Duplicate incorrect attempts prevented
 
-## New to 0.2.0
+### New to 0.2.0
 - Calendar progress tables
 - Quick-print calendar from any directory
 - Configuration expansion
@@ -19,16 +39,6 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 - Better key validation
 - Better default alias handling
 - General bug fixes
-
-## Main Features
-- Download puzzles as markdown and raw inputs directly from the command line
-- Submit answers for puzzles and receive feedback
-- Track progress through your calendar file which is automatically updated as you progress
-- View data about how you answer puzzles, for example your previous attempts, how long it takes to solve a puzzle successfully and how many attempts it took you
-- Inputs and puzzles are cached locally to prevent strain on AoC server
-- Automatic git initialisation
-- Hot keys to open solution megathreads in Reddit if you get stuck
-- Support for multiple AoC accounts by use of session-key aliases
 
 
 ## Installation

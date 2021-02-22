@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 	spec.add_dependency("git")
 	spec.add_dependency("pandoc-ruby")
 	spec.add_dependency("sqlite3")
-	spec.add_dependency("terminal-table")
+	spec.add_dependency("terminal-table", "~> 3.0.0")
 end

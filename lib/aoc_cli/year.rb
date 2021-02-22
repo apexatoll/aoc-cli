@@ -4,6 +4,7 @@ module AocCli
 			puts "- Updating calendar...".blue
 			Year::Meta.new.write
 			Year::Progress.new.write
+				.init_calendar_db
 		end
 		class Meta
 			attr_reader :user, :year, :paths

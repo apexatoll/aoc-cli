@@ -16,13 +16,16 @@ Advent of Code - cli, version #{AocCli::VERSION}
 #{title("Usage")}
 #{"    aoc".bold + " -flag".italic.yellow + " value".bold.blue}
 
+#{title("General")}
+#{flag("-v","--version")}Print version
+#{flag("-h","--help")}Print this screen
+
 #{title("Setup")}
 - Store session cookie keys to access AoC
 
 #{flag("-k","--key")}Store a session cookie to use the cli.
 #{flag("-u","--user")}Set alias for key (default: "main")
 #{flag("-U","--default")}Get/set default alias
-#{flag("-h","--help")}Print this screen
 
 #{title("Year Directory")}
 - Initialise a year directory to use aoc-cli.
