@@ -19,6 +19,9 @@ A command-line interface to interact with Advent of Code puzzles, built in Ruby.
 
 ## Whats New
 
+### New to 0.2.3
+- Bug fix for text-only answers
+
 ### New to 0.2.2
 - Year refresh now creates the calendar table if it does not exist
 - Update terminal-table version requirements

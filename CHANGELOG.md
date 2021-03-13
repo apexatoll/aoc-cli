@@ -29,3 +29,7 @@
 	- Year refresh now creates the calendar table if it does not exist
 	- Update terminal-table version requirements
 	- Add version flag
+
+## 13-03-21
+### 0.2.3
+	- SQLite Bug fix for text-only answers

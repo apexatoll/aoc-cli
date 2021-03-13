@@ -54,7 +54,7 @@ module AocCli
 			end
 			def duplicate?(ans:)
 				db.select(t:"attempts", 
-						  where:where.merge({answer:ans})).count > 0
+						  where:where.merge({answer:"'#{ans}'"})).count > 0
 			end
 			def parse_hint(low:, high:)
 				[ low ? 1 : 0, high ? 1 : 0 ]
