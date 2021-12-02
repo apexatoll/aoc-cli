@@ -48,7 +48,7 @@ module AocCli
 			def message
 				<<~error
 				#{ERROR}: Invalid year: #{year.to_s.red}
-				Advent of Code currently spans 2015 - 2020.
+				Advent of Code currently spans 2015 - 2021.
 				error
 			end
 		end
@@ -214,7 +214,7 @@ module AocCli
 		def self.year(year)
 			raise E::YearNil if year.nil?
 			raise E::YearInv.new(year) if year.to_i < 2015 ||
-				year.to_i > 2020
+				year.to_i > 2021
 			year
 		end
 		def self.day(day)
