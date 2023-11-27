@@ -21,6 +21,10 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: forwardable
+  version: '0'
+  source:
+    type: stdlib
 - name: kangaru
   version: '0.2'
   source:
