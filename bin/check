@@ -1,0 +1,5 @@
+#!/bin/bash
+
+bundle exec rubocop lib spec &&
+bundle exec steep check --log-level fatal &&
+bundle exec rspec
