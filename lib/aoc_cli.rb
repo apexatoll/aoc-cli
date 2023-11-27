@@ -1,4 +1,4 @@
-require_relative "aoc_cli/version"
+require "kangaru"
 
 module AocCli
 end

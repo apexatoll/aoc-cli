@@ -1,3 +1,52 @@
 ---
 path: ".gems"
+gems:
+- name: bigdecimal
+  version: '0'
+  source:
+    type: stdlib
+- name: cgi
+  version: '0'
+  source:
+    type: stdlib
+- name: colorize
+  version: '1.1'
+  source:
+    type: git
+    name: apexatoll/gem_signatures
+    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    remote: https://github.com/apexatoll/gem_signatures
+    repo_dir: sig
+- name: erb
+  version: '0'
+  source:
+    type: stdlib
+- name: kangaru
+  version: '0.2'
+  source:
+    type: git
+    name: apexatoll/gem_signatures
+    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    remote: https://github.com/apexatoll/gem_signatures
+    repo_dir: sig
+- name: sequel
+  version: '5.72'
+  source:
+    type: git
+    name: apexatoll/gem_signatures
+    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    remote: https://github.com/apexatoll/gem_signatures
+    repo_dir: sig
+- name: tempfile
+  version: '0'
+  source:
+    type: stdlib
+- name: zeitwerk
+  version: '2.6'
+  source:
+    type: git
+    name: apexatoll/gem_signatures
+    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    remote: https://github.com/apexatoll/gem_signatures
+    repo_dir: sig
 gemfile_lock_path: Gemfile.lock
