@@ -1,13 +1,75 @@
+require:
+  - rubocop-rspec
+
 AllCops:
-  TargetRubyVersion: 2.6
+  NewCops: enable
+  SuggestExtensions: false
 
-Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: double_quotes
+Gemspec/RequireMFA:
+  Enabled: false
 
-Style/StringLiteralsInInterpolation:
-  Enabled: true
-  EnforcedStyle: double_quotes
-
+Layout/ExtraSpacing:
+  AllowForAlignment: true
 Layout/LineLength:
-  Max: 120
+  Max: 80
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods:
+    - change
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - spec/spec_helper.rb
+Lint/MissingSuper:
+  Enabled: false
+
+Naming/MethodParameterName:
+  AllowedNames:
+    - by
+    - to
+    - id
+
+Style/ArgumentsForwarding:
+  Enabled: false
+Style/CharacterLiteral:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/ExplicitBlockArgument:
+  Enabled: false
+Style/FormatStringToken:
+  EnforcedStyle: template
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/RescueStandardError:
+  EnforcedStyle: implicit
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+RSpec/AnyInstance:
+  Enabled: false
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - and
+    - but
+RSpec/DescribedClass:
+  SkipBlocks: true
+RSpec/ExpectChange:
+  EnforcedStyle: block
+RSpec/FilePath:
+  Exclude:
+    - spec/kangaru/components/**/*.rb
+RSpec/LetSetup:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Max: 15
+RSpec/NestedGroups:
+  Enabled: false
+RSpec/SharedExamples:
+  Enabled: false
