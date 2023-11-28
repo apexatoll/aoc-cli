@@ -1,0 +1,13 @@
+module AocCli
+  module Core
+    class Request
+      attr_reader client: HTTP::Client
+
+      def initialize: (token: String) -> void
+
+      private
+
+      def setup_client!: (String) -> HTTP::Client
+    end
+  end
+end
