@@ -5,7 +5,7 @@ module AocCli
 
   config_path File.expand_path("~/.config/aoc.yml")
 
-  config_path "spec/aoc.yml"
+  config_path "spec/aoc.yml", env: :test
 
   configure do |config|
     config.database.adaptor = :sqlite
