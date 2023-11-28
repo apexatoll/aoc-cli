@@ -1,5 +1,6 @@
 require "http"
 require "kangaru"
+require "nokogiri"
 
 module AocCli
   extend Kangaru::Initialiser

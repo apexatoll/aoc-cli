@@ -1,0 +1,3 @@
+module Nokogiri
+  def self.HTML5: (String) -> HTML::Document
+end

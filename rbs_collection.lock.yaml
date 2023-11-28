@@ -49,6 +49,14 @@ gems:
     revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: nokogiri
+  version: '1.11'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 4b0d2f72e63b6c3e92dc54e19ce23dd24524f9a7
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: pathname
   version: '0'
   source:
