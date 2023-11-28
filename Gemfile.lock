@@ -30,6 +30,8 @@ GEM
     colorize (1.1.0)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
+    crack (0.4.5)
+      rexml
     csv (3.2.8)
     diff-lcs (1.5.0)
     domain_name (0.6.20231109)
@@ -42,6 +44,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     fileutils (1.7.2)
+    hashdiff (1.0.1)
     http (5.1.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
@@ -152,6 +155,10 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    webmock (3.19.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     zeitwerk (2.6.12)
 
 PLATFORMS
@@ -165,6 +172,7 @@ DEPENDENCIES
   rubocop (~> 1.21)
   rubocop-rspec
   steep
+  webmock
 
 BUNDLED WITH
    2.4.1

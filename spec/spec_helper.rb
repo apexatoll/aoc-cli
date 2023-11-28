@@ -1,4 +1,5 @@
 require "aoc_cli"
+require "webmock/rspec"
 
 RSpec.configure do |config|
   Kernel.srand(config.seed)
