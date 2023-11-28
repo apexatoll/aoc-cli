@@ -1,9 +1,13 @@
 module AocCli
   module Core
     class Request
+      extend Forwardable
+
       attr_reader client: HTTP::Client
 
       def initialize: (token: String) -> void
+
+      def get: (String) -> HTTP::Response
 
       def self.build: -> Request
 

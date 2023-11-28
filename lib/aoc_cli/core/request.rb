@@ -1,7 +1,11 @@
 module AocCli
   module Core
     class Request
+      extend Forwardable
+
       attr_reader :client
+
+      def_delegators :client, :get
 
       def initialize(token:)
         @client = setup_client!(token)
