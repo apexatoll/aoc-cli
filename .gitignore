@@ -1,4 +1,5 @@
 /.bundle/
+/db/
 /doc/
 /pkg/
 /tmp/
