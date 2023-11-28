@@ -1,3 +1,4 @@
+require "forwardable"
 require "http"
 require "kangaru"
 require "nokogiri"
