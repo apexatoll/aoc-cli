@@ -1,3 +1,4 @@
+require "http"
 require "kangaru"
 
 module AocCli

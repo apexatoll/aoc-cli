@@ -1,0 +1,3 @@
+module HTTP
+  def self.headers: (**untyped) -> Client
+end
