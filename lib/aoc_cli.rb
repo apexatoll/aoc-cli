@@ -1,6 +1,7 @@
 require "http"
 require "kangaru"
 require "nokogiri"
+require "reverse_markdown"
 
 module AocCli
   extend Kangaru::Initialiser

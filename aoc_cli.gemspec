@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "http"
   spec.add_dependency "kangaru"
   spec.add_dependency "nokogiri"
+  spec.add_dependency "reverse_markdown"
 end

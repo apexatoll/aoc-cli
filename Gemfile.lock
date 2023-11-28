@@ -5,6 +5,7 @@ PATH
       http
       kangaru
       nokogiri
+      reverse_markdown
 
 GEM
   remote: https://rubygems.org/
@@ -86,6 +87,8 @@ GEM
     rbs (3.3.2)
       abbrev
     regexp_parser (2.8.2)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
