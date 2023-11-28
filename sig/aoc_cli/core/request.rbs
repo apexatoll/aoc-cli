@@ -5,6 +5,8 @@ module AocCli
 
       def initialize: (token: String) -> void
 
+      def self.build: -> Request
+
       private
 
       def setup_client!: (String) -> HTTP::Client
