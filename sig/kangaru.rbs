@@ -1,0 +1,5 @@
+module Kangaru
+  class Config
+    attr_reader session: AocCli::Configurators::SessionConfigurator
+  end
+end
