@@ -19,4 +19,6 @@ RSpec.configure do |config|
     vcr.hook_into :webmock
     vcr.cassette_library_dir = "spec/fixtures"
   end
+
+  config.include Matchers
 end
