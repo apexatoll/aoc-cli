@@ -1,0 +1,15 @@
+module AocCli
+  module Core
+    class Repository
+      HOST: String
+
+      RESOURCES: Hash[Symbol, Hash[Symbol, String]]
+
+      private
+
+      def self.build_resource: (Symbol, **untyped) -> Resource
+
+      def self.format_url: (String, **untyped) -> String
+    end
+  end
+end
