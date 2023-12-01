@@ -1,0 +1,18 @@
+module AocCli
+  module Core
+    class Resource
+      attr_reader url: String
+      attr_reader scope: String?
+
+      def initialize: (url: String, ?scope: String?) -> void
+
+      def fetch: -> String
+
+      def fetch_markdown: -> String
+
+      private
+
+      attr_reader response: String
+    end
+  end
+end
