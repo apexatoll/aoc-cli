@@ -4,7 +4,16 @@ module AocCli
       class << self
         HOST = "https://adventofcode.com".freeze
 
-        RESOURCES = {}.freeze
+        RESOURCES = {
+          puzzle: {
+            url: "%{host}/%{year}/day/%{day}",
+            scope: "html/body/main/article"
+          }
+        }.freeze
+
+        def get_puzzle(year:, day:)
+          build_resource(:puzzle, year:, day:).fetch_markdown
+        end
 
         private
 

@@ -1,0 +1,135 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://adventofcode.com/2020/day/23
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - adventofcode.com
+      User-Agent:
+      - http.rb/5.1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 01 Dec 2023 22:08:24 GMT
+      Content-Type:
+      - text/html
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      Server:
+      - Apache
+      Server-Ip:
+      - 172.31.63.108
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=300
+    body:
+      encoding: ASCII-8BIT
+      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n<head>\n<meta charset=\"utf-8\"/>\n<title>Day
+        23 - Advent of Code 2020</title>\n<link rel=\"stylesheet\" type=\"text/css\"
+        href=\"/static/style.css?31\"/>\n<link rel=\"stylesheet alternate\" type=\"text/css\"
+        href=\"/static/highcontrast.css?1\" title=\"High Contrast\"/>\n<link rel=\"shortcut
+        icon\" href=\"/favicon.png\"/>\n<script>window.addEventListener('click', function(e,s,r){if(e.target.nodeName==='CODE'&&e.detail===3){s=window.getSelection();s.removeAllRanges();r=document.createRange();r.selectNodeContents(e.target);s.addRange(r);}});</script>\n</head><!--\n\n\n\n\nOh,
+        hello!  Funny seeing you here.\n\nI appreciate your enthusiasm, but you aren't
+        going to find much down here.\nThere certainly aren't clues to any of the
+        puzzles.  The best surprises don't\neven appear in the source until you unlock
+        them for real.\n\nPlease be careful with automated requests; I'm not a massive
+        company, and I can\nonly take so much traffic.  Please be considerate so that
+        everyone gets to play.\n\nIf you're curious about how Advent of Code works,
+        it's running on some custom\nPerl code. Other than a few integrations (auth,
+        analytics, social media), I\nbuilt the whole thing myself, including the design,
+        animations, prose, and all\nof the puzzles.\n\nThe puzzles are most of the
+        work; preparing a new calendar and a new set of\npuzzles each year takes all
+        of my free time for 4-5 months. A lot of effort\nwent into building this thing
+        - I hope you're enjoying playing it as much as I\nenjoyed making it for you!\n\nIf
+        you'd like to hang out, I'm @ericwastl@hachyderm.io on Mastodon and\n@ericwastl
+        on Twitter.\n\n- Eric Wastl\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n-->\n<body>\n<header><div><h1
+        class=\"title-global\"><a href=\"/\">Advent of Code</a></h1><nav><ul><li><a
+        href=\"/2020/about\">[About]</a></li><li><a href=\"/2020/events\">[Events]</a></li><li><a
+        href=\"https://teespring.com/stores/advent-of-code\" target=\"_blank\">[Shop]</a></li><li><a
+        href=\"/2020/settings\">[Settings]</a></li><li><a href=\"/2020/auth/logout\">[Log
+        Out]</a></li></ul></nav><div class=\"user\">apexatoll <span class=\"star-count\">27*</span></div></div><div><h1
+        class=\"title-event\">&nbsp;&nbsp;&nbsp;<span class=\"title-event-wrap\">&lt;y&gt;</span><a
+        href=\"/2020\">2020</a><span class=\"title-event-wrap\">&lt;/y&gt;</span></h1><nav><ul><li><a
+        href=\"/2020\">[Calendar]</a></li><li><a href=\"/2020/support\">[AoC++]</a></li><li><a
+        href=\"/2020/sponsors\">[Sponsors]</a></li><li><a href=\"/2020/leaderboard\">[Leaderboard]</a></li><li><a
+        href=\"/2020/stats\">[Stats]</a></li></ul></nav></div></header>\n\n<div id=\"sidebar\">\n<div
+        id=\"sponsor\"><div class=\"quiet\">Our <a href=\"/2020/sponsors\">sponsors</a>
+        help make Advent of Code possible:</div><div class=\"sponsor\"><a href=\"https://careers.mheducation.com\"
+        target=\"_blank\" onclick=\"if(ga)ga('send','event','sponsor','sidebar',this.href);\"
+        rel=\"noopener\">McGraw Hill</a> - You look smart! How did that happen? Help
+        us build the tools that help teachers teach the next generation to be smart
+        like you.</div></div>\n</div><!--/sidebar-->\n\n<main>\n<article class=\"day-desc\"><h2>---
+        Day 23: Crab Cups ---</h2><p>The small crab challenges <em>you</em> to a game!
+        The crab is going to mix up some cups, and you have to predict where they'll
+        end up.</p>\n<p>The cups will be arranged in a circle and labeled <em>clockwise</em>
+        (your puzzle input). For example, if your labeling were <code>32415</code>,
+        there would be five cups in the circle; going clockwise around the circle
+        from the first cup, the cups would be labeled <code>3</code>, <code>2</code>,
+        <code>4</code>, <code>1</code>, <code>5</code>, and then back to <code>3</code>
+        again.</p>\n<p>Before the crab starts, it will designate the first cup in
+        your list as the <em>current cup</em>. The crab is then going to do <em>100
+        moves</em>.</p>\n<p>Each <em>move</em>, the crab does the following actions:</p>\n<ul>\n<li>The
+        crab picks up the <em>three cups</em> that are immediately <em>clockwise</em>
+        of the <em>current cup</em>. They are removed from the circle; cup spacing
+        is adjusted as necessary to maintain the circle.</li>\n<li>The crab selects
+        a <em>destination cup</em>: the cup with a <em>label</em> equal to the <em>current
+        cup's</em> label minus one. If this would select one of the cups that was
+        just picked up, the crab will keep subtracting one until it finds a cup that
+        wasn't just picked up. If at any point in this process the value goes below
+        the lowest value on any cup's label, it <em>wraps around</em> to the highest
+        value on any cup's label instead.</li>\n<li>The crab places the cups it just
+        picked up so that they are <em>immediately clockwise</em> of the destination
+        cup. They keep the same order as when they were picked up.</li>\n<li>The crab
+        selects a new <em>current cup</em>: the cup which is immediately clockwise
+        of the current cup.</li>\n</ul>\n<p>For example, suppose your cup labeling
+        were <code>389125467</code>. If the crab were to do merely 10 moves, the following
+        changes would occur:</p>\n<pre><code>-- move 1 --\ncups: (3) 8  9  1  2  5
+        \ 4  6  7 \npick up: 8, 9, 1\ndestination: 2\n\n-- move 2 --\ncups:  3 (2)
+        8  9  1  5  4  6  7 \npick up: 8, 9, 1\ndestination: 7\n\n-- move 3 --\ncups:
+        \ 3  2 (5) 4  6  7  8  9  1 \npick up: 4, 6, 7\ndestination: 3\n\n-- move
+        4 --\ncups:  7  2  5 (8) 9  1  3  4  6 \npick up: 9, 1, 3\ndestination: 7\n\n--
+        move 5 --\ncups:  3  2  5  8 (4) 6  7  9  1 \npick up: 6, 7, 9\ndestination:
+        3\n\n-- move 6 --\ncups:  9  2  5  8  4 (1) 3  6  7 \npick up: 3, 6, 7\ndestination:
+        9\n\n-- move 7 --\ncups:  7  2  5  8  4  1 (9) 3  6 \npick up: 3, 6, 7\ndestination:
+        8\n\n-- move 8 --\ncups:  8  3  6  7  4  1  9 (2) 5 \npick up: 5, 8, 3\ndestination:
+        1\n\n-- move 9 --\ncups:  7  4  1  5  8  3  9  2 (6)\npick up: 7, 4, 1\ndestination:
+        5\n\n-- move 10 --\ncups: (5) 7  4  1  8  3  9  2  6 \npick up: 7, 4, 1\ndestination:
+        3\n\n-- final --\ncups:  5 (8) 3  7  4  1  9  2  6 \n</code></pre>\n<p>In
+        the above example, the cups' values are the labels as they appear moving clockwise
+        around the circle; the <em>current cup</em> is marked with <code>( )</code>.</p>\n<p>After
+        the crab is done, what order will the cups be in? Starting <em>after the cup
+        labeled <code>1</code></em>, collect the other cups' labels clockwise into
+        a single string with no extra characters; each number except <code>1</code>
+        should appear exactly once. In the above example, after 10 moves, the cups
+        clockwise from <code>1</code> are labeled <code>9</code>, <code>2</code>,
+        <code>6</code>, <code>5</code>, and so on, producing <em><code>92658374</code></em>.
+        If the crab were to complete all 100 moves, the order after cup <code>1</code>
+        would be <em><code>67384529</code></em>.</p>\n<p>Using your labeling, simulate
+        100 moves. <em>What are the labels on the cups after cup <code>1</code>?</em></p>\n</article>\n<p>Your
+        puzzle input is <code class=\"puzzle-input\">247819356</code>.</p>\n<form
+        method=\"post\" action=\"23/answer\"><input type=\"hidden\" name=\"level\"
+        value=\"1\"/><p>Answer: <input type=\"text\" name=\"answer\" autocomplete=\"off\"/>
+        <input type=\"submit\" value=\"[Submit]\"/></p></form>\n<p>You can also <span
+        class=\"share\">[Share<span class=\"share-content\">on\n  <a href=\"https://twitter.com/intent/tweet?text=%22Crab+Cups%22+%2D+Day+23+%2D+Advent+of+Code+2020&amp;url=https%3A%2F%2Fadventofcode%2Ecom%2F2020%2Fday%2F23&amp;related=ericwastl&amp;hashtags=AdventOfCode\"
+        target=\"_blank\">Twitter</a>\n  <a href=\"javascript:void(0);\" onclick=\"var
+        ms; try{ms=localStorage.getItem('mastodon.server')}finally{} if(typeof ms!=='string')ms='';
+        ms=prompt('Mastodon Server?',ms); if(typeof ms==='string' && ms.length){this.href='https://'+ms+'/share?text=%22Crab+Cups%22+%2D+Day+23+%2D+Advent+of+Code+2020+%23AdventOfCode+https%3A%2F%2Fadventofcode%2Ecom%2F2020%2Fday%2F23';try{localStorage.setItem('mastodon.server',ms);}finally{}}else{return
+        false;}\" target=\"_blank\">Mastodon</a\n></span>]</span> this puzzle.</p>\n</main>\n\n<!--
+        ga -->\n<script>\n(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+        Date();a=s.createElement(o),\nm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n})(window,document,'script','//www.google-analytics.com/analytics.js','ga');\nga('create',
+        'UA-69522494-1', 'auto');\nga('set', 'anonymizeIp', true);\nga('send', 'pageview');\n</script>\n<!--
+        /ga -->\n</body>\n</html>"
+  recorded_at: Fri, 01 Dec 2023 22:08:24 GMT
+recorded_with: VCR 6.2.0
