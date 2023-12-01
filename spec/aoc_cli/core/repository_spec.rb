@@ -84,4 +84,71 @@ RSpec.describe AocCli::Core::Repository do
       include_examples :fetches_resource, fixture: "puzzle-2023-01.md"
     end
   end
+
+  describe ".get_input" do
+    subject(:input) { described_class.get_input(year:, day:) }
+
+    describe "2015" do
+      let(:year) { 2015 }
+      let(:day)  { 3 }
+
+      include_examples :fetches_resource, fixture: "input-2015-03"
+    end
+
+    describe "2016" do
+      let(:year) { 2016 }
+      let(:day)  { 8 }
+
+      include_examples :fetches_resource, fixture: "input-2016-08"
+    end
+
+    describe "2017" do
+      let(:year) { 2017 }
+      let(:day)  { 15 }
+
+      include_examples :fetches_resource, fixture: "input-2017-15"
+    end
+
+    describe "2018" do
+      let(:year) { 2018 }
+      let(:day)  { 19 }
+
+      include_examples :fetches_resource, fixture: "input-2018-19"
+    end
+
+    describe "2019" do
+      let(:year) { 2019 }
+      let(:day)  { 1 }
+
+      include_examples :fetches_resource, fixture: "input-2019-01"
+    end
+
+    describe "2020" do
+      let(:year) { 2020 }
+      let(:day)  { 23 }
+
+      include_examples :fetches_resource, fixture: "input-2020-23"
+    end
+
+    describe "2021" do
+      let(:year) { 2021 }
+      let(:day)  { 20 }
+
+      include_examples :fetches_resource, fixture: "input-2021-20"
+    end
+
+    describe "2022" do
+      let(:year) { 2022 }
+      let(:day)  { 8 }
+
+      include_examples :fetches_resource, fixture: "input-2022-08"
+    end
+
+    describe "2023" do
+      let(:year) { 2023 }
+      let(:day) { 1 }
+
+      include_examples :fetches_resource, fixture: "input-2023-01"
+    end
+  end
 end

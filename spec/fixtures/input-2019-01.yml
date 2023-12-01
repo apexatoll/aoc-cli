@@ -1,0 +1,141 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://adventofcode.com/2019/day/1/input
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - adventofcode.com
+      User-Agent:
+      - http.rb/5.1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 01 Dec 2023 23:14:03 GMT
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '650'
+      Connection:
+      - close
+      Server:
+      - Apache
+      Server-Ip:
+      - 172.31.63.108
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=300
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        71764
+        58877
+        107994
+        72251
+        74966
+        87584
+        118260
+        144961
+        86889
+        136710
+        52493
+        131045
+        101496
+        124341
+        71936
+        88967
+        106520
+        125454
+        113463
+        81854
+        99918
+        105217
+        120383
+        61105
+        103842
+        125151
+        139191
+        143365
+        102168
+        69845
+        57343
+        93401
+        140910
+        121997
+        107964
+        53358
+        57397
+        141456
+        94052
+        127395
+        99180
+        143838
+        130749
+        126809
+        70165
+        92007
+        83343
+        55163
+        95270
+        101323
+        99877
+        105721
+        129657
+        61213
+        130120
+        108549
+        90539
+        111382
+        61665
+        95121
+        53216
+        103144
+        134367
+        101251
+        105118
+        73220
+        56270
+        50846
+        77314
+        59134
+        98495
+        113654
+        89711
+        68676
+        98991
+        109068
+        129630
+        58999
+        132095
+        98685
+        91762
+        88589
+        73846
+        124940
+        106944
+        133882
+        104073
+        78475
+        76545
+        144728
+        72449
+        118320
+        65363
+        83523
+        124634
+        96222
+        128252
+        112848
+        139027
+        108208
+  recorded_at: Fri, 01 Dec 2023 23:14:03 GMT
+recorded_with: VCR 6.2.0

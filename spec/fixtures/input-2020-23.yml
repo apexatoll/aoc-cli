@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://adventofcode.com/2020/day/23/input
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - adventofcode.com
+      User-Agent:
+      - http.rb/5.1.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 01 Dec 2023 23:14:01 GMT
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '10'
+      Connection:
+      - close
+      Server:
+      - Apache
+      Server-Ip:
+      - 172.31.59.243
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=300
+    body:
+      encoding: ASCII-8BIT
+      string: '247819356
+
+        '
+  recorded_at: Fri, 01 Dec 2023 23:14:01 GMT
+recorded_with: VCR 6.2.0

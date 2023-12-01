@@ -7,6 +7,8 @@ module AocCli
 
       def self.get_puzzle: (year: Integer, day: Integer) -> String
 
+      def self.get_input: (year: Integer, day: Integer) -> String
+
       private
 
       def self.build_resource: (Symbol, **untyped) -> Resource

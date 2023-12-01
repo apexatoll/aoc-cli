@@ -8,11 +8,19 @@ module AocCli
           puzzle: {
             url: "%{host}/%{year}/day/%{day}",
             scope: "html/body/main/article"
+          },
+
+          input: {
+            url: "%{host}/%{year}/day/%{day}/input"
           }
         }.freeze
 
         def get_puzzle(year:, day:)
           build_resource(:puzzle, year:, day:).fetch_markdown
+        end
+
+        def get_input(year:, day:)
+          build_resource(:input, year:, day:).fetch
         end
 
         private
