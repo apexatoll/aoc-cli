@@ -29,6 +29,8 @@ Naming/MethodParameterName:
     - by
     - to
     - id
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
 
 Style/ArgumentsForwarding:
   Enabled: false
@@ -64,7 +66,8 @@ RSpec/ExpectChange:
   EnforcedStyle: block
 RSpec/FilePath:
   Exclude:
-    - spec/kangaru/components/**/*.rb
+    - spec/aoc_cli/models/**/*.rb
+    - spec/aoc_cli/controllers/**/*.rb
 RSpec/LetSetup:
   Enabled: false
 RSpec/MultipleMemoizedHelpers:
@@ -73,3 +76,7 @@ RSpec/NestedGroups:
   Enabled: false
 RSpec/SharedExamples:
   Enabled: false
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - spec/aoc_cli/models/**/*.rb
+    - spec/aoc_cli/controllers/**/*.rb
