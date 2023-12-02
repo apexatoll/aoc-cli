@@ -18,6 +18,50 @@ RSpec.describe AocCli::Core::Repository do
     end
   end
 
+  describe ".get_stats" do
+    subject(:stats) { described_class.get_stats(year:) }
+
+    let(:year) { 2015 }
+
+    let(:expected_stats) do
+      {
+        day_1: 2,
+        day_2: 0,
+        day_3: 1,
+        day_4: 0,
+        day_5: 1,
+        day_6: 1,
+        day_7: 0,
+        day_8: 2,
+        day_9: 2,
+        day_10: 2,
+        day_11: 2,
+        day_12: 0,
+        day_13: 2,
+        day_14: 2,
+        day_15: 1,
+        day_16: 2,
+        day_17: 2,
+        day_18: 2,
+        day_19: 1,
+        day_20: 0,
+        day_21: 1,
+        day_22: 0,
+        day_23: 0,
+        day_24: 0,
+        day_25: 0
+      }
+    end
+
+    around do |spec|
+      VCR.use_cassette("stats-2015") { spec.run }
+    end
+
+    it "returns the expected stats" do
+      expect(stats).to eq(expected_stats)
+    end
+  end
+
   describe ".get_puzzle" do
     subject(:puzzle) { described_class.get_puzzle(year:, day:) }
 

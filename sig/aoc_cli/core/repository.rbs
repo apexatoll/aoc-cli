@@ -5,6 +5,8 @@ module AocCli
 
       RESOURCES: Hash[Symbol, Hash[Symbol, String]]
 
+      def self.get_stats: (year: Integer) -> Hash[Symbol, Integer]
+
       def self.get_puzzle: (year: Integer, day: Integer) -> String
 
       def self.get_input: (year: Integer, day: Integer) -> String
