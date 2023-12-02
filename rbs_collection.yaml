@@ -15,6 +15,7 @@ path: .gems
 
 gems:
   - name: date
+  - name: fileutils
   - name: forwardable
   - name: pathname
   - name: rake
