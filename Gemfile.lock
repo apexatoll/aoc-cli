@@ -6,6 +6,7 @@ PATH
       kangaru
       nokogiri
       reverse_markdown
+      sequel_polymorphic
 
 GEM
   remote: https://rubygems.org/
@@ -132,6 +133,8 @@ GEM
     securerandom (0.3.0)
     sequel (5.74.0)
       bigdecimal
+    sequel_polymorphic (0.5.0)
+      sequel (>= 4.0.0, < 6)
     sqlite3 (1.6.9-arm64-darwin)
     sqlite3 (1.6.9-x86_64-linux)
     steep (1.6.0)
