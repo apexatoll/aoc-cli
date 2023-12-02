@@ -1,0 +1,17 @@
+module AocCli
+  module Validators
+    class PathValidator < Kangaru::Validator
+      def validate: -> void
+
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      def path_exists?: -> bool
+
+      def validate_path_does_not_exist!: -> void
+
+      def validate_path_exists!: -> void
+    end
+  end
+end
