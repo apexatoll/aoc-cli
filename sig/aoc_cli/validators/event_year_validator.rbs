@@ -1,0 +1,19 @@
+module AocCli
+  module Validators
+    class EventYearValidator < Kangaru::Validator
+      def validate: -> untyped
+
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      MIN_YEAR: Integer
+
+      def max_year: -> untyped
+
+      def in_december?: -> bool
+
+      def validate_year!: -> void
+    end
+  end
+end

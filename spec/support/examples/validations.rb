@@ -19,3 +19,37 @@ RSpec.shared_examples :valid do
     expect(subject).to be_valid
   end
 end
+
+RSpec.shared_examples :validates_event_year do
+  context "when nil" do
+    let(:year) { nil }
+
+    include_examples :invalid, errors: ["Year can't be blank"]
+  end
+
+  context "when not an integer" do
+    let(:year) { :foobar }
+
+    include_examples :invalid, errors: ["Year is not an integer"]
+  end
+
+  context "when before first event" do
+    let(:year) { 2014 }
+
+    include_examples :invalid, errors: [
+      "Year is before first Advent of Code event (2015)"
+    ]
+  end
+
+  context "when after most recent event" do
+    let(:year) { 2030 }
+
+    include_examples :invalid, errors: ["Year is in the future"]
+  end
+
+  context "when valid" do
+    let(:year) { 2023 }
+
+    include_examples :valid
+  end
+end
