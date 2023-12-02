@@ -1,0 +1,15 @@
+module AocCli
+  module Validators
+    class IntegerValidator < Kangaru::Validator
+      def validate: -> void
+
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      def range: -> Range[Integer]
+
+      def validate_range!: -> void
+    end
+  end
+end
