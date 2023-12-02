@@ -14,6 +14,7 @@ sources:
 path: .gems
 
 gems:
+  - name: date
   - name: forwardable
   - name: pathname
   - name: rake

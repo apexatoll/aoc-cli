@@ -25,6 +25,10 @@ gems:
     revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: date
+  version: '0'
+  source:
+    type: stdlib
 - name: erb
   version: '0'
   source:
