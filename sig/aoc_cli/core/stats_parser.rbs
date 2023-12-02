@@ -1,0 +1,23 @@
+module AocCli
+  module Core
+    class StatsParser
+      DAY_CLASS_PREFIX: String
+      ONE_STAR_CLASS: String
+      TWO_STARS_CLASS: String
+
+      attr_reader calendar_html: String
+
+      def initialize: (String) -> void
+
+      def to_h: -> Hash[Symbol, Integer]
+
+      private
+
+      def calendar_link_classes: -> Array[Array[String]]
+
+      def calendar_links: -> Nokogiri::XML::NodeSet
+
+      def count_stars: (Array[String]) -> Integer
+    end
+  end
+end
