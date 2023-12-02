@@ -1,5 +1,5 @@
 /.bundle/
-/db/
+/db/*.sqlite3
 /doc/
 /pkg/
 /tmp/
