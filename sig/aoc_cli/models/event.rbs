@@ -1,0 +1,8 @@
+module AocCli
+  class Event < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor year: Integer
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+  end
+end
