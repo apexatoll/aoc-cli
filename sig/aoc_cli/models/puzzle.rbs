@@ -1,0 +1,13 @@
+module AocCli
+  class Puzzle < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor event: Event
+    attr_accessor day: Integer
+    attr_accessor content: String
+    attr_accessor input: String
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+    attr_accessor part_one_completed_at: Time
+    attr_accessor part_two_completed_at: Time
+  end
+end

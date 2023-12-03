@@ -4,5 +4,7 @@ module AocCli
     attr_accessor year: Integer
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
+
+    attr_accessor puzzles: Array[Puzzle]
   end
 end
