@@ -24,6 +24,10 @@ Lint/ConstantDefinitionInBlock:
 Lint/MissingSuper:
   Enabled: false
 
+Metrics/BlockLength:
+  Exclude:
+    - db/migrate/**/*.rb
+
 Naming/MethodParameterName:
   AllowedNames:
     - by
