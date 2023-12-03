@@ -1,0 +1,8 @@
+<% if messages.count == 1 -%>
+<%= title.red %>: <%= messages.first %>
+<% else -%>
+<%= title.red %>:
+<% messages.each do |message| -%>
+  <%= "\u2022 #{message}" %>
+<% end -%>
+<% end -%>

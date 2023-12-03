@@ -1,0 +1,19 @@
+module AocCli
+  module Components
+    class ErrorsComponent < Kangaru::Component
+      attr_reader messages: Array[String]
+
+      def initialize: (*String) -> void
+
+      def render: -> void
+      
+      def self.from_model: (untyped) -> ErrorsComponent
+
+      private
+
+      def render?: -> bool
+
+      def title: -> String
+    end
+  end
+end
