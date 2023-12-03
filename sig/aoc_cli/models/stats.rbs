@@ -1,0 +1,34 @@
+module AocCli
+  class Stats < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor event: Event
+    attr_accessor day_1: Integer
+    attr_accessor day_2: Integer
+    attr_accessor day_3: Integer
+    attr_accessor day_4: Integer
+    attr_accessor day_5: Integer
+    attr_accessor day_6: Integer
+    attr_accessor day_7: Integer
+    attr_accessor day_8: Integer
+    attr_accessor day_9: Integer
+    attr_accessor day_10: Integer
+    attr_accessor day_11: Integer
+    attr_accessor day_12: Integer
+    attr_accessor day_13: Integer
+    attr_accessor day_14: Integer
+    attr_accessor day_15: Integer
+    attr_accessor day_16: Integer
+    attr_accessor day_17: Integer
+    attr_accessor day_18: Integer
+    attr_accessor day_19: Integer
+    attr_accessor day_20: Integer
+    attr_accessor day_21: Integer
+    attr_accessor day_22: Integer
+    attr_accessor day_23: Integer
+    attr_accessor day_24: Integer
+    attr_accessor day_25: Integer
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+    attr_accessor completed_at: Time
+  end
+end

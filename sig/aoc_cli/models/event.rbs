@@ -6,5 +6,6 @@ module AocCli
     attr_accessor updated_at: Time
 
     attr_accessor puzzles: Array[Puzzle]
+    attr_accessor stats: Stats
   end
 end
