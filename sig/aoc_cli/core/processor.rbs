@@ -1,0 +1,15 @@
+module AocCli
+  module Core
+    class Processor
+      include Kangaru::Validatable
+      extend  Kangaru::Validatable::ClassMethods
+
+      include Kangaru::Attributable
+      extend  Kangaru::Attributable::ClassMethods
+
+      def run: -> untyped
+
+      def self.run: (**untyped) -> untyped
+    end
+  end
+end
