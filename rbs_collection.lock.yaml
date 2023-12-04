@@ -1,14 +1,26 @@
 ---
 path: ".gems"
 gems:
+- name: activesupport
+  version: '7.0'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: addressable
   version: '2.8'
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 4b0d2f72e63b6c3e92dc54e19ce23dd24524f9a7
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
+- name: base64
+  version: '0'
+  source:
+    type: stdlib
 - name: bigdecimal
   version: '0'
   source:
@@ -22,9 +34,25 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    revision: de6b946efdd1d2c3b3ae7c7407b634793776aed1
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: concurrent-ruby
+  version: '1.1'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: connection_pool
+  version: '2.4'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: date
   version: '0'
   source:
@@ -46,7 +74,15 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 4b0d2f72e63b6c3e92dc54e19ce23dd24524f9a7
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: i18n
+  version: '1.10'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: kangaru
@@ -54,18 +90,38 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    revision: de6b946efdd1d2c3b3ae7c7407b634793776aed1
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: logger
+  version: '0'
+  source:
+    type: stdlib
+- name: minitest
+  version: '0'
+  source:
+    type: stdlib
+- name: monitor
+  version: '0'
+  source:
+    type: stdlib
+- name: mutex_m
+  version: '0'
+  source:
+    type: stdlib
 - name: nokogiri
   version: '1.11'
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 4b0d2f72e63b6c3e92dc54e19ce23dd24524f9a7
+    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: pathname
+  version: '0'
+  source:
+    type: stdlib
+- name: securerandom
   version: '0'
   source:
     type: stdlib
@@ -74,10 +130,22 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    revision: de6b946efdd1d2c3b3ae7c7407b634793776aed1
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: singleton
+  version: '0'
+  source:
+    type: stdlib
 - name: tempfile
+  version: '0'
+  source:
+    type: stdlib
+- name: time
+  version: '0'
+  source:
+    type: stdlib
+- name: timeout
   version: '0'
   source:
     type: stdlib
@@ -86,7 +154,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: 6ac529a465af67e1c92129046f309e5d2eda9d4e
+    revision: de6b946efdd1d2c3b3ae7c7407b634793776aed1
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 gemfile_lock_path: Gemfile.lock
