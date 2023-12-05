@@ -1,4 +1,5 @@
 require "aoc_cli"
+require "factory_bot"
 require "webmock/rspec"
 require "vcr"
 
@@ -15,10 +16,18 @@ RSpec.configure do |config|
 
   config.default_formatter = :doc if config.files_to_run.one?
 
+  config.before(:suite) do
+    FactoryBot.find_definitions
+
+    FactoryBot.define { to_create(&:save) }
+  end
+
   VCR.configure do |vcr|
     vcr.hook_into :webmock
     vcr.cassette_library_dir = "spec/fixtures"
   end
+
+  config.include FactoryBot::Syntax::Methods
 
   config.include Matchers
 end
