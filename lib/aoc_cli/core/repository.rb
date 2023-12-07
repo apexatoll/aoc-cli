@@ -6,16 +6,19 @@ module AocCli
       RESOURCES = {
         stats: {
           url: "%{host}/%{year}",
-          scope: "html/body/main/pre"
+          scope: "html/body/main/pre",
+          method: :get
         },
 
         puzzle: {
           url: "%{host}/%{year}/day/%{day}",
-          scope: "html/body/main/article"
+          scope: "html/body/main/article",
+          method: :get
         },
 
         input: {
-          url: "%{host}/%{year}/day/%{day}/input"
+          url: "%{host}/%{year}/day/%{day}/input",
+          method: :get
         }
       }.freeze
 
@@ -41,7 +44,9 @@ module AocCli
 
           Resource.new(
             url: format_url(attributes[:url], **params),
-            scope: attributes[:scope]
+            scope: attributes[:scope],
+            method: attributes[:method],
+            params: params.slice(*attributes[:params])
           )
         end
 

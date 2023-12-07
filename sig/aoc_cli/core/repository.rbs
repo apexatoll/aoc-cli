@@ -3,7 +3,7 @@ module AocCli
     class Repository
       HOST: String
 
-      RESOURCES: Hash[Symbol, Hash[Symbol, String]]
+      RESOURCES: Hash[Symbol, Hash[Symbol, untyped]]
 
       def self.get_stats: (year: Integer) -> Hash[Symbol, Integer]
 
