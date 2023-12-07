@@ -30,4 +30,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.include Matchers
+
+  def fixture(file)
+    File.read(File.join("spec/fixtures", file))
+  end
 end
