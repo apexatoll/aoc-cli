@@ -1,7 +1,9 @@
 RSpec.describe AocCli::Core::Resource do
-  subject(:resource) { described_class.new(url:, scope:) }
+  subject(:resource) { described_class.new(url:, scope:, method:, params:) }
 
   let(:url) { "https://example.com/foo/bar" }
+
+  let(:params) { {} }
 
   let(:token) { "token" }
 
@@ -29,6 +31,7 @@ RSpec.describe AocCli::Core::Resource do
     allow(AocCli.config.session).to receive(:token).and_return(token)
 
     stub_request(:get, url).to_return(body: response)
+    stub_request(:post, url).to_return(body: response)
   end
 
   describe "#fetch" do
@@ -37,17 +40,48 @@ RSpec.describe AocCli::Core::Resource do
     shared_examples :fetches_resource do
       let(:expected_headers) { { Cookie: "session=#{token}" } }
 
-      it "does not raise any errors" do
-        expect { body }.not_to raise_error
+      context "when an invalid method is set" do
+        let(:method) { :foobar }
+
+        it "raises an error" do
+          expect { body }.to raise_error("invalid HTTP method")
+        end
       end
 
-      it "fetches the resource" do
-        body
-        assert_requested(:get, url, headers: expected_headers)
+      context "when method is set to :get" do
+        let(:method) { :get }
+
+        it "does not raise any errors" do
+          expect { body }.not_to raise_error
+        end
+
+        it "fetches the resource via HTTP :get" do
+          body
+          assert_requested(:get, url, headers: expected_headers)
+        end
+
+        it "returns the expected payload" do
+          expect(body).to match_html(expected_payload)
+        end
       end
 
-      it "returns the expected payload" do
-        expect(body).to match_html(expected_payload)
+      context "when method is set to :post" do
+        let(:method) { :post }
+
+        let(:params) { { foo: "foo", bar: "bar" } }
+
+        it "does not raise any errors" do
+          expect { body }.not_to raise_error
+        end
+
+        it "fetches the resource via HTTP :post" do
+          body
+          assert_requested(:post, url, headers: expected_headers, body: params)
+        end
+
+        it "returns the expected payload" do
+          expect(body).to match_html(expected_payload)
+        end
       end
     end
 
@@ -90,17 +124,48 @@ RSpec.describe AocCli::Core::Resource do
     shared_examples :fetches_resource do
       let(:expected_headers) { { Cookie: "session=#{token}" } }
 
-      it "does not raise any errors" do
-        expect { markdown }.not_to raise_error
+      context "when an invalid method is set" do
+        let(:method) { :foobar }
+
+        it "raises an error" do
+          expect { markdown }.to raise_error("invalid HTTP method")
+        end
       end
 
-      it "fetches the resource" do
-        markdown
-        assert_requested(:get, url, headers: expected_headers)
+      context "when method is set to :get" do
+        let(:method) { :get }
+
+        it "does not raise any errors" do
+          expect { markdown }.not_to raise_error
+        end
+
+        it "fetches the resource via HTTP :get" do
+          markdown
+          assert_requested(:get, url, headers: expected_headers)
+        end
+
+        it "returns the expected markdown" do
+          expect(markdown).to eq(expected_markdown)
+        end
       end
 
-      it "returns the expected markdown" do
-        expect(markdown).to eq(expected_markdown)
+      context "when method is set to :post" do
+        let(:method) { :post }
+
+        let(:params) { { foo: "foo", bar: "bar" } }
+
+        it "does not raise any errors" do
+          expect { markdown }.not_to raise_error
+        end
+
+        it "fetches the resource via HTTP :post" do
+          markdown
+          assert_requested(:post, url, headers: expected_headers, body: params)
+        end
+
+        it "returns the expected markdown" do
+          expect(markdown).to eq(expected_markdown)
+        end
       end
     end
 

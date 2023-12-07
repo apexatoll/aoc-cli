@@ -4,11 +4,13 @@ module AocCli
     # desired content is extracted from the (usually) HTML response. The whole
     # response is considered the resource payload if no scope is specified.
     class Resource
-      attr_reader :url, :scope
+      attr_reader :url, :scope, :method, :params
 
-      def initialize(url:, scope: nil)
+      def initialize(url:, scope: nil, method: :get, params: {})
         @url = url
         @scope = scope
+        @method = method
+        @params = params
       end
 
       def fetch
@@ -26,7 +28,11 @@ module AocCli
       private
 
       def response
-        @response ||= Request.get(url).to_s
+        case method
+        when :get  then Request.get(url)
+        when :post then Request.post(url, form: params)
+        else raise "invalid HTTP method"
+        end.to_s
       end
     end
   end

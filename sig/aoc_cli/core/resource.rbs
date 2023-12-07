@@ -3,8 +3,15 @@ module AocCli
     class Resource
       attr_reader url: String
       attr_reader scope: String?
+      attr_reader method: Symbol
+      attr_reader params: Hash[Symbol, untyped]
 
-      def initialize: (url: String, ?scope: String?) -> void
+      def initialize: (
+        url: String,
+        ?scope: String?,
+        ?method: Symbol,
+        ?params: Hash[Symbol, untyped]
+      ) -> void
 
       def fetch: -> String
 
@@ -12,7 +19,7 @@ module AocCli
 
       private
 
-      attr_reader response: String
+      def response: -> String
     end
   end
 end
