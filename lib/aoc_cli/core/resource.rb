@@ -26,7 +26,7 @@ module AocCli
       private
 
       def response
-        @response ||= Request.build.get(url).to_s
+        @response ||= Request.get(url).to_s
       end
     end
   end

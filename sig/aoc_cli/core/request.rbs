@@ -11,6 +11,12 @@ module AocCli
 
       def self.build: -> Request
 
+      def self.get: (String) -> HTTP::Response
+
+      class ::Class
+        def def_delegators: (Symbol, *Symbol) -> void
+      end
+
       private
 
       def setup_client!: (String) -> HTTP::Client

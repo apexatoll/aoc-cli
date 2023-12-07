@@ -19,6 +19,12 @@ module AocCli
         new(token:)
       end
 
+      class << self
+        extend Forwardable
+
+        def_delegators :build, :get
+      end
+
       private
 
       def setup_client!(token)
