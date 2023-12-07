@@ -1,25 +1,25 @@
 module AocCli
   module Core
     class Repository
+      HOST = "https://adventofcode.com".freeze
+
+      RESOURCES = {
+        stats: {
+          url: "%{host}/%{year}",
+          scope: "html/body/main/pre"
+        },
+
+        puzzle: {
+          url: "%{host}/%{year}/day/%{day}",
+          scope: "html/body/main/article"
+        },
+
+        input: {
+          url: "%{host}/%{year}/day/%{day}/input"
+        }
+      }.freeze
+
       class << self
-        HOST = "https://adventofcode.com".freeze
-
-        RESOURCES = {
-          stats: {
-            url: "%{host}/%{year}",
-            scope: "html/body/main/pre"
-          },
-
-          puzzle: {
-            url: "%{host}/%{year}/day/%{day}",
-            scope: "html/body/main/article"
-          },
-
-          input: {
-            url: "%{host}/%{year}/day/%{day}/input"
-          }
-        }.freeze
-
         def get_stats(year:)
           html = build_resource(:stats, year:).fetch
 
