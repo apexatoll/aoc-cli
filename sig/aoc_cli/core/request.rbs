@@ -9,9 +9,13 @@ module AocCli
 
       def get: (String) -> HTTP::Response
 
+      def post: (String, **untyped) -> HTTP::Response
+
       def self.build: -> Request
 
       def self.get: (String) -> HTTP::Response
+
+      def self.post: (String, **untyped) -> HTTP::Response
 
       class ::Class
         def def_delegators: (Symbol, *Symbol) -> void

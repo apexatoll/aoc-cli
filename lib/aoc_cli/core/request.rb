@@ -5,7 +5,7 @@ module AocCli
 
       attr_reader :client
 
-      def_delegators :client, :get
+      def_delegators :client, :get, :post
 
       def initialize(token:)
         @client = setup_client!(token)
@@ -22,7 +22,7 @@ module AocCli
       class << self
         extend Forwardable
 
-        def_delegators :build, :get
+        def_delegators :build, :get, :post
       end
 
       private
