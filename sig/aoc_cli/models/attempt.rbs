@@ -1,0 +1,31 @@
+module AocCli
+  class Attempt < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor puzzle: Puzzle
+    attr_accessor level: Integer
+    attr_accessor answer: String
+    attr_accessor status: Symbol
+    attr_accessor hint: Symbol?
+    attr_accessor wait_time: Integer?
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+
+    def incorrect?: -> bool
+    def correct?: -> bool
+    def rate_limited?: -> bool
+    def wrong_level?: -> bool
+
+    def too_low?: -> bool
+    def too_high?: -> bool
+
+    private
+
+    def validate_hint_not_set!: -> void
+
+    def validate_hint!: -> void
+
+    def validate_wait_time_not_set!: -> void
+
+    def validate_wait_time_integer!: -> void
+  end
+end
