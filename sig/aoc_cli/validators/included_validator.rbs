@@ -1,0 +1,11 @@
+module AocCli
+  module Validators
+    class IncludedValidator < Kangaru::Validator
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      def allowed_values: -> Array[untyped]
+    end
+  end
+end
