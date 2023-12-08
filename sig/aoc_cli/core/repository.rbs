@@ -11,6 +11,10 @@ module AocCli
 
       def self.get_input: (year: Integer, day: Integer) -> String
 
+      def self.post_solution: (
+        year: Integer, day: Integer, level: Integer, answer: untyped
+      ) -> Hash[Symbol, untyped]
+
       private
 
       def self.build_resource: (Symbol, **untyped) -> Resource

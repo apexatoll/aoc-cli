@@ -248,4 +248,141 @@ RSpec.describe AocCli::Core::Repository do
                        resource: "input-2023-01"
     end
   end
+
+  describe ".post_solution" do
+    subject(:response) do
+      described_class.post_solution(year:, day:, level:, answer:)
+    end
+
+    let(:year) { 2016 }
+
+    let(:day) { 2 }
+
+    around { |spec| VCR.use_cassette(cassette) { spec.run } }
+
+    shared_examples :makes_expected_post_request do
+      let(:data) { { level:, answer: } }
+
+      let(:body) { URI.encode_www_form(data) }
+
+      let(:url) { path_to_url("2016/day/2/answer") }
+
+      it "makes the expected POST request" do
+        response
+        assert_requested(:post, url, body:)
+      end
+    end
+
+    shared_examples :returns_response_hash do |attributes|
+      it "returns the expected parsed response hash" do
+        expect(response).to eq(**attributes)
+      end
+    end
+
+    context "when on part one of the puzzle" do
+      context "and level is specified correctly as one" do
+        let(:level) { 1 }
+
+        context "and vastly incorrect answer is given" do
+          let(:answer)   { "hello world" }
+          let(:cassette) { "solution-2016-02-1-incorrect-no-hint" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :incorrect, wait_time: 1
+        end
+
+        context "and answer is too low" do
+          let(:answer)   { 99_331 }
+          let(:cassette) { "solution-2016-02-1-incorrect-too-low" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :incorrect, hint: :too_low, wait_time: 1
+        end
+
+        context "and answer is too high" do
+          let(:answer) { 99_333 }
+          let(:cassette) { "solution-2016-02-1-incorrect-too-high" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :incorrect, hint: :too_high, wait_time: 5
+        end
+
+        context "and answering is rate-limited" do
+          let(:answer)   { 99_332 }
+          let(:cassette) { "solution-2016-02-1-rate-limited" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :rate_limited, wait_time: 4
+        end
+
+        context "and answer is correct" do
+          let(:answer)   { 99_332 }
+          let(:cassette) { "solution-2016-02-1-correct" }
+
+          include_examples :makes_expected_post_request
+          include_examples :returns_response_hash, status: :correct
+        end
+      end
+
+      context "and level is specified incorrectly as two" do
+        let(:level)    { 2 }
+        let(:answer)   { 99_332 }
+        let(:cassette) { "solution-2016-02-1-wrong-level" }
+
+        include_examples :makes_expected_post_request
+        include_examples :returns_response_hash, status: :wrong_level
+      end
+    end
+
+    context "when on part two of the puzzle" do
+      context "and level is specified incorrectly as one" do
+        let(:level)    { 1 }
+        let(:answer)   { "DD483" }
+        let(:cassette) { "solution-2016-02-2-wrong-level" }
+
+        include_examples :makes_expected_post_request
+        include_examples :returns_response_hash, status: :wrong_level
+      end
+
+      context "and level is specified correctly as two" do
+        let(:level) { 2 }
+
+        context "and incorrect answer is given" do
+          let(:answer)   { "hello world" }
+          let(:cassette) { "solution-2016-02-2-incorrect" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :incorrect, wait_time: 1
+        end
+
+        context "and answering is rate-limited" do
+          let(:answer)   { "DD483" }
+          let(:cassette) { "solution-2016-02-2-rate-limited" }
+
+          include_examples :makes_expected_post_request
+
+          include_examples :returns_response_hash,
+                           status: :rate_limited, wait_time: 0
+        end
+
+        context "and answer is correct" do
+          let(:answer)   { "DD483" }
+          let(:cassette) { "solution-2016-02-2-correct" }
+
+          include_examples :makes_expected_post_request
+          include_examples :returns_response_hash, status: :correct
+        end
+      end
+    end
+  end
 end

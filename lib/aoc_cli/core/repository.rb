@@ -19,6 +19,13 @@ module AocCli
         input: {
           url: "%{host}/%{year}/day/%{day}/input",
           method: :get
+        },
+
+        solution: {
+          url: "%{host}/%{year}/day/%{day}/answer",
+          scope: "html/body/main/article",
+          method: :post,
+          params: %i[level answer]
         }
       }.freeze
 
@@ -35,6 +42,14 @@ module AocCli
 
         def get_input(year:, day:)
           build_resource(:input, year:, day:).fetch
+        end
+
+        def post_solution(year:, day:, level:, answer:)
+          response = build_resource(
+            :solution, year:, day:, level:, answer:
+          ).fetch_markdown
+
+          AttemptParser.new(response).to_h
         end
 
         private
