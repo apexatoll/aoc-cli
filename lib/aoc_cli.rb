@@ -25,4 +25,5 @@ module AocCli
   apply_config!
 
   Sequel::Model.plugin(:polymorphic)
+  Sequel::Model.plugin(:enum)
 end
