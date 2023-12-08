@@ -1,0 +1,41 @@
+module AocCli
+  module Core
+    class AttemptParser
+      attr_reader response: String
+
+      def initialize: (String) -> void
+
+      def to_h: -> Hash[Symbol, untyped]
+
+      private
+
+      module Prefixes
+        CORRECT: Regexp
+        INCORRECT: Regexp
+        RATE_LIMITED: Regexp
+        WRONG_LEVEL: Regexp
+      end
+
+      module Hints
+        TOO_LOW: Regexp
+        TOO_HIGH: Regexp
+      end
+
+      module WaitTimes
+        ONE_MINUTE: Regexp
+        INCORRECT_FORMAT: Regexp
+        RATE_LIMITED_FORMAT: Regexp
+      end
+
+      def status: -> Symbol
+
+      def hint: -> Symbol?
+
+      def wait_time: -> Integer?
+
+      def scan_incorrect_wait_time!: -> Integer?
+
+      def scan_rated_limited_wait_time!: -> Integer?
+    end
+  end
+end
