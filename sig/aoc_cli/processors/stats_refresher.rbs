@@ -1,0 +1,13 @@
+module AocCli
+  module Processors
+    class StatsRefresher < Core::Processor
+      attr_accessor year: Integer
+
+      private
+
+      attr_reader event: Event?
+
+      def validate_event_exists!: -> void
+    end
+  end
+end
