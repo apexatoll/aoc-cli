@@ -76,4 +76,129 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
       end
     end
   end
+
+  describe "#run" do
+    subject(:run) { puzzle_refresher.run }
+
+    let(:year) { 2017 }
+
+    let(:day) { 3 }
+
+    let(:content) { "Puzzle content" }
+
+    let(:input) { "foobar" }
+
+    before do
+      allow(AocCli::Core::Repository)
+        .to receive(:get_puzzle)
+        .with(year:, day:)
+        .and_return(content)
+
+      allow(AocCli::Core::Repository)
+        .to receive(:get_input)
+        .with(year:, day:)
+        .and_return(input)
+    end
+
+    context "when invalid" do
+      it "does not fetch the puzzle content" do
+        run
+
+        expect(AocCli::Core::Repository)
+          .not_to have_received(:get_puzzle)
+          .with(year:, day:)
+      end
+
+      it "does not fetch the puzzle input" do
+        run
+
+        expect(AocCli::Core::Repository)
+          .not_to have_received(:get_input)
+          .with(year:, day:)
+      end
+
+      it "does not create a Puzzle record" do
+        expect { run }.not_to change { AocCli::Puzzle.count }
+      end
+
+      it "returns nil" do
+        expect(run).to be_nil
+      end
+    end
+
+    context "when valid" do
+      let!(:event) { create(:event, year:) }
+
+      context "and puzzle does not already exist" do
+        let(:puzzle) { AocCli::Puzzle.last }
+
+        it "fetches the puzzle content" do
+          run
+
+          expect(AocCli::Core::Repository)
+            .to have_received(:get_puzzle)
+            .with(year:, day:)
+            .once
+        end
+
+        it "fetches the puzzle input" do
+          run
+
+          expect(AocCli::Core::Repository)
+            .to have_received(:get_input)
+            .with(year:, day:)
+            .once
+        end
+
+        it "creates a Puzzle record" do
+          expect { run }.to change { AocCli::Puzzle.count }.by(1)
+        end
+
+        it "sets the expected Puzzle attributes" do
+          run
+          expect(puzzle).to have_attributes(event:, day:, content:, input:)
+        end
+
+        it "returns the created Puzzle record" do
+          expect(run).to eq(puzzle)
+        end
+      end
+
+      context "and puzzle already exists" do
+        let!(:puzzle) { create(:puzzle, event:, day:) }
+
+        it "fetches the puzzle content" do
+          run
+
+          expect(AocCli::Core::Repository)
+            .to have_received(:get_puzzle)
+            .with(year:, day:)
+            .once
+        end
+
+        it "fetches the puzzle input" do
+          run
+
+          expect(AocCli::Core::Repository)
+            .to have_received(:get_input)
+            .with(year:, day:)
+            .once
+        end
+
+        it "does not create a Puzzle record" do
+          expect { run }.not_to change { AocCli::Puzzle.count }
+        end
+
+        it "updates the existing Puzzle attributes" do
+          expect { run }
+            .to change { puzzle.reload.values }
+            .to(include(content:, input:))
+        end
+
+        it "returns the updated Puzzle record" do
+          expect(run.reload).to eq(puzzle.reload)
+        end
+      end
+    end
+  end
 end

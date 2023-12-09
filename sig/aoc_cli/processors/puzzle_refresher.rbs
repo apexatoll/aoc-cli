@@ -4,9 +4,18 @@ module AocCli
       attr_accessor year: Integer
       attr_accessor day: Integer
 
+      def run: -> Puzzle?
+
       private
 
       attr_reader event: Event?
+      attr_reader puzzle: Puzzle?
+
+      def fetch_content!: -> String
+
+      def fetch_input!: -> String
+
+      def create_or_update_puzzle!: (String, String) -> Puzzle
 
       def validate_event_set!: -> void
     end
