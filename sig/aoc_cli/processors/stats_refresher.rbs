@@ -3,9 +3,17 @@ module AocCli
     class StatsRefresher < Core::Processor
       attr_accessor year: Integer
 
+      def run: -> Stats?
+
       private
 
       attr_reader event: Event?
+
+      def event!: -> Event
+
+      def fetch_stats!: -> Hash[Symbol, Integer]
+
+      def create_or_update_stats!: (Hash[Symbol, Integer]) -> Stats
 
       def validate_event_exists!: -> void
     end
