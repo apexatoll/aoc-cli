@@ -1,0 +1,11 @@
+module AocCli
+  class Location < Kangaru::Model
+    type resource = (Event | Puzzle)
+
+    attr_accessor id: Integer
+    attr_accessor path: String
+    attr_accessor resource: resource
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+  end
+end

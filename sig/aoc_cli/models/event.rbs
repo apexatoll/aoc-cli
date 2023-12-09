@@ -7,5 +7,6 @@ module AocCli
 
     attr_accessor puzzles: Array[Puzzle]
     attr_accessor stats: Stats
+    attr_accessor location: Location
   end
 end
