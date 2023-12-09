@@ -1,0 +1,24 @@
+module AocCli
+  module Processors
+    class SolutionPoster < Core::Processor
+      attr_accessor year: Integer
+      attr_accessor day: Integer
+      attr_accessor answer: untyped
+
+      private
+
+      attr_reader event: Event?
+      attr_reader puzzle: Puzzle?
+
+      def stats: -> Stats
+
+      def validate_event_exists!: -> void
+
+      def validate_stats_exist!: -> void
+
+      def validate_puzzle_exists!: -> void
+
+      def validate_puzzle_not_complete!: -> void
+    end
+  end
+end
