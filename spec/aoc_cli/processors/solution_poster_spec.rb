@@ -169,6 +169,50 @@ RSpec.describe AocCli::Processors::SolutionPoster do
       end
     end
 
+    shared_examples :does_not_mark_complete do
+      it "does not set the puzzle part_one_completed_at time" do
+        expect { run }.not_to change { puzzle.reload.part_one_completed_at }
+      end
+
+      it "does not set the puzzle part_two_completed_at time" do
+        expect { run }.not_to change { puzzle.reload.part_two_completed_at }
+      end
+
+      it "does not update the stats" do
+        expect { run }.not_to change { stats.reload.progress(day) }
+      end
+    end
+
+    shared_examples :marks_part_one_complete do
+      before { allow(Time).to receive(:now).and_return(Time.now) }
+
+      it "updates the puzzle completed at timestamp" do
+        expect { run }
+          .to change { puzzle.reload.part_one_completed_at }
+          .from(nil)
+          .to(Time.now)
+      end
+
+      it "updates the stats" do
+        expect { run }.to change { stats.reload.progress(day) }.from(0).to(1)
+      end
+    end
+
+    shared_examples :marks_part_two_complete do
+      before { allow(Time).to receive(:now).and_return(Time.now) }
+
+      it "updates the puzzle completed at timestamp" do
+        expect { run }
+          .to change { puzzle.reload.part_two_completed_at }
+          .from(nil)
+          .to(Time.now)
+      end
+
+      it "updates the stats" do
+        expect { run }.to change { stats.reload.progress(day) }.from(1).to(2)
+      end
+    end
+
     context "when invalid" do
       let(:progress) { 2 }
 
@@ -194,24 +238,28 @@ RSpec.describe AocCli::Processors::SolutionPoster do
           let(:response) { { status: :wrong_level } }
 
           include_examples :posts_solution, level: 1
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is rate limited" do
           let(:response) { { status: :rate_limited, wait_time: 3 } }
 
           include_examples :posts_solution, level: 1
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is incorrect" do
           let(:response) { { status: :incorrect, wait_time: 1 } }
 
           include_examples :posts_solution, level: 1
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is correct" do
           let(:response) { { status: :correct } }
 
           include_examples :posts_solution, level: 1
+          include_examples :marks_part_one_complete
         end
       end
 
@@ -222,24 +270,28 @@ RSpec.describe AocCli::Processors::SolutionPoster do
           let(:response) { { status: :wrong_level } }
 
           include_examples :posts_solution, level: 2
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is rate limited" do
           let(:response) { { status: :rate_limited, wait_time: 3 } }
 
           include_examples :posts_solution, level: 2
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is incorrect" do
           let(:response) { { status: :incorrect, wait_time: 1 } }
 
           include_examples :posts_solution, level: 2
+          include_examples :does_not_mark_complete
         end
 
         context "and solution is correct" do
           let(:response) { { status: :correct } }
 
           include_examples :posts_solution, level: 2
+          include_examples :marks_part_two_complete
         end
       end
     end

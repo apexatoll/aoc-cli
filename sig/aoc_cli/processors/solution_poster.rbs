@@ -14,9 +14,13 @@ module AocCli
       attr_reader stats: Stats
       attr_reader level: Integer
 
+      def puzzle!: -> Puzzle
+
       def post_solution!: -> Hash[Symbol, untyped]
 
       def create_attempt!: (Hash[Symbol, untyped]) -> Attempt
+
+      def handle_correct_attempt!: -> void
 
       def validate_event_exists!: -> void
 

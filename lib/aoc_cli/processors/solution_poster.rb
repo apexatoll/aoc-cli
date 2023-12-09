@@ -18,7 +18,9 @@ module AocCli
       def run
         return unless valid?
 
-        create_attempt!(post_solution!)
+        create_attempt!(post_solution!).tap do |attempt|
+          handle_correct_attempt! if attempt.correct?
+        end
       end
 
       private
@@ -29,6 +31,10 @@ module AocCli
 
       def puzzle
         @puzzle ||= Puzzle.join(:events, id: :event_id).first(year:, day:)
+      end
+
+      def puzzle!
+        puzzle || raise
       end
 
       def stats
@@ -45,6 +51,11 @@ module AocCli
 
       def create_attempt!(data)
         Attempt.create(puzzle:, level:, answer:, **data)
+      end
+
+      def handle_correct_attempt!
+        stats.advance_progress!(day)
+        puzzle!.mark_complete!(level)
       end
 
       def validate_event_exists!
