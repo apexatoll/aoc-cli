@@ -1,5 +1,5 @@
 RSpec.describe AocCli::Stats do
-  subject(:stats) { described_class.new(**attributes) }
+  subject(:stats) { described_class.create(**attributes) }
 
   let(:attributes) { { event:, **stats_hash } }
 
@@ -8,6 +8,8 @@ RSpec.describe AocCli::Stats do
   let(:stats_hash) { 1.upto(25).to_h { |i| [:"day_#{i}", 0] } }
 
   describe "validations" do
+    subject(:stats) { described_class.new(**attributes) }
+
     shared_examples :validates_day do |day|
       describe ":day_#{day}" do
         before { stats_hash.merge!("day_#{day}": value) }
@@ -149,6 +151,62 @@ RSpec.describe AocCli::Stats do
 
       it "returns true" do
         expect(complete?).to be(true)
+      end
+    end
+  end
+
+  describe "#advance_progress!" do
+    subject(:advance_progress!) { stats.advance_progress!(day) }
+
+    context "when day is not valid" do
+      let(:day) { 100 }
+
+      it "raises an error" do
+        expect { advance_progress! }.to raise_error("invalid day")
+      end
+    end
+
+    context "when day is valid" do
+      let(:day) { 8 }
+
+      let(:stats_hash) { super().merge("day_#{day}": progress) }
+
+      context "and progress is initially 0" do
+        let(:progress) { 0 }
+
+        it "does not raise any errors" do
+          expect { advance_progress! }.not_to raise_error
+        end
+
+        it "updates the progress" do
+          expect { advance_progress! }
+            .to change { stats.reload[:"day_#{day}"] }
+            .from(0)
+            .to(1)
+        end
+      end
+
+      context "and progress is initially 1" do
+        let(:progress) { 1 }
+
+        it "does not raise any errors" do
+          expect { advance_progress! }.not_to raise_error
+        end
+
+        it "updates the progress" do
+          expect { advance_progress! }
+            .to change { stats.reload[:"day_#{day}"] }
+            .from(1)
+            .to(2)
+        end
+      end
+
+      context "and progress is initially 2" do
+        let(:progress) { 2 }
+
+        it "raises an error" do
+          expect { advance_progress! }.to raise_error("already complete")
+        end
       end
     end
   end

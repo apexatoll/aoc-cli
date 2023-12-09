@@ -21,5 +21,11 @@ module AocCli
     def complete?(day)
       progress(day) == 2
     end
+
+    def advance_progress!(day)
+      raise "already complete" if complete?(day)
+
+      update("day_#{day}": current_level(day))
+    end
   end
 end

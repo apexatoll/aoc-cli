@@ -36,5 +36,7 @@ module AocCli
     def current_level: (Integer) -> Integer?
 
     def complete?: (Integer) -> bool
+
+    def advance_progress!: (Integer) -> void
   end
 end
