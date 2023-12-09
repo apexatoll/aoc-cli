@@ -5,12 +5,18 @@ module AocCli
       attr_accessor day: Integer
       attr_accessor answer: untyped
 
+      def run: -> Attempt?
+
       private
 
       attr_reader event: Event?
       attr_reader puzzle: Puzzle?
+      attr_reader stats: Stats
+      attr_reader level: Integer
 
-      def stats: -> Stats
+      def post_solution!: -> Hash[Symbol, untyped]
+
+      def create_attempt!: (Hash[Symbol, untyped]) -> Attempt
 
       def validate_event_exists!: -> void
 

@@ -3,11 +3,13 @@ RSpec.describe AocCli::Processors::SolutionPoster do
 
   let(:attributes) { { year:, day:, answer: }.compact }
 
-  describe "validations" do
-    let(:year) { 2016 }
-    let(:day) { 3 }
-    let(:answer) { 100 }
+  let(:year) { 2016 }
 
+  let(:day) { 3 }
+
+  let(:answer) { "abcdef" }
+
+  describe "validations" do
     context "when year is nil" do
       let(:year) { nil }
 
@@ -118,6 +120,126 @@ RSpec.describe AocCli::Processors::SolutionPoster do
               end
             end
           end
+        end
+      end
+    end
+  end
+
+  describe "#run" do
+    subject(:run) { solution_parser.run }
+
+    let(:event) { create(:event, year:) }
+
+    let!(:stats) { create(:stats, event:, "day_#{day}": progress) }
+
+    let!(:puzzle) { create(:puzzle, event:, day:) }
+
+    let(:response) { {} }
+
+    before do
+      allow(AocCli::Core::Repository)
+        .to receive(:post_solution)
+        .and_return(response)
+    end
+
+    shared_examples :posts_solution do |options|
+      let(:level) { options[:level] }
+
+      let(:attempt) { AocCli::Attempt.last }
+
+      it "posts the solution" do
+        run
+
+        expect(AocCli::Core::Repository)
+          .to have_received(:post_solution)
+          .with(year:, day:, level:, answer:)
+          .once
+      end
+
+      it "creates an Attempt record" do
+        expect { run }.to change { AocCli::Attempt.count }.by(1)
+      end
+
+      it "sets the expected Attempt attributes" do
+        run
+
+        expect(attempt).to have_attributes(
+          puzzle:, level:, answer:, **response
+        )
+      end
+    end
+
+    context "when invalid" do
+      let(:progress) { 2 }
+
+      it "does not post the solution" do
+        run
+        expect(AocCli::Core::Repository).not_to have_received(:post_solution)
+      end
+
+      it "does not create an Attempt record" do
+        expect { run }.not_to change { AocCli::Attempt.count }
+      end
+
+      it "returns nil" do
+        expect(run).to be_nil
+      end
+    end
+
+    context "when valid" do
+      context "and puzzle has no initial progress" do
+        let(:progress) { 0 }
+
+        context "and wrong level is specified" do
+          let(:response) { { status: :wrong_level } }
+
+          include_examples :posts_solution, level: 1
+        end
+
+        context "and solution is rate limited" do
+          let(:response) { { status: :rate_limited, wait_time: 3 } }
+
+          include_examples :posts_solution, level: 1
+        end
+
+        context "and solution is incorrect" do
+          let(:response) { { status: :incorrect, wait_time: 1 } }
+
+          include_examples :posts_solution, level: 1
+        end
+
+        context "and solution is correct" do
+          let(:response) { { status: :correct } }
+
+          include_examples :posts_solution, level: 1
+        end
+      end
+
+      context "and puzzle has initial progress" do
+        let(:progress) { 1 }
+
+        context "and wrong level is specified" do
+          let(:response) { { status: :wrong_level } }
+
+          include_examples :posts_solution, level: 2
+        end
+
+        context "and solution is rate limited" do
+          let(:response) { { status: :rate_limited, wait_time: 3 } }
+
+          include_examples :posts_solution, level: 2
+        end
+
+        context "and solution is incorrect" do
+          let(:response) { { status: :incorrect, wait_time: 1 } }
+
+          include_examples :posts_solution, level: 2
+        end
+
+        context "and solution is correct" do
+          let(:response) { { status: :correct } }
+
+          include_examples :posts_solution, level: 2
         end
       end
     end

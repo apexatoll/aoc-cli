@@ -15,6 +15,12 @@ module AocCli
         validate_puzzle_not_complete! if errors.empty?
       end
 
+      def run
+        return unless valid?
+
+        create_attempt!(post_solution!)
+      end
+
       private
 
       def event
@@ -27,6 +33,18 @@ module AocCli
 
       def stats
         @stats ||= event&.stats || raise
+      end
+
+      def level
+        @level ||= stats.current_level(day) || raise
+      end
+
+      def post_solution!
+        Core::Repository.post_solution(year:, day:, level:, answer:)
+      end
+
+      def create_attempt!(data)
+        Attempt.create(puzzle:, level:, answer:, **data)
       end
 
       def validate_event_exists!
