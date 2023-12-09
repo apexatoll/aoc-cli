@@ -78,7 +78,7 @@ RSpec.describe AocCli::Attempt do
       end
 
       context "when an integer" do
-        let(:answer) { 12345 }
+        let(:answer) { 123 }
 
         include_examples :valid
       end
