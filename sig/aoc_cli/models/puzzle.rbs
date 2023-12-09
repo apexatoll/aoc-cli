@@ -9,5 +9,7 @@ module AocCli
     attr_accessor updated_at: Time
     attr_accessor part_one_completed_at: Time
     attr_accessor part_two_completed_at: Time
+
+    def mark_complete!: (Integer) -> void
   end
 end
