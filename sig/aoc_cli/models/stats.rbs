@@ -30,5 +30,11 @@ module AocCli
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
     attr_accessor completed_at: Time
+
+    def progress: (Integer) -> Integer
+
+    def current_level: (Integer) -> Integer?
+
+    def complete?: (Integer) -> bool
   end
 end

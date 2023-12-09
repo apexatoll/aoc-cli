@@ -68,4 +68,88 @@ RSpec.describe AocCli::Stats do
       include_examples :validates_day, day
     end
   end
+
+  describe "#progress" do
+    subject(:progress) { stats.progress(day) }
+
+    context "when day is not valid" do
+      let(:day) { 100 }
+
+      it "raises an error" do
+        expect { progress }.to raise_error("invalid day")
+      end
+    end
+
+    context "when day is valid" do
+      let(:day) { 3 }
+
+      it "returns the stats value" do
+        expect(progress).to eq(stats.day_3)
+      end
+    end
+  end
+
+  describe "#current_level" do
+    subject(:level) { stats.current_level(day) }
+
+    let(:day) { 10 }
+
+    let(:stats_hash) { super().merge("day_#{day}": progress) }
+
+    context "when day is not attempted" do
+      let(:progress) { 0 }
+
+      it "returns 1" do
+        expect(level).to eq(1)
+      end
+    end
+
+    context "when day is half complete" do
+      let(:progress) { 1 }
+
+      it "returns 2" do
+        expect(level).to eq(2)
+      end
+    end
+
+    context "when day is complete" do
+      let(:progress) { 2 }
+
+      it "returns nil" do
+        expect(level).to be_nil
+      end
+    end
+  end
+
+  describe "#complete?" do
+    subject(:complete?) { stats.complete?(day) }
+
+    let(:day) { 1 }
+
+    let(:stats_hash) { super().merge("day_#{day}": progress) }
+
+    context "when day is not attempted" do
+      let(:progress) { 0 }
+
+      it "returns false" do
+        expect(complete?).to be(false)
+      end
+    end
+
+    context "when day is half complete" do
+      let(:progress) { 1 }
+
+      it "returns false" do
+        expect(complete?).to be(false)
+      end
+    end
+
+    context "when day is complete" do
+      let(:progress) { 2 }
+
+      it "returns true" do
+        expect(complete?).to be(true)
+      end
+    end
+  end
 end

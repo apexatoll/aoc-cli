@@ -7,5 +7,19 @@ module AocCli
     1.upto(25) do |i|
       validates :"day_#{i}", integer: { between: 0..2 }
     end
+
+    def progress(day)
+      self[:"day_#{day}"] || raise("invalid day")
+    end
+
+    def current_level(day)
+      return if complete?(day)
+
+      progress(day) + 1
+    end
+
+    def complete?(day)
+      progress(day) == 2
+    end
   end
 end
