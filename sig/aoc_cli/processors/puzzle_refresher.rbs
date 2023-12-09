@@ -1,0 +1,14 @@
+module AocCli
+  module Processors
+    class PuzzleRefresher < Core::Processor
+      attr_accessor year: Integer
+      attr_accessor day: Integer
+
+      private
+
+      attr_reader event: Event?
+
+      def validate_event_set!: -> void
+    end
+  end
+end
