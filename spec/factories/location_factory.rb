@@ -9,5 +9,13 @@ FactoryBot.define do
 
       resource { event }
     end
+
+    trait :puzzle_dir do
+      transient do
+        puzzle { association :puzzle }
+      end
+
+      resource { puzzle }
+    end
   end
 end
