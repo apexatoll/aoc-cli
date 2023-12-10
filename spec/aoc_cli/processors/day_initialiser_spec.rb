@@ -102,4 +102,153 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
       end
     end
   end
+
+  describe "#run" do
+    subject(:run) { day_initialiser.run }
+
+    let(:event) { create(:event, year:) }
+
+    let!(:event_location) do
+      create(:location, :year_dir, event:, path: event_dir)
+    end
+
+    let!(:puzzle) { create(:puzzle, event:, day:) }
+
+    let(:event_dir)        { temp_dir.to_s }
+    let(:puzzle_dir)       { temp_path(day.to_s).to_s }
+    let(:puzzle_file_path) { File.join(puzzle_dir, "day_#{day}.md") }
+    let(:input_file_path)  { File.join(puzzle_dir, "input") }
+
+    before do
+      allow(AocCli::Processors::PuzzleRefresher)
+        .to receive(:run)
+        .with(year:, day:)
+        .and_return(puzzle)
+    end
+
+    context "when invalid" do
+      before { temp_path(day.to_s).mkdir }
+
+      it "does not refresh the puzzle" do
+        run
+        expect(AocCli::Processors::PuzzleRefresher).not_to have_received(:run)
+      end
+
+      it "does not create a Location record" do
+        expect { run }.not_to change { AocCli::Location.count }
+      end
+
+      it "does not make the day directory" do
+        expect { run }.not_to create_temp_dir(day.to_s)
+      end
+
+      it "does not write the puzzle file" do
+        expect { run }
+          .not_to create_temp_file(puzzle_file_path)
+          .with_contents(puzzle.content)
+      end
+
+      it "does not write the input file" do
+        expect { run }
+          .not_to create_temp_file(input_file_path)
+          .with_contents(puzzle.input)
+      end
+
+      it "returns nil" do
+        expect(run).to be_nil
+      end
+    end
+
+    context "when valid" do
+      context "and puzzle location record already exists" do
+        let!(:puzzle_location) { create(:location, :puzzle_dir, puzzle:) }
+
+        it "refreshes the puzzle" do
+          run
+
+          expect(AocCli::Processors::PuzzleRefresher)
+            .to have_received(:run)
+            .with(year:, day:)
+            .once
+        end
+
+        it "does not create a Location record" do
+          expect { run }.not_to change { AocCli::Location.count }
+        end
+
+        it "updates the existing Location attributes" do
+          run
+
+          expect(puzzle_location.reload).to have_attributes(
+            resource: puzzle, path: puzzle_dir
+          )
+        end
+
+        it "makes the day directory" do
+          expect { run }.to create_temp_dir(day.to_s)
+        end
+
+        it "writes the puzzle file" do
+          expect { run }
+            .to create_temp_file(puzzle_file_path)
+            .with_contents(puzzle.content)
+        end
+
+        it "writes the input file" do
+          expect { run }
+            .to create_temp_file(input_file_path)
+            .with_contents(puzzle.input)
+        end
+
+        it "returns the Puzzle record" do
+          expect(run).to eq(puzzle)
+        end
+      end
+
+      context "and puzzle location record does not already exist" do
+        let(:puzzle_location) { AocCli::Location.last }
+
+        it "refreshes the puzzle" do
+          run
+
+          expect(AocCli::Processors::PuzzleRefresher)
+            .to have_received(:run)
+            .with(year:, day:)
+            .once
+        end
+
+        it "creates a Location record" do
+          expect { run }.to change { AocCli::Location.count }.by(1)
+        end
+
+        it "sets the expected Location attributes" do
+          run
+
+          expect(puzzle_location).to have_attributes(
+            resource: puzzle, path: puzzle_dir
+          )
+        end
+
+        it "makes the day directory" do
+          expect { run }.to create_temp_dir(day.to_s)
+        end
+
+        it "writes the puzzle file" do
+          expect { run }
+            .to create_temp_file(puzzle_file_path)
+            .with_contents(puzzle.content)
+        end
+
+        it "writes the input file" do
+          expect { run }
+            .to create_temp_file(input_file_path)
+            .with_contents(puzzle.input)
+        end
+
+        it "returns the Puzzle record" do
+          expect(run).to eq(puzzle)
+        end
+      end
+    end
+  end
 end

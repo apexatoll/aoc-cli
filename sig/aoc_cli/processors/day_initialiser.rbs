@@ -10,6 +10,18 @@ module AocCli
       attr_reader event_dir: String
       attr_reader puzzle_dir: String
 
+      def puzzle_path: -> String
+
+      def input_path: -> String
+
+      def refresh_puzzle!: -> Puzzle
+
+      def create_or_update_location!: (Puzzle) -> void
+
+      def make_directory!: -> void
+
+      def write_files!: (Puzzle) -> void
+
       def validate_event_is_initialised!: -> void
 
       def validate_event_location_is_set!: -> void
