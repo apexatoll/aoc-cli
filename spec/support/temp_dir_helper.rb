@@ -1,8 +1,23 @@
 module TempDirHelper
+  extend RSpec::Matchers::DSL
+
   attr_reader :temp_dir
 
   def temp_path(file)
     Pathname(temp_dir).join(file)
+  end
+
+  matcher :create_temp_dir do |dir|
+    supports_block_expectations
+
+    match do |action|
+      path = temp_path(dir)
+      exists_before = Dir.exist?(path)
+      action.call
+      exists_after = Dir.exist?(path)
+
+      !exists_before && exists_after
+    end
   end
 end
 
