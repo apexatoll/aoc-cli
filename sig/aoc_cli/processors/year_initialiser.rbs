@@ -1,0 +1,14 @@
+module AocCli
+  module Processors
+    class YearInitialiser < Core::Processor
+      attr_accessor year: Integer
+      attr_accessor dir: String
+
+      private
+
+      attr_reader year_dir: String
+
+      def validate_year_dir_does_not_exist!: -> void
+    end
+  end
+end
