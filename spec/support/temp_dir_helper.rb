@@ -19,6 +19,28 @@ module TempDirHelper
       !exists_before && exists_after
     end
   end
+
+  matcher :create_temp_file do |file|
+    supports_block_expectations
+
+    match do |action|
+      path = temp_path(file)
+
+      exists_before = File.exist?(path)
+      action.call
+      exists_after = File.exist?(path)
+
+      created = !exists_before && exists_after
+
+      return created unless @contents
+
+      created && File.read(path) == @contents
+    end
+
+    chain :with_contents do |contents|
+      @contents = contents
+    end
+  end
 end
 
 RSpec.configure do |config|
