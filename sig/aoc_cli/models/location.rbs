@@ -7,5 +7,7 @@ module AocCli
     attr_accessor resource: resource
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
+
+    def exists?: -> bool
   end
 end

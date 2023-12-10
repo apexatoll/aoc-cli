@@ -3,6 +3,8 @@ RSpec.describe AocCli::Location do
 
   let(:attributes) { { path:, resource: } }
 
+  let(:resource) { create(:event) }
+
   describe "validations" do
     let(:path) { "/foo/bar/baz" }
 
@@ -39,6 +41,26 @@ RSpec.describe AocCli::Location do
         let(:resource) { create(:puzzle) }
 
         include_examples :valid
+      end
+    end
+  end
+
+  describe "#exists?", :with_temp_dir do
+    subject(:exists?) { location.exists? }
+
+    context "when path does not exist" do
+      let(:path) { temp_path("some-dir").to_s }
+
+      it "returns false" do
+        expect(exists?).to be(false)
+      end
+    end
+
+    context "when path exists" do
+      let(:path) { temp_dir.to_s }
+
+      it "returns true" do
+        expect(exists?).to be(true)
       end
     end
   end
