@@ -8,5 +8,13 @@ module AocCli
     def exists?
       File.exist?(path)
     end
+
+    def event_dir?
+      resource.is_a?(Event)
+    end
+
+    def puzzle_dir?
+      resource.is_a?(Puzzle)
+    end
   end
 end

@@ -3,11 +3,11 @@ RSpec.describe AocCli::Location do
 
   let(:attributes) { { path:, resource: } }
 
+  let(:path) { "/foo/bar/baz" }
+
   let(:resource) { create(:event) }
 
   describe "validations" do
-    let(:path) { "/foo/bar/baz" }
-
     let(:resource) { create(:event) }
 
     describe ":path" do
@@ -61,6 +61,42 @@ RSpec.describe AocCli::Location do
 
       it "returns true" do
         expect(exists?).to be(true)
+      end
+    end
+  end
+
+  describe "#event_dir?" do
+    context "when resource is an Event" do
+      let(:resource) { create(:event) }
+
+      it "returns true" do
+        expect(location).to be_an_event_dir
+      end
+    end
+
+    context "when resource is a Puzzle" do
+      let(:resource) { create(:puzzle) }
+
+      it "returns false" do
+        expect(location).not_to be_an_event_dir
+      end
+    end
+  end
+
+  describe "#puzzle_dir?" do
+    context "when resource is an Event" do
+      let(:resource) { create(:event) }
+
+      it "returns false" do
+        expect(location).not_to be_a_puzzle_dir
+      end
+    end
+
+    context "when resource is a Puzzle" do
+      let(:resource) { create(:puzzle) }
+
+      it "returns true" do
+        expect(location).to be_a_puzzle_dir
       end
     end
   end

@@ -9,5 +9,9 @@ module AocCli
     attr_accessor updated_at: Time
 
     def exists?: -> bool
+
+    def event_dir?: -> bool
+
+    def puzzle_dir?: -> bool
   end
 end
