@@ -1,0 +1,18 @@
+module AocCli
+  module Helpers
+    module PathHelper
+      attr_reader current_path: String
+      attr_reader current_location: Location?
+
+      def current_resource: -> untyped
+
+      def current_year: -> Integer?
+
+      def current_day: -> Integer?
+
+      def in_event_dir?: -> bool
+
+      def in_puzzle_dir?: -> bool
+    end
+  end
+end
