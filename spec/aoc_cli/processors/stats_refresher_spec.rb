@@ -139,7 +139,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
         end
 
         it "returns the Stats record" do
-          expect(run).to eq(stats.reload)
+          expect(run.reload).to eq(stats.reload)
         end
       end
     end
