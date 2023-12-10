@@ -184,13 +184,15 @@ RSpec.describe AocCli::Processors::SolutionPoster do
     end
 
     shared_examples :marks_part_one_complete do
-      before { allow(Time).to receive(:now).and_return(Time.now) }
+      before { allow(Time).to receive(:now).and_return(now) }
+
+      let(:now) { Time.now.round(6) }
 
       it "updates the puzzle completed at timestamp" do
         expect { run }
-          .to change { puzzle.reload.part_one_completed_at }
+          .to change { puzzle.reload.part_one_completed_at&.round(6) }
           .from(nil)
-          .to(Time.now)
+          .to(now)
       end
 
       it "updates the stats" do
@@ -199,13 +201,15 @@ RSpec.describe AocCli::Processors::SolutionPoster do
     end
 
     shared_examples :marks_part_two_complete do
-      before { allow(Time).to receive(:now).and_return(Time.now) }
+      before { allow(Time).to receive(:now).and_return(now) }
+
+      let(:now) { Time.now.round(6) }
 
       it "updates the puzzle completed at timestamp" do
         expect { run }
-          .to change { puzzle.reload.part_two_completed_at }
+          .to change { puzzle.reload.part_two_completed_at&.round(6) }
           .from(nil)
-          .to(Time.now)
+          .to(now)
       end
 
       it "updates the stats" do
