@@ -61,7 +61,9 @@ RSpec.describe AocCli::Puzzle do
   describe "#mark_complete!" do
     subject(:mark_complete!) { puzzle.mark_complete!(level) }
 
-    before { allow(Time).to receive(:now).and_return(Time.now) }
+    let(:now) { Time.now.round(6) }
+
+    before { allow(Time).to receive(:now).and_return(now) }
 
     context "when level is 0" do
       let(:level) { 0 }
@@ -76,9 +78,9 @@ RSpec.describe AocCli::Puzzle do
 
       it "updates the part_one_completed_at timestamp" do
         expect { mark_complete! }
-          .to change { puzzle.reload.part_one_completed_at }
+          .to change { puzzle.reload.part_one_completed_at&.round(6) }
           .from(nil)
-          .to(Time.now)
+          .to(now)
       end
 
       it "does not update the part_two_completed_at timestamp" do
@@ -99,9 +101,9 @@ RSpec.describe AocCli::Puzzle do
 
       it "updates the part_two_completed_at timestamp" do
         expect { mark_complete! }
-          .to change { puzzle.reload.part_two_completed_at }
+          .to change { puzzle.reload.part_two_completed_at&.round(6) }
           .from(nil)
-          .to(Time.now)
+          .to(now)
       end
     end
 
