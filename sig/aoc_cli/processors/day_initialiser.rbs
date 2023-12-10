@@ -1,0 +1,22 @@
+module AocCli
+  module Processors
+    class DayInitialiser < Core::Processor
+      attr_accessor year: Integer
+      attr_accessor day: Integer
+
+      private
+
+      attr_reader event: Event?
+      attr_reader event_dir: String
+      attr_reader puzzle_dir: String
+
+      def validate_event_is_initialised!: -> void
+
+      def validate_event_location_is_set!: -> void
+
+      def validate_event_dir_exists!: -> void
+
+      def validate_puzzle_dir_does_not_exist!: -> void
+    end
+  end
+end
