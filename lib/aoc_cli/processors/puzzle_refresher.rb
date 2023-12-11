@@ -24,7 +24,7 @@ module AocCli
       end
 
       def puzzle
-        @puzzle ||= Puzzle.join(:events, id: :event_id).first(day:)
+        @puzzle ||= Puzzle.join(:events, id: :event_id).first(event:, day:)
       end
 
       def fetch_content!
