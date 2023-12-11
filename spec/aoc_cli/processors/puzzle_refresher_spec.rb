@@ -100,6 +100,26 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
         .and_return(input)
     end
 
+    shared_examples :fetches_puzzle_data do
+      it "fetches the puzzle content" do
+        run
+
+        expect(AocCli::Core::Repository)
+          .to have_received(:get_puzzle)
+          .with(year:, day:)
+          .once
+      end
+
+      it "fetches the puzzle input" do
+        run
+
+        expect(AocCli::Core::Repository)
+          .to have_received(:get_input)
+          .with(year:, day:)
+          .once
+      end
+    end
+
     context "when invalid" do
       it "does not fetch the puzzle content" do
         run
@@ -132,23 +152,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
       context "and puzzle does not already exist" do
         let(:puzzle) { AocCli::Puzzle.last }
 
-        it "fetches the puzzle content" do
-          run
-
-          expect(AocCli::Core::Repository)
-            .to have_received(:get_puzzle)
-            .with(year:, day:)
-            .once
-        end
-
-        it "fetches the puzzle input" do
-          run
-
-          expect(AocCli::Core::Repository)
-            .to have_received(:get_input)
-            .with(year:, day:)
-            .once
-        end
+        include_examples :fetches_puzzle_data
 
         it "creates a Puzzle record" do
           expect { run }.to change { AocCli::Puzzle.count }.by(1)
@@ -167,23 +171,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
       context "and puzzle already exists" do
         let!(:puzzle) { create(:puzzle, event:, day:) }
 
-        it "fetches the puzzle content" do
-          run
-
-          expect(AocCli::Core::Repository)
-            .to have_received(:get_puzzle)
-            .with(year:, day:)
-            .once
-        end
-
-        it "fetches the puzzle input" do
-          run
-
-          expect(AocCli::Core::Repository)
-            .to have_received(:get_input)
-            .with(year:, day:)
-            .once
-        end
+        include_examples :fetches_puzzle_data
 
         it "does not create a Puzzle record" do
           expect { run }.not_to change { AocCli::Puzzle.count }
