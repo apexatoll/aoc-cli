@@ -25,9 +25,9 @@ module Matchers
 
     match do |action|
       expected = if messages.count > 1
-                   errors_as_line(messages.first)
-                 else
                    errors_as_list(*messages)
+                 else
+                   error_as_line(messages.first)
                  end
 
       expect { action.call }.to output(expected).to_stdout
