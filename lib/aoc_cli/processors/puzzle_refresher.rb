@@ -39,7 +39,7 @@ module AocCli
         if puzzle.nil?
           Puzzle.create(event:, day:, content:, input:)
         else
-          puzzle.update(content:, input:)
+          puzzle.update(content:, input:) || puzzle
         end
       end
 

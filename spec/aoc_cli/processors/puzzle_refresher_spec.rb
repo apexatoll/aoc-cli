@@ -84,20 +84,20 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
 
     let(:day) { 3 }
 
-    let(:content) { "Puzzle content" }
+    let(:fetched_content) { "Puzzle content" }
 
-    let(:input) { "foobar" }
+    let(:fetched_input) { "foobar" }
 
     before do
       allow(AocCli::Core::Repository)
         .to receive(:get_puzzle)
         .with(year:, day:)
-        .and_return(content)
+        .and_return(fetched_content)
 
       allow(AocCli::Core::Repository)
         .to receive(:get_input)
         .with(year:, day:)
-        .and_return(input)
+        .and_return(fetched_input)
     end
 
     shared_examples :fetches_puzzle_data do
@@ -160,7 +160,10 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
 
         it "sets the expected Puzzle attributes" do
           run
-          expect(puzzle).to have_attributes(event:, day:, content:, input:)
+
+          expect(puzzle).to have_attributes(
+            event:, day:, content: fetched_content, input: fetched_input
+          )
         end
 
         it "returns the created Puzzle record" do
@@ -169,22 +172,53 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
       end
 
       context "and puzzle already exists" do
-        let!(:puzzle) { create(:puzzle, event:, day:) }
-
-        include_examples :fetches_puzzle_data
-
-        it "does not create a Puzzle record" do
-          expect { run }.not_to change { AocCli::Puzzle.count }
+        let!(:puzzle) do
+          create(
+            :puzzle,
+            event:, day:,
+            content: original_content,
+            input: original_input
+          )
         end
 
-        it "updates the existing Puzzle attributes" do
-          expect { run }
-            .to change { puzzle.reload.values }
-            .to(include(content:, input:))
+        context "and puzzle data has not changed" do
+          let(:original_content) { fetched_content }
+          let(:original_input) { fetched_input }
+
+          include_examples :fetches_puzzle_data
+
+          it "does not create a Puzzle record" do
+            expect { run }.not_to change { AocCli::Puzzle.count }
+          end
+
+          it "does not change the existing Puzzle attributes" do
+            expect { run }.not_to change { puzzle.reload.values }
+          end
+
+          it "returns the updated Puzzle record" do
+            expect(run.reload).to eq(puzzle.reload)
+          end
         end
 
-        it "returns the updated Puzzle record" do
-          expect(run.reload).to eq(puzzle.reload)
+        context "and puzzle data has changed" do
+          let(:original_content) { fetched_content.reverse }
+          let(:original_input) { fetched_input.reverse }
+
+          include_examples :fetches_puzzle_data
+
+          it "does not create a Puzzle record" do
+            expect { run }.not_to change { AocCli::Puzzle.count }
+          end
+
+          it "updates the existing Puzzle attributes" do
+            expect { run }
+              .to change { puzzle.reload.values }
+              .to(include(content: fetched_content, input: fetched_input))
+          end
+
+          it "returns the updated Puzzle record" do
+            expect(run.reload).to eq(puzzle.reload)
+          end
         end
       end
     end
