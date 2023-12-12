@@ -79,7 +79,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
       end
 
       it "does not create a Stats record" do
-        expect { run }.not_to change { AocCli::Stats.count }
+        expect { run }.not_to create_model(AocCli::Stats)
       end
 
       it "returns nil" do
@@ -103,7 +103,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
         end
 
         it "creates a Stats record" do
-          expect { run }.to change { AocCli::Stats.count }.by(1)
+          expect { run }.to create_model(AocCli::Stats)
         end
 
         it "sets the expected Stats attributes" do
@@ -129,7 +129,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
         end
 
         it "does not create a Stats record" do
-          expect { run }.not_to change { AocCli::Stats.count }
+          expect { run }.not_to create_model(AocCli::Stats)
         end
 
         it "updates the existing Stats record" do

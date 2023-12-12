@@ -138,7 +138,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
       end
 
       it "does not create a Puzzle record" do
-        expect { run }.not_to change { AocCli::Puzzle.count }
+        expect { run }.not_to create_model(AocCli::Puzzle)
       end
 
       it "returns nil" do
@@ -155,7 +155,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
         include_examples :fetches_puzzle_data
 
         it "creates a Puzzle record" do
-          expect { run }.to change { AocCli::Puzzle.count }.by(1)
+          expect { run }.to create_model(AocCli::Puzzle)
         end
 
         it "sets the expected Puzzle attributes" do
@@ -188,7 +188,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
           include_examples :fetches_puzzle_data
 
           it "does not create a Puzzle record" do
-            expect { run }.not_to change { AocCli::Puzzle.count }
+            expect { run }.not_to create_model(AocCli::Puzzle)
           end
 
           it "does not change the existing Puzzle attributes" do
@@ -207,7 +207,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
           include_examples :fetches_puzzle_data
 
           it "does not create a Puzzle record" do
-            expect { run }.not_to change { AocCli::Puzzle.count }
+            expect { run }.not_to create_model(AocCli::Puzzle)
           end
 
           it "updates the existing Puzzle attributes" do

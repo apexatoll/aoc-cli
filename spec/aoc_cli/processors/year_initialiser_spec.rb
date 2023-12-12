@@ -78,7 +78,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
       let(:year) { 2014 }
 
       it "does not create an Event record" do
-        expect { run }.not_to change { AocCli::Event.count }
+        expect { run }.not_to create_model(AocCli::Event)
       end
 
       it "does not fetch the stats" do
@@ -87,7 +87,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
       end
 
       it "does not create a Location record" do
-        expect { run }.not_to change { AocCli::Location.count }
+        expect { run }.not_to create_model(AocCli::Location)
       end
 
       it "does not create the year directory" do
@@ -103,7 +103,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
         let(:location) { AocCli::Location.last }
 
         it "creates an Event record" do
-          expect { run }.to change { AocCli::Event.count }.by(1)
+          expect { run }.to create_model(AocCli::Event)
         end
 
         it "sets the expected Event attributes" do
@@ -121,7 +121,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
         end
 
         it "creates a Location record" do
-          expect { run }.to change { AocCli::Location.count }.by(1)
+          expect { run }.to create_model(AocCli::Location)
         end
 
         it "sets the expected Location attributes" do
@@ -148,7 +148,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
           let!(:location) { create(:location, :year_dir, event:) }
 
           it "does not create an Event record" do
-            expect { run }.not_to change { AocCli::Event.count }
+            expect { run }.not_to create_model(AocCli::Event)
           end
 
           it "does not update the Event attributes" do
@@ -165,7 +165,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
           end
 
           it "does not create a Location record" do
-            expect { run }.not_to change { AocCli::Location.count }
+            expect { run }.not_to create_model(AocCli::Location)
           end
 
           it "updates the expected Location attributes" do
@@ -189,7 +189,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
           let(:location) { AocCli::Location.last }
 
           it "does not create an Event record" do
-            expect { run }.not_to change { AocCli::Event.count }
+            expect { run }.not_to create_model(AocCli::Event)
           end
 
           it "does not update the Event attributes" do
@@ -206,7 +206,7 @@ RSpec.describe AocCli::Processors::YearInitialiser, :with_temp_dir do
           end
 
           it "creates a Location record" do
-            expect { run }.to change { AocCli::Location.count }.by(1)
+            expect { run }.to create_model(AocCli::Location)
           end
 
           it "sets the expected Location attributes" do

@@ -157,7 +157,7 @@ RSpec.describe AocCli::Processors::SolutionPoster do
       end
 
       it "creates an Attempt record" do
-        expect { run }.to change { AocCli::Attempt.count }.by(1)
+        expect { run }.to create_model(AocCli::Attempt)
       end
 
       it "sets the expected Attempt attributes" do
@@ -226,7 +226,7 @@ RSpec.describe AocCli::Processors::SolutionPoster do
       end
 
       it "does not create an Attempt record" do
-        expect { run }.not_to change { AocCli::Attempt.count }
+        expect { run }.not_to create_model(AocCli::Attempt)
       end
 
       it "returns nil" do

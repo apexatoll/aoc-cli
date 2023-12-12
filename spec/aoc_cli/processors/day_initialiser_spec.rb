@@ -135,7 +135,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
       end
 
       it "does not create a Location record" do
-        expect { run }.not_to change { AocCli::Location.count }
+        expect { run }.not_to create_model(AocCli::Location)
       end
 
       it "does not make the day directory" do
@@ -173,7 +173,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
         end
 
         it "does not create a Location record" do
-          expect { run }.not_to change { AocCli::Location.count }
+          expect { run }.not_to create_model(AocCli::Location)
         end
 
         it "updates the existing Location attributes" do
@@ -218,7 +218,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
         end
 
         it "creates a Location record" do
-          expect { run }.to change { AocCli::Location.count }.by(1)
+          expect { run }.to create_model(AocCli::Location)
         end
 
         it "sets the expected Location attributes" do
