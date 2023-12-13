@@ -11,6 +11,8 @@ module AocCli
 
       def event!: -> Event
 
+      def blank_stats: -> Hash[Symbol, Integer]
+
       def fetch_stats!: -> Hash[Symbol, Integer]
 
       def create_or_update_stats!: (Hash[Symbol, Integer]) -> Stats

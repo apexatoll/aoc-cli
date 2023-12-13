@@ -27,8 +27,15 @@ module AocCli
         event || raise
       end
 
+      def blank_stats
+        1.upto(25).to_h { |i| [:"day_#{i}", 0] }
+      end
+
+      # Merge with a template hash that sets all days to 0 by default.
+      # This is to prevent validation failing when fetching stats for an event
+      # that is still in progress and not all the stats are populated.
       def fetch_stats!
-        Core::Repository.get_stats(year:)
+        blank_stats.merge(Core::Repository.get_stats(year:))
       end
 
       def create_or_update_stats!(data)
