@@ -1,0 +1,5 @@
+module AocCli
+  class EventController < ApplicationController
+    def init: -> void
+  end
+end
