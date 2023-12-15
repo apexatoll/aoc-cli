@@ -1,7 +1,7 @@
 module Matchers
   extend RSpec::Matchers::DSL
 
-  matcher :render_errors do |messages|
+  matcher :render_errors do |*messages|
     def error_bullet = "  \u2022".freeze
 
     def error_list(messages)
