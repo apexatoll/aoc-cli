@@ -67,9 +67,9 @@ RSpec.describe AocCli::Core::Repository do
 
       let(:expected_stats) do
         {
-          day_1: 1,  day_2: 0,  day_3: 0, day_4: 0, day_5: 0,
-          day_6: 0,  day_7: 0,  day_8: 0, day_9: 0, day_10: 0,
-          day_11: 0, day_12: 0, day_13: 0
+          day_1: 2,  day_2: 0,  day_3: 0,  day_4: 0,  day_5: 0,
+          day_6: 0,  day_7: 0,  day_8: 0,  day_9: 0,  day_10: 0,
+          day_11: 0, day_12: 0, day_13: 0, day_14: 0, day_15: 0
         }
       end
 

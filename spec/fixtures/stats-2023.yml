@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 13 Dec 2023 19:50:01 GMT
+      - Fri, 15 Dec 2023 13:57:29 GMT
       Content-Type:
       - text/html
       Transfer-Encoding:
@@ -29,7 +29,7 @@ http_interactions:
       Server:
       - Apache
       Server-Ip:
-      - 172.31.56.123
+      - 172.31.61.174
       Vary:
       - Accept-Encoding
       Strict-Transport-Security:
@@ -126,19 +126,21 @@ http_interactions:
 
         -->
         <body>
-        <header><div><h1 class="title-global"><a href="/">Advent of Code</a></h1><nav><ul><li><a href="/2023/about">[About]</a></li><li><a href="/2023/events">[Events]</a></li><li><a href="https://teespring.com/stores/advent-of-code" target="_blank">[Shop]</a></li><li><a href="/2023/settings">[Settings]</a></li><li><a href="/2023/auth/logout">[Log Out]</a></li></ul></nav><div class="user">apexatoll <span class="star-count">1*</span></div></div><div><h1 class="title-event">&nbsp;&nbsp;<span class="title-event-wrap">{year=&gt;</span><a href="/2023">2023</a><span class="title-event-wrap">}</span></h1><nav><ul><li><a href="/2023">[Calendar]</a></li><li><a href="/2023/support">[AoC++]</a></li><li><a href="/2023/sponsors">[Sponsors]</a></li><li><a href="/2023/leaderboard">[Leaderboard]</a></li><li><a href="/2023/stats">[Stats]</a></li></ul></nav></div></header>
+        <header><div><h1 class="title-global"><a href="/">Advent of Code</a></h1><nav><ul><li><a href="/2023/about">[About]</a></li><li><a href="/2023/events">[Events]</a></li><li><a href="https://teespring.com/stores/advent-of-code" target="_blank">[Shop]</a></li><li><a href="/2023/settings">[Settings]</a></li><li><a href="/2023/auth/logout">[Log Out]</a></li></ul></nav><div class="user">apexatoll <span class="star-count">1*</span></div></div><div><h1 class="title-event">&nbsp;&nbsp;&nbsp;<span class="title-event-wrap">0xffff&amp;</span><a href="/2023">2023</a><span class="title-event-wrap"></span></h1><nav><ul><li><a href="/2023">[Calendar]</a></li><li><a href="/2023/support">[AoC++]</a></li><li><a href="/2023/sponsors">[Sponsors]</a></li><li><a href="/2023/leaderboard">[Leaderboard]</a></li><li><a href="/2023/stats">[Stats]</a></li></ul></nav></div></header>
 
         <div id="sidebar">
-        <div id="sponsor"><div class="quiet">Our <a href="/2023/sponsors">sponsors</a> help make Advent of Code possible:</div><div class="sponsor"><a href="https://union.build" target="_blank" onclick="if(ga)ga('send','event','sponsor','sidebar',this.href);" rel="noopener">Union</a> - Bridging IBC &lt;&gt; ETH with Zero-Knowledge crypto, live on our testnet!</div></div>
+        <div id="sponsor"><div class="quiet">Our <a href="/2023/sponsors">sponsors</a> help make Advent of Code possible:</div><div class="sponsor"><a href="https://pwc.to/3R1t0YY" target="_blank" onclick="if(ga)ga('send','event','sponsor','sidebar',this.href);" rel="noopener">PwC UK</a> - Human-led, tech-powered it all adds up to the New Equation. Become a part of PwC&apos;s Talent Community and join our growing community of solvers.</div></div>
         </div><!--/sidebar-->
 
         <main>
-        <pre class="calendar"><span aria-hidden="true" class="calendar-day14">                         *                         <span class="calendar-day">14</span><span id="calendar-countdown"></span><script>
+        <pre class="calendar"><a aria-label="Day 14" href="/2023/day/14" class="calendar-day14">                         *                         <span class="calendar-day">14</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+        <a aria-label="Day 15" href="/2023/day/15" class="calendar-day15">                                 *                 <span class="calendar-day">15</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+        <span aria-hidden="true" class="calendar-day16">                                    *              <span class="calendar-day">16</span><span id="calendar-countdown"></span><script>
         (function(){
         var countdown = document.getElementById("calendar-countdown");
         if (!countdown) return;
-        var server_eta = 32999;
-        var key = "2023-14-"+server_eta;
+        var server_eta = 54151;
+        var key = "2023-16-"+server_eta;
         var now = Math.floor(new Date().getTime()/1000);
         var target = server_eta + now;
         if (sessionStorage) {
@@ -161,8 +163,8 @@ http_interactions:
             countdown.textContent = "";
 
             var a = document.createElement("a");
-            a[String.fromCharCode(104,114,101,102)] = "/2023" + String.fromCharCode(47,100,97,121,47) + "14";
-            a.className = "calendar-day14 calendar-day-new";
+            a[String.fromCharCode(104,114,101,102)] = "/2023" + String.fromCharCode(47,100,97,121,47) + "16";
+            a.className = "calendar-day16 calendar-day-new";
             var span = countdown.parentNode;
             while (span.firstChild) {
               a.appendChild(span.firstChild);
@@ -184,8 +186,6 @@ http_interactions:
         update_countdown();
         })();
         </script></span>
-        <span aria-hidden="true" class="">                                                 </span>
-        <span aria-hidden="true" class="">                                                 </span>
         <a aria-label="Day 13" href="/2023/day/13" class="calendar-day13">                        *                          <span class="calendar-day">13</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
         <span aria-hidden="true" class="">                                                 </span>
         <a aria-label="Day 12" href="/2023/day/12" class="calendar-day12">        *                                          <span class="calendar-day">12</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
@@ -207,7 +207,7 @@ http_interactions:
         <span aria-hidden="true" class="">                                                 </span>
         <a aria-label="Day 3" href="/2023/day/3" class="calendar-day3">                               *                   <span class="calendar-day"> 3</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
         <a aria-label="Day 2" href="/2023/day/2" class="calendar-day2">    ----@             *                            <span class="calendar-day"> 2</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
-        <a aria-label="Day 1, one star" href="/2023/day/1" class="calendar-day1 calendar-complete">  * ! /^\                                          <span class="calendar-day"> 1</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
+        <a aria-label="Day 1, two stars" href="/2023/day/1" class="calendar-day1 calendar-verycomplete">  * ! /^\                                          <span class="calendar-day"> 1</span> <span class="calendar-mark-complete">*</span><span class="calendar-mark-verycomplete">*</span></a>
         </pre>
         </main>
 
@@ -224,5 +224,5 @@ http_interactions:
         <!-- /ga -->
         </body>
         </html>
-  recorded_at: Wed, 13 Dec 2023 19:50:01 GMT
+  recorded_at: Fri, 15 Dec 2023 13:57:29 GMT
 recorded_with: VCR 6.2.0
