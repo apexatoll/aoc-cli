@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
     end
   end
 
-  spec.bindir = "bin"
-  spec.executables = []
+  spec.bindir = "exe"
+  spec.executables = ["aoc"]
   spec.require_paths = ["lib"]
 
   spec.add_dependency "http"
