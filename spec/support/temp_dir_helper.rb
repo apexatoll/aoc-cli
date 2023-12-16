@@ -48,7 +48,7 @@ RSpec.configure do |config|
 
   config.around(with_temp_dir: true) do |spec|
     env_key = "TMPDIR"
-    tmpdir_before = ENV.fetch(env_key)
+    tmpdir_before = ENV.fetch(env_key, nil)
 
     ENV[env_key] = spec_dir.join("tmp").tap do |dir|
       dir.mkdir unless dir.exist?
