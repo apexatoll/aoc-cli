@@ -1,6 +1,4 @@
 RSpec.describe AocCli::EventController, :with_temp_dir do
-  before { allow(AocCli.config.session).to receive_messages(token: "token") }
-
   around { |spec| Dir.chdir(temp_dir) { spec.run } }
 
   describe "/event/init/:year" do

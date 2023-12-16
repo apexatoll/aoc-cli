@@ -1,8 +1,4 @@
 RSpec.describe AocCli::Core::Repository do
-  before do
-    allow(AocCli.config.session).to receive(:token).and_return("token")
-  end
-
   def resource_to_cassette(resource)
     resource.gsub(/\.\w+$/, "")
   end
