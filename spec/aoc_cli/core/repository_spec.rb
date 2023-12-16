@@ -1,8 +1,4 @@
 RSpec.describe AocCli::Core::Repository do
-  def resource_to_cassette(resource)
-    resource.gsub(/\.\w+$/, "")
-  end
-
   def path_to_url(path)
     File.join(described_class::HOST, path)
   end
@@ -10,11 +6,6 @@ RSpec.describe AocCli::Core::Repository do
   shared_examples :gets_resource do |options|
     let(:path)     { options[:path] }
     let(:resource) { options[:resource] }
-    let(:cassette) { resource_to_cassette(resource) }
-
-    around do |spec|
-      VCR.use_cassette(cassette) { spec.run }
-    end
 
     it "makes the expected GET request" do
       subject
@@ -29,7 +20,7 @@ RSpec.describe AocCli::Core::Repository do
   describe ".get_stats" do
     subject(:stats) { described_class.get_stats(year:) }
 
-    around { |spec| VCR.use_cassette("stats-#{year}") { spec.run } }
+    around { |spec| use_stats_cassette(year:) { spec.run } }
 
     shared_examples :fetches_stats do
       it "makes the expected GET request" do
@@ -75,6 +66,8 @@ RSpec.describe AocCli::Core::Repository do
 
   describe ".get_puzzle" do
     subject(:puzzle) { described_class.get_puzzle(year:, day:) }
+
+    around { |spec| use_puzzle_cassette(year:, day:) { spec.run } }
 
     describe "2015" do
       let(:year) { 2015 }
@@ -160,6 +153,8 @@ RSpec.describe AocCli::Core::Repository do
 
   describe ".get_input" do
     subject(:input) { described_class.get_input(year:, day:) }
+
+    around { |spec| use_input_cassette(year:, day:) { spec.run } }
 
     describe "2015" do
       let(:year) { 2015 }
@@ -252,7 +247,9 @@ RSpec.describe AocCli::Core::Repository do
 
     let(:day) { 2 }
 
-    around { |spec| VCR.use_cassette(cassette) { spec.run } }
+    around do |spec|
+      use_solution_cassette(year:, day:, level:, tag:) { spec.run }
+    end
 
     shared_examples :makes_expected_post_request do
       let(:data) { { level:, answer: } }
@@ -278,8 +275,8 @@ RSpec.describe AocCli::Core::Repository do
         let(:level) { 1 }
 
         context "and vastly incorrect answer is given" do
-          let(:answer)   { "hello world" }
-          let(:cassette) { "solution-2016-02-1-incorrect-no-hint" }
+          let(:answer) { "hello world" }
+          let(:tag)    { :incorrect_no_hint }
 
           include_examples :makes_expected_post_request
 
@@ -288,8 +285,8 @@ RSpec.describe AocCli::Core::Repository do
         end
 
         context "and answer is too low" do
-          let(:answer)   { 99_331 }
-          let(:cassette) { "solution-2016-02-1-incorrect-too-low" }
+          let(:answer) { 99_331 }
+          let(:tag)    { :incorrect_too_low }
 
           include_examples :makes_expected_post_request
 
@@ -299,7 +296,7 @@ RSpec.describe AocCli::Core::Repository do
 
         context "and answer is too high" do
           let(:answer) { 99_333 }
-          let(:cassette) { "solution-2016-02-1-incorrect-too-high" }
+          let(:tag)    { :incorrect_too_high }
 
           include_examples :makes_expected_post_request
 
@@ -308,8 +305,8 @@ RSpec.describe AocCli::Core::Repository do
         end
 
         context "and answering is rate-limited" do
-          let(:answer)   { 99_332 }
-          let(:cassette) { "solution-2016-02-1-rate-limited" }
+          let(:answer) { 99_332 }
+          let(:tag)    { :rate_limited }
 
           include_examples :makes_expected_post_request
 
@@ -318,8 +315,8 @@ RSpec.describe AocCli::Core::Repository do
         end
 
         context "and answer is correct" do
-          let(:answer)   { 99_332 }
-          let(:cassette) { "solution-2016-02-1-correct" }
+          let(:answer) { 99_332 }
+          let(:tag)    { :correct }
 
           include_examples :makes_expected_post_request
           include_examples :returns_response_hash, status: :correct
@@ -327,9 +324,9 @@ RSpec.describe AocCli::Core::Repository do
       end
 
       context "and level is specified incorrectly as two" do
-        let(:level)    { 2 }
-        let(:answer)   { 99_332 }
-        let(:cassette) { "solution-2016-02-1-wrong-level" }
+        let(:level)  { 2 }
+        let(:answer) { 99_332 }
+        let(:tag)    { :wrong_level }
 
         include_examples :makes_expected_post_request
         include_examples :returns_response_hash, status: :wrong_level
@@ -338,9 +335,9 @@ RSpec.describe AocCli::Core::Repository do
 
     context "when on part two of the puzzle" do
       context "and level is specified incorrectly as one" do
-        let(:level)    { 1 }
-        let(:answer)   { "DD483" }
-        let(:cassette) { "solution-2016-02-2-wrong-level" }
+        let(:level)  { 1 }
+        let(:answer) { "DD483" }
+        let(:tag)    { :wrong_level }
 
         include_examples :makes_expected_post_request
         include_examples :returns_response_hash, status: :wrong_level
@@ -350,8 +347,8 @@ RSpec.describe AocCli::Core::Repository do
         let(:level) { 2 }
 
         context "and incorrect answer is given" do
-          let(:answer)   { "hello world" }
-          let(:cassette) { "solution-2016-02-2-incorrect" }
+          let(:answer) { "hello world" }
+          let(:tag)    { :incorrect }
 
           include_examples :makes_expected_post_request
 
@@ -360,8 +357,8 @@ RSpec.describe AocCli::Core::Repository do
         end
 
         context "and answering is rate-limited" do
-          let(:answer)   { "DD483" }
-          let(:cassette) { "solution-2016-02-2-rate-limited" }
+          let(:answer) { "DD483" }
+          let(:tag)    { :rate_limited }
 
           include_examples :makes_expected_post_request
 
@@ -370,8 +367,8 @@ RSpec.describe AocCli::Core::Repository do
         end
 
         context "and answer is correct" do
-          let(:answer)   { "DD483" }
-          let(:cassette) { "solution-2016-02-2-correct" }
+          let(:answer) { "DD483" }
+          let(:tag)    { :correct }
 
           include_examples :makes_expected_post_request
           include_examples :returns_response_hash, status: :correct

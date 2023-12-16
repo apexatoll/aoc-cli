@@ -88,7 +88,7 @@ RSpec.describe AocCli::EventController, :with_temp_dir do
 
       let(:initial_event_dir) { File.join(initial_dir, year.to_s) }
 
-      around { |spec| VCR.use_cassette(cassette) { spec.run } }
+      around { |spec| use_stats_cassette(year:, tag:) { spec.run } }
 
       shared_examples :updates_event do
         it "does not create an Event record" do
@@ -120,7 +120,7 @@ RSpec.describe AocCli::EventController, :with_temp_dir do
       end
 
       context "when stats have not changed since first initialisation" do
-        let(:cassette) { "stats-#{year}-duplicate" }
+        let(:tag) { :duplicate }
 
         include_examples :updates_event
 
@@ -130,7 +130,7 @@ RSpec.describe AocCli::EventController, :with_temp_dir do
       end
 
       context "when stats have changed since first initialisation" do
-        let(:cassette) { "stats-#{year}-less-complete" }
+        let(:tag) { :less_complete }
 
         include_examples :updates_event
 
@@ -194,7 +194,7 @@ RSpec.describe AocCli::EventController, :with_temp_dir do
     context "when valid event year is specified" do
       let(:year) { 2023 }
 
-      around { |spec| VCR.use_cassette("stats-2023") { spec.run } }
+      around { |spec| use_stats_cassette(year:) { spec.run } }
 
       context "and non-existent dir is specified" do
         let(:dir) { temp_path("does-not-exist").to_s }
