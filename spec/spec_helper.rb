@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.include Matchers
 
   def fixture(file)
-    File.read(File.join("spec/fixtures", file))
+    spec_dir.join("fixtures").join(file).read
   end
 
   def spec_dir
