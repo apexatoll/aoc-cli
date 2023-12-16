@@ -59,7 +59,7 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     json (2.6.3)
-    kangaru (0.2.3)
+    kangaru (0.2.4)
       colorize (~> 1.1)
       erb (~> 4.0)
       sequel (~> 5.72)
