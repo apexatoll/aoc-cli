@@ -27,8 +27,4 @@ module CassetteHelpers
       .map { |part| part.to_s.gsub("_", "-") }
       .join("-")
   end
-
-  def formatted_day(day)
-    day&.to_s&.rjust(2, "0")
-  end
 end

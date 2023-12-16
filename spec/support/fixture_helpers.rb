@@ -10,10 +10,4 @@ module FixtureHelpers
   def input_fixture(year:, day:)
     fixture("input-#{year}-#{formatted_day(day)}")
   end
-
-  private
-
-  def formatted_day(day)
-    day&.to_s&.rjust(2, "0")
-  end
 end

@@ -8,10 +8,4 @@ module PathHelpers
   def puzzle_input_path(dir:)
     Pathname(dir).join("input")
   end
-
-  private
-
-  def formatted_day(day)
-    day&.to_s&.rjust(2, "0")
-  end
 end

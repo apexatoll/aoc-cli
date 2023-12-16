@@ -39,6 +39,10 @@ RSpec.configure do |config|
     Pathname(File.expand_path(__dir__))
   end
 
+  def formatted_day(day)
+    day&.to_s&.rjust(2, "0")
+  end
+
   # TODO: Controller class should not be cached by Kangaru. This raises an
   # error when more than one controller is requested as it is cached.
   config.before(type: :request) do
