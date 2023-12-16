@@ -31,6 +31,8 @@ RSpec.configure do |config|
 
   config.include Matchers
 
+  config.include CassetteHelpers
+
   def fixture(file)
     spec_dir.join("fixtures").join(file).read
   end
