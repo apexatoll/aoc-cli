@@ -1,8 +1,4 @@
 RSpec.describe AocCli::Core::Repository do
-  def path_to_url(path)
-    File.join(described_class::HOST, path)
-  end
-
   describe ".get_stats" do
     subject(:stats) { described_class.get_stats(year:) }
 
@@ -58,7 +54,7 @@ RSpec.describe AocCli::Core::Repository do
     shared_examples :gets_puzzle do
       it "makes the expected GET request" do
         puzzle
-        assert_requested(:get, path_to_url("#{year}/day/#{day}"))
+        assert_requested(:get, "#{described_class::HOST}/#{year}/day/#{day}")
       end
 
       it "returns the expected resource" do
@@ -138,7 +134,10 @@ RSpec.describe AocCli::Core::Repository do
     shared_examples :gets_input do
       it "makes the expected GET request" do
         input
-        assert_requested(:get, path_to_url("#{year}/day/#{day}/input"))
+
+        assert_requested(
+          :get, "#{described_class::HOST}/#{year}/day/#{day}/input"
+        )
       end
 
       it "returns the expected resource" do
@@ -228,7 +227,7 @@ RSpec.describe AocCli::Core::Repository do
 
       let(:body) { URI.encode_www_form(data) }
 
-      let(:url) { path_to_url("2016/day/2/answer") }
+      let(:url) { "#{described_class::HOST}/#{year}/day/#{day}/answer" }
 
       it "makes the expected POST request" do
         response
