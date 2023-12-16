@@ -34,4 +34,8 @@ RSpec.configure do |config|
   def fixture(file)
     File.read(File.join("spec/fixtures", file))
   end
+
+  def spec_dir
+    Pathname(File.expand_path(__dir__))
+  end
 end

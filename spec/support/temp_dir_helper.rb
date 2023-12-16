@@ -47,6 +47,13 @@ RSpec.configure do |config|
   config.include TempDirHelper, with_temp_dir: true
 
   config.around(with_temp_dir: true) do |spec|
+    env_key = "TMPDIR"
+    tmpdir_before = ENV.fetch(env_key)
+
+    ENV[env_key] = spec_dir.join("tmp").tap do |dir|
+      dir.mkdir unless dir.exist?
+    end.to_s
+
     Dir.mktmpdir do |temp_dir|
       @temp_dir = temp_dir
 
@@ -54,5 +61,7 @@ RSpec.configure do |config|
 
       remove_instance_variable(:@temp_dir)
     end
+
+    ENV[env_key] = tmpdir_before
   end
 end
