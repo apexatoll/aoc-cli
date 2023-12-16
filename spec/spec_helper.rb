@@ -32,10 +32,7 @@ RSpec.configure do |config|
   config.include Matchers
 
   config.include CassetteHelpers
-
-  def fixture(file)
-    spec_dir.join("fixtures").join(file).read
-  end
+  config.include FixtureHelpers
 
   def spec_dir
     Pathname(File.expand_path(__dir__))
