@@ -1,0 +1,11 @@
+module AocCli
+  class PuzzleController < ApplicationController
+    @puzzle: Puzzle
+
+    def init: -> void
+
+    private
+
+    def validate_in_event_dir!: -> void
+  end
+end
