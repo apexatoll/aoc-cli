@@ -6,5 +6,15 @@ FactoryBot.define do
 
     content { "Markdown" }
     input { "input" }
+
+    trait :with_location do
+      transient do
+        path { "foo/bar/baz" }
+      end
+
+      after(:create) do |puzzle, evaluator|
+        create(:location, :puzzle_dir, puzzle:, path: evaluator.path)
+      end
+    end
   end
 end
