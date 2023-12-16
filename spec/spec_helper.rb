@@ -38,4 +38,14 @@ RSpec.configure do |config|
   def spec_dir
     Pathname(File.expand_path(__dir__))
   end
+
+  # TODO: Controller class should not be cached by Kangaru. This raises an
+  # error when more than one controller is requested as it is cached.
+  config.before(type: :request) do
+    router = Kangaru.application.router
+
+    if router.instance_variable_defined?(:@controller_class)
+      router.remove_instance_variable(:@controller_class)
+    end
+  end
 end
