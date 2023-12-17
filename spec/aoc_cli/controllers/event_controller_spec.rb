@@ -217,4 +217,52 @@ RSpec.describe AocCli::EventController, :with_temp_dir do
       end
     end
   end
+
+  describe "/event/progress" do
+    subject(:make_request) { resolve "/event/progress", params: {} }
+
+    context "when not in an event or a puzzle dir" do
+      it "renders the expected error" do
+        expect { make_request }.to render_errors(
+          "Cannot perform that action from outside an AoC directory"
+        )
+      end
+
+      it "does not render the progress table" do
+        expect { make_request }
+          .not_to render_component(AocCli::Components::ProgressTable)
+      end
+    end
+
+    context "when in an event dir" do
+      let!(:event) do
+        create(:event, :with_stats, :with_location, path: temp_dir)
+      end
+
+      it "does not render errors" do
+        expect { make_request }.not_to render_errors
+      end
+
+      it "renders the progress table" do
+        expect { make_request }
+          .to render_component(AocCli::Components::ProgressTable)
+          .with(event:)
+      end
+    end
+
+    context "when in a puzzle dir" do
+      let(:event)   { create(:event, :with_stats) }
+      let!(:puzzle) { create(:puzzle, :with_location, event:, path: temp_dir) }
+
+      it "does not render errors" do
+        expect { make_request }.not_to render_errors
+      end
+
+      it "renders the progress table" do
+        expect { make_request }
+          .to render_component(AocCli::Components::ProgressTable)
+          .with(event:)
+      end
+    end
+  end
 end
