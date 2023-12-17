@@ -30,7 +30,7 @@ module AocCli
       end
 
       def puzzle
-        @puzzle ||= Puzzle.join(:events, id: :event_id).first(year:, day:)
+        @puzzle ||= Puzzle.first(event:, day:)
       end
 
       def puzzle!
