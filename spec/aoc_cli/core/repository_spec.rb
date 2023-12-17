@@ -247,7 +247,7 @@ RSpec.describe AocCli::Core::Repository do
 
         context "and vastly incorrect answer is given" do
           let(:answer) { "hello world" }
-          let(:tag)    { :incorrect_no_hint }
+          let(:tag)    { :incorrect }
 
           include_examples :makes_expected_post_request
 
@@ -334,7 +334,7 @@ RSpec.describe AocCli::Core::Repository do
           include_examples :makes_expected_post_request
 
           include_examples :returns_response_hash,
-                           status: :rate_limited, wait_time: 0
+                           status: :rate_limited, wait_time: 4
         end
 
         context "and answer is correct" do
