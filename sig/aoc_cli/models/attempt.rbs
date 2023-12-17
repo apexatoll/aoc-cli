@@ -20,8 +20,6 @@ module AocCli
     def too_low?: -> bool
     def too_high?: -> bool
 
-    def human_hint: -> String?
-
     private
 
     def validate_hint_not_set!: -> void

@@ -3,7 +3,7 @@
 <% elsif @attempt.incorrect? -%>
 <%= "Incorrect".red.bold %>: please wait <%= @attempt.wait_time %> minutes.
 <% unless @attempt.hint.nil? -%>
-Hint: your answer is <%= @attempt.human_hint %>
+Hint: your answer is <%= @attempt.presenter.hint.downcase %>
 <% end -%>
 <% elsif @attempt.correct? -%>
 <%= "Correct".green.bold %>: part <%= @attempt.level %> complete.
