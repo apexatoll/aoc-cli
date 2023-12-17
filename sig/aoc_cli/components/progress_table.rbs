@@ -1,0 +1,28 @@
+module AocCli
+  module Components
+    class ProgressTable < Kangaru::Component
+      attr_reader event: Event
+
+      def initialize: (event: Event) -> void
+
+      private
+
+      type row = [String, String]
+
+      TITLE: String
+      HEADINGS: Array[String]
+      PROGRESS: String
+      TOTAL: String
+
+      def title: -> String
+
+      def headings: -> Array[String]
+
+      def rows: -> Array[row | Symbol]
+
+      def progress_rows: -> Array[row]
+
+      def total_row: -> row
+    end
+  end
+end
