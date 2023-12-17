@@ -5,6 +5,8 @@ module AocCli
 
       def initialize: (Attempt) -> void
 
+      def status: -> String
+
       def hint: -> String
     end
   end

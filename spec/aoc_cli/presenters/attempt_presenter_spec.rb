@@ -3,6 +3,42 @@ RSpec.describe AocCli::Presenters::AttemptPresenter do
 
   let(:attempt) { create(:attempt, trait) }
 
+  describe "#status" do
+    subject(:status) { presenter.status }
+
+    context "when :wrong_level" do
+      let(:trait) { :wrong_level }
+
+      it "returns the expected text" do
+        expect(status).to eq("Wrong level")
+      end
+    end
+
+    context "when :rate_limited" do
+      let(:trait) { :rate_limited }
+
+      it "returns the expected text" do
+        expect(status).to eq("Rate limited")
+      end
+    end
+
+    context "when :incorrect" do
+      let(:trait) { :incorrect }
+
+      it "returns the expected text" do
+        expect(status).to eq("Incorrect")
+      end
+    end
+
+    context "when :correct" do
+      let(:trait) { :correct }
+
+      it "returns the expected text" do
+        expect(status).to eq("Correct")
+      end
+    end
+  end
+
   describe "#hint" do
     subject(:hint) { presenter.hint }
 
