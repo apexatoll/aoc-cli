@@ -25,6 +25,13 @@ module AocCli
       validate_wait_time_integer! if incorrect? || rate_limited?
     end
 
+    def human_hint
+      case hint
+      when :too_low then "too low"
+      when :too_high then "too high"
+      end
+    end
+
     private
 
     def validate_hint_not_set!
