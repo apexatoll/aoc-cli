@@ -6,6 +6,7 @@ require "irb"
 
 IRB.setup("nil")
 IRB.conf[:MAIN_CONTEXT] = IRB::Irb.new.context
+IRB.conf[:COMPLETER] = :type
 
 require "irb/ext/multi-irb"
 
