@@ -11,5 +11,9 @@ FactoryBot.define do
         create(:location, :year_dir, event:, path: evaluator.path)
       end
     end
+
+    trait :with_stats do
+      after(:create) { |event| create(:stats, event:) }
+    end
   end
 end
