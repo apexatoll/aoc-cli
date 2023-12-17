@@ -10,6 +10,8 @@ module AocCli
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
 
+    attr_reader presenter: Presenters::AttemptPresenter
+
     def incorrect?: -> bool
     def correct?: -> bool
     def rate_limited?: -> bool

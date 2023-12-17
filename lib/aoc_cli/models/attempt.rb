@@ -16,6 +16,10 @@ module AocCli
       in: %i[incorrect correct rate_limited wrong_level]
     }
 
+    def presenter
+      @presenter ||= Presenters::AttemptPresenter.new(self)
+    end
+
     # TODO: move to a conditional validation when supported by Kangaru
     def validate
       super

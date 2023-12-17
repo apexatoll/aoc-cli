@@ -1,0 +1,11 @@
+module AocCli
+  module Presenters
+    class AttemptPresenter
+      attr_reader attempt: Attempt
+
+      def initialize: (Attempt) -> void
+
+      def hint: -> String
+    end
+  end
+end
