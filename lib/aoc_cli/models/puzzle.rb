@@ -2,6 +2,7 @@ module AocCli
   class Puzzle < Kangaru::Model
     many_to_one :event
     one_to_one :location, as: :resource
+    one_to_many :attempts
 
     validates :event, required: true
     validates :day, integer: { between: 1..25 }

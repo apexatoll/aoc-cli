@@ -11,6 +11,7 @@ module AocCli
     attr_accessor part_two_completed_at: Time
 
     attr_accessor location: Location
+    attr_accessor attempts: Array[Attempt]
 
     def mark_complete!: (Integer) -> void
   end
