@@ -8,6 +8,14 @@ module AocCli
       validates :"day_#{i}", integer: { between: 0..2 }
     end
 
+    def presenter
+      @presenter ||= Presenters::StatsPresenter.new(self)
+    end
+
+    def total
+      1.upto(25).map { |day| progress(day) }.sum
+    end
+
     def progress(day)
       self[:"day_#{day}"] || raise("invalid day")
     end

@@ -71,6 +71,44 @@ RSpec.describe AocCli::Stats do
     end
   end
 
+  describe "#total" do
+    subject(:total) { stats.total }
+
+    let(:stats_hash) { super().merge(**progress) }
+
+    context "when no progress has been made" do
+      let(:progress) { {} }
+
+      it "returns 0" do
+        expect(total).to eq(0)
+      end
+    end
+
+    context "when some progress has been made" do
+      let(:progress) { { day_1: 2, day_3: 1, day_10: 2 } }
+
+      it "returns the expected total" do
+        expect(total).to eq(progress.values.sum)
+      end
+    end
+
+    context "when event is complete" do
+      let(:progress) do
+        {
+          day_1: 2,  day_2: 2,  day_3: 2,  day_4: 2,  day_5: 2,
+          day_6: 2,  day_7: 2,  day_8: 2,  day_9: 2,  day_10: 2,
+          day_11: 2, day_12: 2, day_13: 2, day_14: 2, day_15: 2,
+          day_16: 2, day_17: 2, day_18: 2, day_19: 2, day_20: 2,
+          day_21: 2, day_22: 2, day_23: 2, day_24: 2, day_25: 2
+        }
+      end
+
+      it "returns 50" do
+        expect(total).to eq(50)
+      end
+    end
+  end
+
   describe "#progress" do
     subject(:progress) { stats.progress(day) }
 

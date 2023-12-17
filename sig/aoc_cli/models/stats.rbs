@@ -31,6 +31,10 @@ module AocCli
     attr_accessor updated_at: Time
     attr_accessor completed_at: Time
 
+    attr_reader presenter: Presenters::StatsPresenter
+
+    def total: -> Integer
+
     def progress: (Integer) -> Integer
 
     def current_level: (Integer) -> Integer?
