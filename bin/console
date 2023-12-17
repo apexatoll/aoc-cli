@@ -4,4 +4,9 @@ require "bundler/setup"
 require "aoc_cli"
 require "irb"
 
-IRB.start(__FILE__)
+IRB.setup("nil")
+IRB.conf[:MAIN_CONTEXT] = IRB::Irb.new.context
+
+require "irb/ext/multi-irb"
+
+IRB.irb(nil, AocCli)
