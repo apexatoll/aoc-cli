@@ -4,6 +4,7 @@ require "http"
 require "kangaru"
 require "nokogiri"
 require "reverse_markdown"
+require "terminal-table"
 
 module AocCli
   extend Kangaru::Initialiser
@@ -26,4 +27,9 @@ module AocCli
 
   Sequel::Model.plugin(:polymorphic)
   Sequel::Model.plugin(:enum)
+
+  Terminal::Table::Style.defaults = {
+    border: :unicode,
+    alignment: :center
+  }
 end

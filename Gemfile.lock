@@ -7,6 +7,7 @@ PATH
       nokogiri
       reverse_markdown
       sequel_polymorphic
+      terminal-table
 
 GEM
   remote: https://rubygems.org/

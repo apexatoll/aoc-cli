@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri"
   spec.add_dependency "reverse_markdown"
   spec.add_dependency "sequel_polymorphic"
+  spec.add_dependency "terminal-table"
 end
