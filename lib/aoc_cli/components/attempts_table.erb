@@ -1,0 +1,5 @@
+<% if puzzle.attempts.empty? -%>
+No attempts have been made for this puzzle.
+<% else -%>
+<%= Terminal::Table.new(title:, headings:, rows:) %>
+<% end -%>

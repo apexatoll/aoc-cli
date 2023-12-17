@@ -1,0 +1,29 @@
+module AocCli
+  module Components
+    class AttemptsTable < Kangaru::Component
+      attr_reader puzzle: Puzzle
+
+      def initialize: (puzzle: Puzzle) -> void
+
+      def title: -> String
+
+      def headings: -> Array[String]
+
+      def rows: -> Array[Array[untyped] | Symbol]
+
+      private
+
+      attr_reader level_one_rows: Array[Array[untyped]]
+
+      attr_reader level_two_rows: Array[Array[untyped]]
+
+      def separator: -> Symbol?
+
+      def level_one_attempts: -> Array[Attempt]
+
+      def level_two_attempts: -> Array[Attempt]
+
+      def rows_for: (Array[Attempt]) -> Array[Array[untyped]]
+    end
+  end
+end
