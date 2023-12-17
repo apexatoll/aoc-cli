@@ -1,0 +1,13 @@
+module AocCli
+  module Presenters
+    class PuzzlePresenter
+      attr_reader puzzle: Puzzle
+
+      def initialize: (Puzzle) -> void
+
+      def date: -> String
+
+      def formatted_day: -> String
+    end
+  end
+end

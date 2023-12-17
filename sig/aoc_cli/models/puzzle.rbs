@@ -13,6 +13,8 @@ module AocCli
     attr_accessor location: Location
     attr_accessor attempts: Array[Attempt]
 
+    attr_reader presenter: Presenters::PuzzlePresenter
+
     def mark_complete!: (Integer) -> void
   end
 end

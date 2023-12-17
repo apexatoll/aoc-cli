@@ -9,6 +9,10 @@ module AocCli
     validates :content, required: true
     validates :input, required: true
 
+    def presenter
+      @presenter ||= Presenters::PuzzlePresenter.new(self)
+    end
+
     def mark_complete!(level)
       case level
       when 1 then update(part_one_completed_at: Time.now)
