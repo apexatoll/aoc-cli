@@ -1,0 +1,19 @@
+module AocCli
+  module Presenters
+    class StatsPresenter
+      attr_reader stats: Stats
+
+      def initialize: (Stats) -> void
+
+      def total_progress: -> String
+
+      def progress_icons: (Integer) -> String
+
+      module Icons
+        INCOMPLETE: String
+        HALF_COMPLETE: String
+        COMPLETE: String
+      end
+    end
+  end
+end
