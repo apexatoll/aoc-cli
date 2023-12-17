@@ -1,7 +1,6 @@
 module AocCli
   class Attempt < Kangaru::Model
     attr_accessor id: Integer
-    attr_accessor puzzle: Puzzle
     attr_accessor level: Integer
     attr_accessor answer: String
     attr_accessor status: Symbol
@@ -9,6 +8,9 @@ module AocCli
     attr_accessor wait_time: Integer?
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
+
+    attr_accessor puzzle: Puzzle
+    attr_accessor puzzle_dataset: Sequel::Dataset
 
     attr_reader presenter: Presenters::AttemptPresenter
 

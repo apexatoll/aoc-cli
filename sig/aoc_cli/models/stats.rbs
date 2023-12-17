@@ -1,7 +1,6 @@
 module AocCli
   class Stats < Kangaru::Model
     attr_accessor id: Integer
-    attr_accessor event: Event
     attr_accessor day_1: Integer
     attr_accessor day_2: Integer
     attr_accessor day_3: Integer
@@ -30,6 +29,9 @@ module AocCli
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
     attr_accessor completed_at: Time
+
+    attr_accessor event: Event
+    attr_accessor event_dataset: Sequel::Dataset
 
     attr_reader presenter: Presenters::StatsPresenter
 

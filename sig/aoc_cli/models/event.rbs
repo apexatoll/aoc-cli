@@ -6,7 +6,12 @@ module AocCli
     attr_accessor updated_at: Time
 
     attr_accessor puzzles: Array[Puzzle]
+    attr_accessor puzzles_dataset: Sequel::Dataset
+
     attr_accessor stats: Stats
+    attr_accessor stats_dataset: Sequel::Dataset
+
     attr_accessor location: Location
+    attr_accessor location_dataset: Sequel::Dataset
   end
 end
