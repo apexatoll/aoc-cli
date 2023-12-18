@@ -31,6 +31,12 @@ module AocCli
       true
     end
 
+    def attempts
+      return unless validate_in_puzzle_dir!
+
+      Components::AttemptsTable.new(puzzle: current_resource).render
+    end
+
     private
 
     def validate_in_event_dir!

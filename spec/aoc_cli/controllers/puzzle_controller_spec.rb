@@ -404,4 +404,36 @@ RSpec.describe AocCli::PuzzleController, :with_temp_dir do
       end
     end
   end
+
+  describe "/puzzle/attempts" do
+    subject(:make_request) { resolve "/puzzle/attempts", params: {} }
+
+    context "when not in a puzzle dir" do
+      it "renders the expected error" do
+        expect { make_request }.to render_errors(
+          "Cannot perform that action from outside a puzzle directory"
+        )
+      end
+
+      it "does not render the attempts table" do
+        expect { make_request }
+          .not_to render_component(AocCli::Components::AttemptsTable)
+      end
+    end
+
+    context "when in a puzzle dir" do
+      let(:event)   { create(:event, :with_stats) }
+      let!(:puzzle) { create(:puzzle, :with_location, event:, path: temp_dir) }
+
+      it "does not render errors" do
+        expect { make_request }.not_to render_errors
+      end
+
+      it "renders the attempts table" do
+        expect { make_request }
+          .to render_component(AocCli::Components::AttemptsTable)
+          .with(puzzle:)
+      end
+    end
+  end
 end
