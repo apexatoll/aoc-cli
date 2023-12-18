@@ -13,7 +13,7 @@ RSpec.describe AocCli::Components::HelpComponent do
     let(:expected_text) do
       <<~TEXT
 
-        Advent of Code CLI <0.1.0>
+        Advent of Code CLI <#{AocCli::VERSION}>
 
         A command-line interface for the Advent of Code puzzles.
 
