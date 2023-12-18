@@ -1,0 +1,23 @@
+module AocCli
+  module Components
+    class HelpComponent < Kangaru::Component
+      ENDPOINTS: Hash[Symbol, untyped]
+
+      def endpoints: -> Hash[Symbol, untyped]
+
+      def heading: (String) -> String
+
+      def title: -> String
+
+      def commands_table: (Hash[Symbol, String], ?indent: Integer) -> String
+
+      private
+
+      COMMAND_COLUMN_WIDTH: Integer
+
+      def format_command_row: (String, String, indent: Integer) -> String
+
+      def space: (Integer) -> String
+    end
+  end
+end

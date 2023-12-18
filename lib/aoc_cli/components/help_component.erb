@@ -1,0 +1,19 @@
+
+<%= heading(title) %> <<%= AocCli::VERSION.blue %>>
+
+A command-line interface for the Advent of Code puzzles.
+
+Features include downloading puzzles and inputs, solving puzzles and
+tracking year progress from within the terminal.
+
+This is an unofficial project with no affiliation to Advent of Code.
+
+<% endpoints.each do |controller, data| %>
+  <%= heading(controller) %>
+
+  <%= data[:description] %>
+
+  Usage: <%= "aoc #{controller}".blue %> <%= "<command>".cyan %>
+
+<%= commands_table(data[:commands], indent: 4) %>
+<% end -%>
