@@ -53,7 +53,7 @@ module AocCli
       end
 
       def refresh_puzzle!
-        PuzzleRefresher.run(year:, day:)
+        PuzzleRefresher.run(year:, day:, use_cache: false)
       end
 
       def create_or_update_location!(puzzle)

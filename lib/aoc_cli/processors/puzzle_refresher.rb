@@ -15,6 +15,7 @@ module AocCli
 
       def run
         return unless valid?
+        return puzzle if puzzle && use_cache
 
         create_or_update_puzzle!(fetch_content!, fetch_input!)
       end

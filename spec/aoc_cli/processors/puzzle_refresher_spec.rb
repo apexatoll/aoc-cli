@@ -1,7 +1,9 @@
 RSpec.describe AocCli::Processors::PuzzleRefresher do
   subject(:puzzle_refresher) { described_class.new(**attributes) }
 
-  let(:attributes) { { year:, day: }.compact }
+  let(:attributes) { { year:, day:, use_cache: }.compact }
+
+  let(:use_cache) { nil }
 
   describe "validations" do
     let(:year) { 2021 }
@@ -181,43 +183,78 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
           )
         end
 
-        context "and puzzle data has not changed" do
-          let(:original_content) { fetched_content }
-          let(:original_input) { fetched_input }
+        let(:original_content) { fetched_content }
+        let(:original_input) { fetched_input }
 
-          include_examples :fetches_puzzle_data
+        context "and use_cache is set to true" do
+          let(:use_cache) { nil }
 
-          it "does not create a Puzzle record" do
-            expect { run }.not_to create_model(AocCli::Puzzle)
+          it "does not fetch the puzzle content" do
+            run
+
+            expect(AocCli::Core::Repository)
+              .not_to have_received(:get_puzzle)
+              .with(year:, day:)
+          end
+
+          it "does not fetch the puzzle input" do
+            run
+
+            expect(AocCli::Core::Repository)
+              .not_to have_received(:get_input)
+              .with(year:, day:)
           end
 
           it "does not change the existing Puzzle attributes" do
             expect { run }.not_to change { puzzle.reload.values }
           end
 
-          it "returns the updated Puzzle record" do
+          it "returns the cached Puzzle record" do
             expect(run.reload).to eq(puzzle.reload)
           end
         end
 
-        context "and puzzle data has changed" do
-          let(:original_content) { fetched_content.reverse }
-          let(:original_input) { fetched_input.reverse }
+        context "and use_cache is set to false" do
+          let(:use_cache) { false }
 
-          include_examples :fetches_puzzle_data
+          context "and puzzle data has not changed" do
+            let(:original_content) { fetched_content }
+            let(:original_input) { fetched_input }
 
-          it "does not create a Puzzle record" do
-            expect { run }.not_to create_model(AocCli::Puzzle)
+            include_examples :fetches_puzzle_data
+
+            it "does not create a Puzzle record" do
+              expect { run }.not_to create_model(AocCli::Puzzle)
+            end
+
+            it "does not change the existing Puzzle attributes" do
+              expect { run }.not_to change { puzzle.reload.values }
+            end
+
+            it "returns the updated Puzzle record" do
+              expect(run.reload).to eq(puzzle.reload)
+            end
           end
 
-          it "updates the existing Puzzle attributes" do
-            expect { run }
-              .to change { puzzle.reload.values }
-              .to(include(content: fetched_content, input: fetched_input))
-          end
+          context "and puzzle data has changed" do
+            let(:original_content) { fetched_content.reverse }
+            let(:original_input) { fetched_input.reverse }
 
-          it "returns the updated Puzzle record" do
-            expect(run.reload).to eq(puzzle.reload)
+            include_examples :fetches_puzzle_data
+
+            it "does not create a Puzzle record" do
+              expect { run }.not_to create_model(AocCli::Puzzle)
+            end
+
+            it "updates the existing Puzzle attributes" do
+              expect { run }
+                .to change { puzzle.reload.values }
+                .to(include(content: fetched_content, input: fetched_input))
+            end
+
+            it "returns the updated Puzzle record" do
+              expect(run.reload).to eq(puzzle.reload)
+            end
           end
         end
       end

@@ -122,7 +122,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
     before do
       allow(AocCli::Processors::PuzzleRefresher)
         .to receive(:run)
-        .with(year:, day:)
+        .with(year:, day:, use_cache: false)
         .and_return(puzzle)
     end
 
@@ -168,7 +168,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
 
           expect(AocCli::Processors::PuzzleRefresher)
             .to have_received(:run)
-            .with(year:, day:)
+            .with(year:, day:, use_cache: false)
             .once
         end
 
@@ -213,7 +213,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
 
           expect(AocCli::Processors::PuzzleRefresher)
             .to have_received(:run)
-            .with(year:, day:)
+            .with(year:, day:, use_cache: false)
             .once
         end
 
