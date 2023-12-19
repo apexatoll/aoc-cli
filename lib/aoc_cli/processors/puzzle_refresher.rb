@@ -1,7 +1,9 @@
 module AocCli
   module Processors
     class PuzzleRefresher < Core::Processor
-      attr_accessor :year, :day
+      attr_accessor :year, :day, :use_cache
+
+      set_default use_cache: true
 
       validates :year, event_year: true
       validates :day, integer: { between: 1..25 }
