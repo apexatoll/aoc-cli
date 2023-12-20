@@ -1,6 +1,6 @@
 module AocCli
   module Processors
-    class PuzzleRefresher < Core::Processor
+    class PuzzleFetcher < Core::Processor
       attr_accessor :year, :day, :use_cache
 
       set_default use_cache: true

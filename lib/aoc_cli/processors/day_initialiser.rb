@@ -17,7 +17,7 @@ module AocCli
       def run
         return unless valid?
 
-        refresh_puzzle!.tap do |puzzle|
+        fetch_puzzle!.tap do |puzzle|
           create_or_update_location!(puzzle)
           make_directory!
           write_files!(puzzle)
@@ -52,8 +52,8 @@ module AocCli
         File.join(puzzle_dir, "input")
       end
 
-      def refresh_puzzle!
-        PuzzleRefresher.run(year:, day:, use_cache: false)
+      def fetch_puzzle!
+        PuzzleFetcher.run(year:, day:, use_cache: false)
       end
 
       def create_or_update_location!(puzzle)

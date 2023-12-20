@@ -1,5 +1,5 @@
-RSpec.describe AocCli::Processors::PuzzleRefresher do
-  subject(:puzzle_refresher) { described_class.new(**attributes) }
+RSpec.describe AocCli::Processors::PuzzleFetcher do
+  subject(:puzzle_fetcher) { described_class.new(**attributes) }
 
   let(:attributes) { { year:, day:, use_cache: }.compact }
 
@@ -80,7 +80,7 @@ RSpec.describe AocCli::Processors::PuzzleRefresher do
   end
 
   describe "#run" do
-    subject(:run) { puzzle_refresher.run }
+    subject(:run) { puzzle_fetcher.run }
 
     let(:year) { 2017 }
 
