@@ -41,6 +41,28 @@ module TempDirHelper
       @contents = contents
     end
   end
+
+  matcher :update_temp_file do |file|
+    supports_block_expectations
+
+    match do |action|
+      path = temp_path(file)
+
+      value_before = File.read(path)
+      action.call
+      value_after = File.read(path)
+
+      updated = value_after != value_before
+
+      return updated unless @contents
+
+      updated && value_after == @contents
+    end
+
+    chain :to do |contents|
+      @contents = contents
+    end
+  end
 end
 
 RSpec.configure do |config|
