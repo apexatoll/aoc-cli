@@ -26,4 +26,24 @@ RSpec.describe AocCli::Presenters::PuzzlePresenter do
       end
     end
   end
+
+  describe "#puzzle_filename" do
+    subject(:puzzle_filename) { presenter.puzzle_filename }
+
+    context "when day is single digit" do
+      let(:day) { 8 }
+
+      it "returns the expected filename" do
+        expect(puzzle_filename).to eq("day_08.md")
+      end
+    end
+
+    context "when day is double digit" do
+      let(:day) { 10 }
+
+      it "returns the expected date" do
+        expect(puzzle_filename).to eq("day_10.md")
+      end
+    end
+  end
 end

@@ -7,6 +7,10 @@ module AocCli
 
       def date: -> String
 
+      def puzzle_filename: -> String
+
+      def input_filename: -> String
+
       private
 
       def formatted_day: -> String

@@ -11,6 +11,14 @@ module AocCli
         "#{puzzle.event.year}-12-#{formatted_day}"
       end
 
+      def puzzle_filename
+        "day_#{formatted_day}.md"
+      end
+
+      def input_filename
+        "input"
+      end
+
       private
 
       def formatted_day
