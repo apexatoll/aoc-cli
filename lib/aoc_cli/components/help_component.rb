@@ -14,6 +14,7 @@ module AocCli
           description: "Handle puzzle directories",
           commands: {
             init: "Fetch and initialise puzzles for the current event",
+            solve: "Submit and evaluate a puzzle solution",
             attempts: "Review previous attempts for the current puzzle"
           }
         }

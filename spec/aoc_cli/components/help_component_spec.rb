@@ -40,6 +40,7 @@ RSpec.describe AocCli::Components::HelpComponent do
           Usage: aoc puzzle <command>
 
             init        Fetch and initialise puzzles for the current event
+            solve       Submit and evaluate a puzzle solution
             attempts    Review previous attempts for the current puzzle
 
       TEXT
