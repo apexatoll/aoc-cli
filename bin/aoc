@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/aoc_cli.rb'
-AocCli::Interface::Query.new
+# Runs the application using the latest code for development purposes
+# exe/aoc is the release script using the published gem code.
+require_relative "../lib/aoc_cli"
+
+AocCli.run!(*ARGV)
