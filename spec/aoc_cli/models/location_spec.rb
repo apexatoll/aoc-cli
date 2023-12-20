@@ -100,4 +100,16 @@ RSpec.describe AocCli::Location do
       end
     end
   end
+
+  describe "#to_pathname" do
+    subject(:pathname) { location.to_pathname }
+
+    it "returns a Pathname object" do
+      expect(pathname).to be_a(Pathname)
+    end
+
+    it "wraps the location path" do
+      expect(pathname.to_s).to eq(path)
+    end
+  end
 end

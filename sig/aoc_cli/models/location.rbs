@@ -13,5 +13,7 @@ module AocCli
     def event_dir?: -> bool
 
     def puzzle_dir?: -> bool
+
+    def to_pathname: -> Pathname
   end
 end

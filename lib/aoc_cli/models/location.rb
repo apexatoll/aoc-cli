@@ -16,5 +16,9 @@ module AocCli
     def puzzle_dir?
       resource.is_a?(Puzzle)
     end
+
+    def to_pathname
+      Pathname.new(path)
+    end
   end
 end
