@@ -1,0 +1,15 @@
+module AocCli
+  module Processors
+    class PuzzleDirSynchroniser < Core::Processor
+      attr_accessor puzzle: Puzzle
+      attr_accessor location: Location
+      attr_accessor skip_cache: bool
+
+      private
+
+      attr_reader puzzle_dir: Pathname
+
+      def validate_puzzle_dir_exists!: -> void
+    end
+  end
+end
