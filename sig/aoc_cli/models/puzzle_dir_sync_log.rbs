@@ -1,0 +1,11 @@
+module AocCli
+  class PuzzleDirSyncLog < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor puzzle: Puzzle
+    attr_accessor location: Location
+    attr_accessor puzzle_status: Symbol
+    attr_accessor input_status: Symbol
+
+    STATUS_ENUM: Hash[Symbol, Integer]
+  end
+end
