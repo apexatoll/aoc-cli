@@ -34,7 +34,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: d024ac045075b85cee587286fb70ff4951ee861b
+    revision: 1c3a6639a58e083d8c736c324f876a330ae0dfaf
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 - name: concurrent-ruby
@@ -90,7 +90,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: d024ac045075b85cee587286fb70ff4951ee861b
+    revision: 1c3a6639a58e083d8c736c324f876a330ae0dfaf
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 - name: logger
@@ -130,7 +130,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: d024ac045075b85cee587286fb70ff4951ee861b
+    revision: 1c3a6639a58e083d8c736c324f876a330ae0dfaf
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 - name: singleton
@@ -146,7 +146,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: d024ac045075b85cee587286fb70ff4951ee861b
+    revision: 1c3a6639a58e083d8c736c324f876a330ae0dfaf
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 - name: time
@@ -162,7 +162,7 @@ gems:
   source:
     type: git
     name: apexatoll/gem_signatures
-    revision: d024ac045075b85cee587286fb70ff4951ee861b
+    revision: 1c3a6639a58e083d8c736c324f876a330ae0dfaf
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
 gemfile_lock_path: Gemfile.lock
