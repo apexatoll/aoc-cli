@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :puzzle, class: "AocCli::Puzzle" do
-    event { association(:event) }
+    transient do
+      year { (2015..2023).to_a.sample }
+    end
+
+    event { association(:event, year:) }
 
     day { (1..25).to_a.sample }
 
