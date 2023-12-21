@@ -14,7 +14,7 @@ module AocCli
 
       def input_path: -> String
 
-      def fetch_puzzle!: -> Puzzle
+      def refresh_puzzle!: -> Puzzle
 
       def create_or_update_location!: (Puzzle) -> void
 

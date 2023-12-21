@@ -1,6 +1,6 @@
 module AocCli
   module Processors
-    class PuzzleFetcher < Core::Processor
+    class PuzzleRefresher < Core::Processor
       attr_accessor year: Integer
       attr_accessor day: Integer
       attr_accessor use_cache: bool

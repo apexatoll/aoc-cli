@@ -120,7 +120,7 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
     let(:input_file_path)  { File.join(puzzle_dir, "input") }
 
     before do
-      allow(AocCli::Processors::PuzzleFetcher)
+      allow(AocCli::Processors::PuzzleRefresher)
         .to receive(:run)
         .with(year:, day:, use_cache: false)
         .and_return(puzzle)
@@ -129,9 +129,9 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
     context "when invalid" do
       before { temp_path(day.to_s).mkdir }
 
-      it "does not fetch the puzzle" do
+      it "does not refresh the puzzle" do
         run
-        expect(AocCli::Processors::PuzzleFetcher).not_to have_received(:run)
+        expect(AocCli::Processors::PuzzleRefresher).not_to have_received(:run)
       end
 
       it "does not create a Location record" do
@@ -163,10 +163,10 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
       context "and puzzle location record already exists" do
         let!(:puzzle_location) { create(:location, :puzzle_dir, puzzle:) }
 
-        it "fetches the puzzle" do
+        it "refreshes the puzzle" do
           run
 
-          expect(AocCli::Processors::PuzzleFetcher)
+          expect(AocCli::Processors::PuzzleRefresher)
             .to have_received(:run)
             .with(year:, day:, use_cache: false)
             .once
@@ -208,10 +208,10 @@ RSpec.describe AocCli::Processors::DayInitialiser, :with_temp_dir do
       context "and puzzle location record does not already exist" do
         let(:puzzle_location) { AocCli::Location.last }
 
-        it "fetches the puzzle" do
+        it "refreshes the puzzle" do
           run
 
-          expect(AocCli::Processors::PuzzleFetcher)
+          expect(AocCli::Processors::PuzzleRefresher)
             .to have_received(:run)
             .with(year:, day:, use_cache: false)
             .once
