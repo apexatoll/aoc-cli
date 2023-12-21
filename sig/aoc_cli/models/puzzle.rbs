@@ -1,5 +1,7 @@
 module AocCli
   class Puzzle < Kangaru::Model
+    extend Forwardable
+
     attr_accessor id: Integer
     attr_accessor event: Event
     attr_accessor day: Integer
@@ -15,6 +17,9 @@ module AocCli
 
     attr_accessor attempts: Array[Attempt]
     attr_accessor attempts_dataset: Sequel::Dataset
+
+    # Delegated to event
+    def year: -> Integer
 
     attr_reader presenter: Presenters::PuzzlePresenter
 

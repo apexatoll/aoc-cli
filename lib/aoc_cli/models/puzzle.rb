@@ -1,5 +1,7 @@
 module AocCli
   class Puzzle < Kangaru::Model
+    extend Forwardable
+
     many_to_one :event
     one_to_one :location, as: :resource
     one_to_many :attempts
@@ -8,6 +10,8 @@ module AocCli
     validates :day, integer: { between: 1..25 }
     validates :content, required: true
     validates :input, required: true
+
+    def_delegators :event, :year
 
     def presenter
       @presenter ||= Presenters::PuzzlePresenter.new(self)
