@@ -1,0 +1,22 @@
+module AocCli
+  module Validators
+    class TypeValidator < Kangaru::Validator
+
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      def valid_type: -> Class?
+
+      def valid_types: -> Array[Class]?
+
+      def error: -> String
+
+      def validate_target_type_set!: -> void
+
+      def validate_type!: -> void
+
+      def validate_type_from_list!: -> void
+    end
+  end
+end
