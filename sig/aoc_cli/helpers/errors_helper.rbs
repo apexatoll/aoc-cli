@@ -1,9 +1,0 @@
-module AocCli
-  module Helpers
-    module ErrorsHelper
-      def render_errors!: (*String) -> false
-
-      def render_model_errors!: (untyped) -> false
-    end
-  end
-end

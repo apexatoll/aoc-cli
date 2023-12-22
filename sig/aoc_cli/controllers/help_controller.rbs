@@ -1,7 +1,0 @@
-module AocCli
-  class HelpController < ApplicationController
-    def default: -> void
-
-    alias help default
-  end
-end

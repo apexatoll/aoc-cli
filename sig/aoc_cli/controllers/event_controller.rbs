@@ -1,7 +1,0 @@
-module AocCli
-  class EventController < ApplicationController
-    def init: -> void
-
-    def progress: -> void
-  end
-end

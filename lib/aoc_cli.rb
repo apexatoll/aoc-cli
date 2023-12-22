@@ -17,8 +17,6 @@ module AocCli
     config.database.adaptor = :sqlite
     config.database.path = File.expand_path("~/.local/share/aoc/aoc.sqlite3")
     config.database.migration_path = "db/migrate"
-
-    config.request.default_controller = HelpController
   end
 
   configure env: :test do |config|
