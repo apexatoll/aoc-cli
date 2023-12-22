@@ -1,0 +1,21 @@
+module AocCli
+  module Processors
+    class PuzzleRefresher < Core::Processor
+      attr_accessor puzzle: Puzzle
+
+      def self.run!: (puzzle: Puzzle) -> Puzzle
+
+      private
+
+      extend Forwardable
+
+      def year: -> Integer
+
+      def day: -> Integer
+
+      def content: -> String
+
+      def input: -> String
+    end
+  end
+end
