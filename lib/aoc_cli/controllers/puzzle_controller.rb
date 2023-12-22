@@ -31,6 +31,22 @@ module AocCli
       true
     end
 
+    def sync
+      return unless validate_in_puzzle_dir!
+
+      processor = Processors::PuzzleDirSynchroniser.new(
+        puzzle: current_resource,
+        location: current_location,
+        skip_cache: params[:skip_cache] || false
+      )
+
+      @log = processor.run
+
+      return render_model_errors!(processor) if @log.nil?
+
+      true
+    end
+
     def attempts
       return unless validate_in_puzzle_dir!
 

@@ -405,6 +405,316 @@ RSpec.describe AocCli::PuzzleController, :with_temp_dir do
     end
   end
 
+  describe "/puzzle/sync" do
+    subject(:make_request) { resolve "/puzzle/sync", params: }
+
+    let(:params) { { skip_cache: }.compact }
+
+    let(:skip_cache) { nil }
+
+    let(:year) { 2019 }
+
+    let(:day) { 8 }
+
+    let!(:puzzle) { create(:puzzle, :with_location, year:, day:, path:) }
+
+    let(:puzzle_url) { "https://adventofcode.com/#{year}/day/#{day}" }
+
+    let(:input_url) { "#{puzzle_url}/input" }
+
+    let(:puzzle_file) { puzzle_content_path(day:, dir: temp_dir) }
+
+    let(:input_file) { puzzle_input_path(dir: temp_dir) }
+
+    shared_examples :does_not_request_puzzle do
+      it "does not request the puzzle" do
+        make_request
+        assert_not_requested(:get, puzzle_url)
+      end
+
+      it "does not request the input" do
+        make_request
+        assert_not_requested(:get, input_url)
+      end
+    end
+
+    shared_examples :requests_puzzle do
+      it "requests the puzzle" do
+        make_request
+        assert_requested(:get, puzzle_url)
+      end
+
+      it "requests the input" do
+        make_request
+        assert_requested(:get, input_url)
+      end
+    end
+
+    context "when not in puzzle directory" do
+      let(:path) { temp_path("some-other-path").to_s }
+
+      include_examples :does_not_request_puzzle
+
+      it "renders the expected errors" do
+        expect { make_request }.to render_errors(
+          "Cannot perform that action from outside a puzzle directory"
+        )
+      end
+
+      it "does not create a puzzle file" do
+        expect { make_request }.not_to create_temp_file(puzzle_file)
+      end
+
+      it "does not create an input file" do
+        expect { make_request }.not_to create_temp_file(input_file)
+      end
+    end
+
+    context "when in puzzle directory" do
+      let(:path) { temp_dir }
+
+      before do
+        puzzle_file.write(current_puzzle) if current_puzzle
+        input_file.write(current_input) if current_input
+      end
+
+      shared_examples :renders_log do |options|
+        let(:status) { options[:status] }
+
+        it "does not render any errors" do
+          expect { make_request }.not_to render_errors
+        end
+
+        it "renders the log" do
+          expect { make_request }.to output(<<~TEXT).to_stdout
+            Puzzle #{puzzle.presenter.date} synchronised
+            \u2022 Puzzle file: #{status}
+            \u2022 Input file: #{status}
+          TEXT
+        end
+      end
+
+      context "and cache is used" do
+        let(:skip_cache) { nil }
+
+        context "and files do not currently exist" do
+          let(:current_puzzle) { nil }
+          let(:current_input)  { nil }
+
+          include_examples :does_not_request_puzzle
+
+          include_examples :renders_log, status: :new
+
+          it "creates the puzzle file from cache" do
+            expect { make_request }
+              .to create_temp_file(puzzle_file)
+              .with_contents(puzzle.content)
+          end
+
+          it "creates the input file from cache" do
+            expect { make_request }
+              .to create_temp_file(input_file)
+              .with_contents(puzzle.input)
+          end
+        end
+
+        context "and current files have drifted from cache" do
+          let(:current_puzzle) { puzzle.content.reverse }
+          let(:current_input) { puzzle.input.reverse }
+
+          include_examples :does_not_request_puzzle
+
+          include_examples :renders_log, status: :modified
+
+          it "updates the puzzle file from cache" do
+            expect { make_request }
+              .to update_temp_file(puzzle_file)
+              .to(puzzle.content)
+          end
+
+          it "updates the input file from cache" do
+            expect { make_request }
+              .to update_temp_file(input_file)
+              .to(puzzle.input)
+          end
+
+          it "does not render errors" do
+            expect { make_request }.not_to render_errors
+          end
+        end
+
+        context "and current files are same as cache" do
+          let(:current_puzzle) { puzzle.content }
+          let(:current_input) { puzzle.input }
+
+          include_examples :does_not_request_puzzle
+
+          include_examples :renders_log, status: :unmodified
+
+          it "does not update the puzzle file" do
+            expect { make_request }.not_to update_temp_file(puzzle_file)
+          end
+
+          it "does not update the input file" do
+            expect { make_request }.not_to update_temp_file(input_file)
+          end
+
+          it "does not render errors" do
+            expect { make_request }.not_to render_errors
+          end
+        end
+      end
+
+      context "and cache is not used" do
+        let(:skip_cache) { true }
+
+        let(:puzzle_html) do
+          <<~HTML
+            <html>
+              <head></head>
+              <body>
+                <main>
+                  <article>#{new_puzzle}</article>
+                </main>
+              </body>
+            </html>
+          HTML
+        end
+
+        before do
+          stub_request(:get, puzzle_url).to_return(body: puzzle_html)
+          stub_request(:get, input_url).to_return(body: new_input)
+        end
+
+        context "and files do not currently exist" do
+          let(:current_puzzle) { nil }
+          let(:current_input) { nil }
+
+          context "and cache is still accurate" do
+            let(:new_puzzle) { puzzle.content }
+            let(:new_input) { puzzle.input }
+
+            include_examples :requests_puzzle
+
+            include_examples :renders_log, status: :new
+
+            it "does not update the puzzle record" do
+              expect { make_request }.not_to change { puzzle.reload.values }
+            end
+
+            it "creates the puzzle file" do
+              expect { make_request }
+                .to create_temp_file(puzzle_file)
+                .with_contents(new_puzzle)
+            end
+
+            it "creates the input file" do
+              expect { make_request }
+                .to create_temp_file(input_file)
+                .with_contents(new_input)
+            end
+
+            it "does not render errors" do
+              expect { make_request }.not_to render_errors
+            end
+          end
+
+          context "and cache is outdated" do
+            let(:new_puzzle) { puzzle.content.reverse }
+            let(:new_input) { puzzle.input.reverse }
+
+            include_examples :requests_puzzle
+
+            include_examples :renders_log, status: :new
+
+            it "updates the puzzle record" do
+              expect { make_request }
+                .to change { puzzle.reload.values }
+                .to(include(content: new_puzzle, input: new_input))
+            end
+
+            it "creates the puzzle file" do
+              expect { make_request }
+                .to create_temp_file(puzzle_file)
+                .with_contents(new_puzzle)
+            end
+
+            it "creates the input file" do
+              expect { make_request }
+                .to create_temp_file(input_file)
+                .with_contents(new_input)
+            end
+
+            it "does not render errors" do
+              expect { make_request }.not_to render_errors
+            end
+          end
+        end
+
+        context "and files currently exist" do
+          let(:current_puzzle) { puzzle.content }
+          let(:current_input) { puzzle.input }
+
+          context "and cache is still accurate" do
+            let(:new_puzzle) { current_puzzle }
+            let(:new_input) { current_input }
+
+            include_examples :requests_puzzle
+
+            include_examples :renders_log, status: :unmodified
+
+            it "does not update the puzzle record" do
+              expect { make_request }.not_to change { puzzle.reload.values }
+            end
+
+            it "does not update the puzzle file" do
+              expect { make_request }.not_to update_temp_file(puzzle_file)
+            end
+
+            it "does not update the input file" do
+              expect { make_request }.not_to update_temp_file(input_file)
+            end
+
+            it "does not render errors" do
+              expect { make_request }.not_to render_errors
+            end
+          end
+
+          context "and cache is outdated" do
+            let(:new_puzzle) { puzzle.content.reverse }
+            let(:new_input) { puzzle.input.reverse }
+
+            include_examples :requests_puzzle
+
+            include_examples :renders_log, status: :modified
+
+            it "updates the puzzle record" do
+              expect { make_request }
+                .to change { puzzle.reload.values }
+                .to(include(content: new_puzzle, input: new_input))
+            end
+
+            it "updates the puzzle file" do
+              expect { make_request }
+                .to update_temp_file(puzzle_file)
+                .to(new_puzzle)
+            end
+
+            it "creates the input file" do
+              expect { make_request }
+                .to update_temp_file(input_file)
+                .to(new_input)
+            end
+
+            it "does not render errors" do
+              expect { make_request }.not_to render_errors
+            end
+          end
+        end
+      end
+    end
+  end
+
   describe "/puzzle/attempts" do
     subject(:make_request) { resolve "/puzzle/attempts", params: {} }
 

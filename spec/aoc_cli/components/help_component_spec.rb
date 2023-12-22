@@ -41,6 +41,7 @@ RSpec.describe AocCli::Components::HelpComponent do
 
             init        Fetch and initialise puzzles for the current event
             solve       Submit and evaluate a puzzle solution
+            sync        Ensure puzzle files are up to date
             attempts    Review previous attempts for the current puzzle
 
       TEXT
