@@ -34,6 +34,7 @@ RSpec.configure do |config|
   config.include CassetteHelpers
   config.include FixtureHelpers
   config.include PathHelpers
+  config.include RequestHelpers
 
   def spec_dir
     Pathname(File.expand_path(__dir__))
