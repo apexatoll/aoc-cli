@@ -1,0 +1,16 @@
+module AocCli
+  module Processors
+    class ResourceAttacher < Core::Processor
+      type resource = Event | Puzzle
+
+      attr_accessor resource: resource
+      attr_accessor path: String
+
+      def run: -> Location
+
+      def self.run!: (resource: resource, path: String) -> Location
+
+      def location: -> Location?
+    end
+  end
+end
