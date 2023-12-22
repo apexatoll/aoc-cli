@@ -1,0 +1,25 @@
+module AocCli
+  module Core
+    class Processor
+      extend Forwardable
+
+      include Kangaru::Attributable
+      extend Kangaru::Attributable::ClassMethods
+
+      include Kangaru::Validatable
+      extend Kangaru::Validatable::ClassMethods
+
+      class Error < StandardError
+        attr_reader processor: Processor
+
+        def initialize: (Processor) -> void
+      end
+
+      def run: -> untyped
+
+      def run!: -> untyped
+
+      def self.run!: (**untyped) -> untyped
+    end
+  end
+end
