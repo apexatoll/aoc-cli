@@ -1,5 +1,7 @@
 module AocCli
   class Stats < Kangaru::Model
+    extend Forwardable
+
     attr_accessor id: Integer
     attr_accessor day_1: Integer
     attr_accessor day_2: Integer
@@ -32,6 +34,9 @@ module AocCli
 
     attr_accessor event: Event
     attr_accessor event_dataset: Sequel::Dataset
+
+    # Delegated to event
+    def year: -> Integer
 
     attr_reader presenter: Presenters::StatsPresenter
 
