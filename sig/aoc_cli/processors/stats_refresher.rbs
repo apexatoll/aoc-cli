@@ -1,0 +1,19 @@
+module AocCli
+  module Processors
+    class StatsRefresher < Core::Processor
+      extend Forwardable
+
+      attr_accessor stats: Stats
+
+      def run: -> Stats
+
+      def self.run!: (stats: Stats) -> Stats
+
+      private
+
+      def year: -> Integer
+
+      def updated_stats: -> Hash[Symbol, Integer]
+    end
+  end
+end
