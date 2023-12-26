@@ -1,0 +1,24 @@
+module AocCli
+  module Processors
+    class EventInitialiser < Core::Processor
+      attr_accessor year: Integer
+      attr_accessor dir: String
+
+      def self.run!: (year: Integer, dir: String) -> Event
+
+      private
+
+      attr_reader event_dir: Pathname
+
+      def create_event!: -> Event
+
+      def make_event_directory!: -> void
+
+      def attach_event!: (Event) -> void
+
+      def validate_event_dir_does_not_exist!: -> void
+
+      def validate_event_not_already_initialised!: -> void
+    end
+  end
+end
