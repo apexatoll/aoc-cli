@@ -1,0 +1,40 @@
+module AocCli
+  module Processors
+    class PuzzleDirSynchroniser < Core::Processor
+      attr_accessor puzzle: Puzzle
+      attr_accessor location: Location
+      attr_accessor skip_cache: bool
+
+      def self.run!: (
+        puzzle: Puzzle,
+        location: Location,
+        ?skip_cache: bool?
+      )-> PuzzleDirSyncLog
+
+      private
+
+      # Delegated to Puzzle
+      def year: -> Integer
+      def day: -> Integer
+      def presenter: -> Presenters::PuzzlePresenter
+
+      # Delegated to Presenter
+      def puzzle_filename: -> String
+      def input_filename: -> String
+
+      attr_reader puzzle_dir: Pathname
+      attr_reader puzzle_file: Pathname
+      attr_reader input_file: Pathname
+
+      def refresh_puzzle!: -> void
+
+      def create_puzzle_dir_sync_log!: -> PuzzleDirSyncLog
+
+      def puzzle_status: -> Symbol
+
+      def input_status: -> Symbol
+
+      def validate_puzzle_dir_exists!: -> void
+    end
+  end
+end
