@@ -1,0 +1,37 @@
+module AocCli
+  module Processors
+    class PuzzleInitialiser < Core::Processor
+      attr_accessor event: Event
+      attr_accessor day: Integer
+
+      def run: -> Puzzle
+
+      def self.run!: (event: Event, day: Integer) -> Puzzle
+
+      private
+
+      # Delegated to Event
+      def year: -> Integer
+
+      attr_reader event_dir: Pathname
+      attr_reader puzzle_dir: Pathname
+      attr_reader existing_puzzle: Puzzle?
+
+      def fetch_content!: -> String
+
+      def fetch_input!: -> String
+
+      def create_or_update_puzzle!: (String, String) -> Puzzle
+
+      def attach_puzzle_dir!: (Puzzle) -> Location
+
+      def write_puzzle_files!: (Puzzle, Location) -> PuzzleDirSyncLog
+
+      def validate_event_location_set!: -> void
+
+      def validate_event_dir_exists!: -> void
+
+      def validate_puzzle_dir_does_not_exist!: -> void
+    end
+  end
+end
