@@ -45,7 +45,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
         end
 
         it "requests the stats" do
-          expect { run_process }.to request(stats_url(stats)).via(:get)
+          expect { run_process }.to request_url(stats_url(stats)).via(:get)
         end
 
         it "does not update the stats" do
@@ -65,7 +65,7 @@ RSpec.describe AocCli::Processors::StatsRefresher do
         end
 
         it "requests the stats" do
-          expect { run_process }.to request(stats_url(stats)).via(:get)
+          expect { run_process }.to request_url(stats_url(stats)).via(:get)
         end
 
         it "updates the stats" do

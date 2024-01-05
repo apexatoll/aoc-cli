@@ -1,7 +1,7 @@
 module Matchers
   extend RSpec::Matchers::DSL
 
-  matcher :request do |url|
+  matcher :request_url do |url|
     supports_block_expectations
 
     match do |action|

@@ -131,11 +131,11 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
                 let(:location) { AocCli::Location.last }
 
                 it "fetches the puzzle content" do
-                  expect { run_process }.to request(puzzle_url).via(:get)
+                  expect { run_process }.to request_url(puzzle_url).via(:get)
                 end
 
                 it "fetches the puzzle input" do
-                  expect { run_process }.to request(input_url).via(:get)
+                  expect { run_process }.to request_url(input_url).via(:get)
                 end
 
                 it "creates the Puzzle record" do
@@ -175,11 +175,11 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
                   let(:cached_input)   { input.reverse }
 
                   it "fetches the puzzle content" do
-                    expect { run_process }.to request(puzzle_url).via(:get)
+                    expect { run_process }.to request_url(puzzle_url).via(:get)
                   end
 
                   it "fetches the puzzle input" do
-                    expect { run_process }.to request(input_url).via(:get)
+                    expect { run_process }.to request_url(input_url).via(:get)
                   end
 
                   it "does not create a Puzzle record" do
@@ -206,11 +206,11 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
                   let(:cached_input)   { input }
 
                   it "fetches the puzzle content" do
-                    expect { run_process }.to request(puzzle_url).via(:get)
+                    expect { run_process }.to request_url(puzzle_url).via(:get)
                   end
 
                   it "fetches the puzzle input" do
-                    expect { run_process }.to request(input_url).via(:get)
+                    expect { run_process }.to request_url(input_url).via(:get)
                   end
 
                   it "does not create a Puzzle record" do

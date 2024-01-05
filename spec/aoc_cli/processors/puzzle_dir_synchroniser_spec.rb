@@ -78,11 +78,11 @@ RSpec.describe AocCli::Processors::PuzzleDirSynchroniser, :with_temp_dir do
           let(:skip_cache) { false }
 
           it "does not request the puzzle content" do
-            expect { run_process }.not_to request(puzzle_url(puzzle))
+            expect { run_process }.not_to request_url(puzzle_url(puzzle))
           end
 
           it "does not request the puzzle input" do
-            expect { run_process }.not_to request(input_url(puzzle))
+            expect { run_process }.not_to request_url(input_url(puzzle))
           end
         end
 
@@ -90,11 +90,11 @@ RSpec.describe AocCli::Processors::PuzzleDirSynchroniser, :with_temp_dir do
           let(:skip_cache) { true }
 
           it "requests the puzzle content" do
-            expect { run_process }.to request(puzzle_url(puzzle))
+            expect { run_process }.to request_url(puzzle_url(puzzle))
           end
 
           it "requests the puzzle input" do
-            expect { run_process }.to request(input_url(puzzle))
+            expect { run_process }.to request_url(input_url(puzzle))
           end
         end
       end
