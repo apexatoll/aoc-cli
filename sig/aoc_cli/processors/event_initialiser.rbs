@@ -4,7 +4,7 @@ module AocCli
       attr_accessor year: Integer
       attr_accessor dir: String
 
-      def self.run!: (year: Integer, dir: String) -> Event
+      def self.run!: (year: untyped, dir: untyped) -> Event
 
       private
 
