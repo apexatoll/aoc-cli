@@ -78,9 +78,18 @@ RSpec.describe AocCli::Processors::EventInitialiser, :with_temp_dir do
 
           context "and event dir does not already exist" do
             let(:event)    { AocCli::Event.last }
+            let(:stats)    { AocCli::Stats.last }
             let(:location) { AocCli::Location.last }
 
+            let(:stats_data) { { day_1: 2, day_2: 2, day_3: 1 } }
+
             let(:event_dir) { temp_path(year.to_s).to_s }
+
+            before do
+              allow(AocCli::Core::Repository)
+                .to receive(:get_stats)
+                .and_return(stats_data)
+            end
 
             it "creates an Event record" do
               expect { run_process }
@@ -88,10 +97,21 @@ RSpec.describe AocCli::Processors::EventInitialiser, :with_temp_dir do
                 .with_attributes(year:)
             end
 
+            it "creates a Stats record" do
+              expect { run_process }
+                .to create_model(AocCli::Stats)
+                .with_attributes(**stats_data)
+            end
+
             it "creates a Location record" do
               expect { run_process }
                 .to create_model(AocCli::Location)
                 .with_attributes(path: event_dir)
+            end
+
+            it "associates the Stats to the Event" do
+              run_process
+              expect(event.stats).to eq(stats)
             end
 
             it "associates the Location to the Event" do

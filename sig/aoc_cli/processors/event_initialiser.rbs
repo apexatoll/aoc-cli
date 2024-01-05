@@ -12,6 +12,8 @@ module AocCli
 
       def create_event!: -> Event
 
+      def initialise_stats!: (Event) -> void
+
       def make_event_directory!: -> void
 
       def attach_event!: (Event) -> void

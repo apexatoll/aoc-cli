@@ -16,6 +16,7 @@ module AocCli
 
       def run
         create_event!.tap do |event|
+          initialise_stats!(event)
           make_event_directory!
           attach_event!(event)
         end
@@ -29,6 +30,10 @@ module AocCli
 
       def create_event!
         Event.create(year:)
+      end
+
+      def initialise_stats!(event)
+        StatsInitialiser.run!(event:)
       end
 
       def make_event_directory!
