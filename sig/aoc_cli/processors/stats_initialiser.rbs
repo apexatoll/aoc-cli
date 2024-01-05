@@ -1,0 +1,15 @@
+module AocCli
+  module Processors
+    class StatsInitialiser < Core::Processor
+      attr_accessor event: Event
+
+      private
+
+      BLANK_STATS: Hash[Symbol, Integer]
+
+      def fetch_stats!: -> Hash[Symbol, Integer]
+
+      def validate_stats_do_not_exist!: -> void
+    end
+  end
+end
