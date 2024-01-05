@@ -13,6 +13,10 @@ module RequestHelpers
     "#{BASE}/#{puzzle.year}/day/#{puzzle.day}/input"
   end
 
+  def solution_url(puzzle)
+    "#{BASE}/#{puzzle.year}/day/#{puzzle.day}/answer"
+  end
+
   def wrap_in_html(content, tag: :article)
     <<~HTML
       <html>

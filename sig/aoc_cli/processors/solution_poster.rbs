@@ -1,0 +1,31 @@
+module AocCli
+  module Processors
+    class SolutionPoster < Core::Processor
+      attr_accessor puzzle: Puzzle
+      attr_accessor answer: Integer
+
+      def run: -> Attempt
+
+      def self.run!: -> Attempt
+
+      private
+
+      # Delegated to @puzzle
+      def event: -> Event
+      def year: -> Integer
+      def day: -> Integer
+
+      attr_reader level: Integer
+
+      def post_solution!: -> Hash[Symbol, untyped]
+
+      def create_attempt!: (Hash[Symbol, untyped]) -> Attempt
+
+      def advance_puzzle!: -> void
+
+      def validate_stats_associated!: -> void
+
+      def validate_puzzle_not_complete!: -> void
+    end
+  end
+end
