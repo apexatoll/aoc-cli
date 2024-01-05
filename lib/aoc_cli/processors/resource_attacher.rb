@@ -13,7 +13,7 @@ module AocCli
           Location.create(resource:, path:)
         else
           location&.update(path:) || location
-        end
+        end.tap { resource.reload }
       end
 
       def_delegators :resource, :location
