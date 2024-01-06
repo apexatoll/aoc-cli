@@ -6,6 +6,117 @@ RSpec.describe AocCli::Processors::SolutionPoster do
   describe ".run!" do
     subject(:run_process) { described_class.run!(puzzle:, answer:) }
 
+    shared_examples :handles_rate_limited_attempt do |options|
+      let(:expected_attempt_attributes) do
+        {
+          puzzle:,
+          answer:,
+          level: progress + 1,
+          status: :rate_limited,
+          wait_time: options[:wait]
+        }
+      end
+
+      it "posts the solution" do
+        run_process
+        assert_requested(:post, solution_url(puzzle))
+      end
+
+      it "creates an Attempt" do
+        expect { run_process }
+          .to create_model(AocCli::Attempt)
+          .with_attributes(**expected_attempt_attributes)
+      end
+
+      it "does not change the puzzle attributes" do
+        expect { run_process }.not_to change { puzzle.reload.values }
+      end
+
+      it "does not change the stats attributes" do
+        expect { run_process }.not_to change { stats.reload.values }
+      end
+
+      it "returns the Attempt" do
+        expect(run_process).to eq(attempt)
+      end
+    end
+
+    shared_examples :handles_incorrect_attempt do |options|
+      let(:expected_attempt_attributes) do
+        {
+          puzzle:,
+          answer:,
+          level: progress + 1,
+          status: :incorrect,
+          wait_time: options[:wait]
+        }
+      end
+
+      it "posts the solution" do
+        run_process
+        assert_requested(:post, solution_url(puzzle))
+      end
+
+      it "creates an Attempt" do
+        expect { run_process }
+          .to create_model(AocCli::Attempt)
+            .with_attributes(**expected_attempt_attributes)
+      end
+
+      it "does not change the puzzle attributes" do
+        expect { run_process }.not_to change { puzzle.reload.values }
+      end
+
+      it "does not change the stats attributes" do
+        expect { run_process }.not_to change { stats.reload.values }
+      end
+
+      it "returns the Attempt" do
+        expect(run_process).to eq(attempt)
+      end
+    end
+
+    shared_examples :handles_correct_attempt do |options|
+      it "posts the solution" do
+        run_process
+        assert_requested(:post, solution_url(puzzle))
+      end
+
+      it "creates an Attempt" do
+        expect { run_process }
+          .to create_model(AocCli::Attempt)
+          .with_attributes(puzzle:, status: :correct)
+      end
+
+      it "returns the attempt" do
+        expect(run_process).to eq(attempt)
+      end
+
+      if options[:initial].zero?
+        it "sets the part_one_completed_at timestamp" do
+          expect { run_process }
+            .to change { puzzle.reload.part_one_completed_at }
+            .to(now)
+        end
+
+        it "does not set the part_two_completed_at timestamp" do
+          expect { run_process }
+            .not_to change { puzzle.reload.part_two_completed_at }
+        end
+      else
+        it "does not set the part_one_completed_at timestamp" do
+          expect { run_process }
+            .not_to change { puzzle.reload.part_one_completed_at }
+        end
+
+        it "sets the part_two_completed_at timestamp" do
+          expect { run_process }
+            .to change { puzzle.reload.part_two_completed_at }
+            .to(now)
+        end
+      end
+    end
+
     context "when puzzle is nil" do
       let(:puzzle) { nil }
 
@@ -88,8 +199,10 @@ RSpec.describe AocCli::Processors::SolutionPoster do
 
             let(:attempt) { AocCli::Attempt.last }
 
-            shared_examples :handles_rate_limited_attempt do
-              context "when answer was given too recently" do
+            context "and puzzle has no progress" do
+              let(:progress) { 0 }
+
+              context "and answer was given too recently" do
                 let(:body) do
                   wrap_in_html(<<~HTML)
                     You gave an answer too recently;
@@ -97,151 +210,63 @@ RSpec.describe AocCli::Processors::SolutionPoster do
                   HTML
                 end
 
-                let(:expected_attempt_attributes) do
-                  {
-                    puzzle:,
-                    answer:,
-                    level: progress + 1,
-                    status: :rate_limited,
-                    wait_time: 1
-                  }
-                end
-
-                it "posts the solution" do
-                  run_process
-                  assert_requested(:post, solution_url(puzzle))
-                end
-
-                it "creates an Attempt" do
-                  expect { run_process }
-                    .to create_model(AocCli::Attempt)
-                    .with_attributes(**expected_attempt_attributes)
-                end
-
-                it "does not change the puzzle attributes" do
-                  expect { run_process }.not_to change { puzzle.reload.values }
-                end
-
-                it "does not change the stats attributes" do
-                  expect { run_process }.not_to change { stats.reload.values }
-                end
-
-                it "returns the Attempt" do
-                  expect(run_process).to eq(attempt)
-                end
+                include_examples :handles_rate_limited_attempt, wait: 1
               end
-            end
 
-            shared_examples :handles_incorrect_attempt do
-              context "when answer is incorrect" do
+              context "and answer is incorrect" do
                 let(:body) do
                   wrap_in_html(<<~HTML)
                     That's not the right answer; Please wait one minute
                   HTML
                 end
 
-                let(:expected_attempt_attributes) do
-                  {
-                    puzzle:,
-                    answer:,
-                    level: progress + 1,
-                    status: :incorrect,
-                    wait_time: 1
-                  }
-                end
-
-                it "posts the solution" do
-                  run_process
-                  assert_requested(:post, solution_url(puzzle))
-                end
-
-                it "creates an Attempt" do
-                  expect { run_process }
-                    .to create_model(AocCli::Attempt)
-                    .with_attributes(**expected_attempt_attributes)
-                end
-
-                it "does not change the puzzle attributes" do
-                  expect { run_process }.not_to change { puzzle.reload.values }
-                end
-
-                it "does not change the stats attributes" do
-                  expect { run_process }.not_to change { stats.reload.values }
-                end
-
-                it "returns the Attempt" do
-                  expect(run_process).to eq(attempt)
-                end
+                include_examples :handles_incorrect_attempt, wait: 1
               end
-            end
 
-            shared_examples :handles_correct_attempt do |options|
-              context "when answer is correct" do
+              context "and answer is correct" do
                 let(:body) do
                   wrap_in_html(<<~HTML)
                     That's the right answer!
                   HTML
                 end
 
-                it "posts the solution" do
-                  run_process
-                  assert_requested(:post, solution_url(puzzle))
-                end
-
-                it "creates an Attempt" do
-                  expect { run_process }
-                    .to create_model(AocCli::Attempt)
-                    .with_attributes(puzzle:, status: :correct)
-                end
-
-                it "returns the attempt" do
-                  expect(run_process).to eq(attempt)
-                end
-
-                if options[:initial].zero?
-                  it "sets the part_one_completed_at timestamp" do
-                    expect { run_process }
-                      .to change { puzzle.reload.part_one_completed_at }
-                      .to(now)
-                  end
-
-                  it "does not set the part_two_completed_at timestamp" do
-                    expect { run_process }
-                      .not_to change { puzzle.reload.part_two_completed_at }
-                  end
-                else
-                  it "does not set the part_one_completed_at timestamp" do
-                    expect { run_process }
-                      .not_to change { puzzle.reload.part_one_completed_at }
-                  end
-
-                  it "sets the part_two_completed_at timestamp" do
-                    expect { run_process }
-                      .to change { puzzle.reload.part_two_completed_at }
-                      .to(now)
-                  end
-                end
+                include_examples :handles_correct_attempt, initial: 0
               end
-            end
-
-            context "and puzzle has no progress" do
-              let(:progress) { 0 }
-
-              include_examples :handles_rate_limited_attempt
-
-              include_examples :handles_incorrect_attempt
-
-              include_examples :handles_correct_attempt, initial: 0
             end
 
             context "and puzzle has partial progress" do
               let(:progress) { 1 }
 
-              include_examples :handles_rate_limited_attempt
+              context "and answer was given too recently" do
+                let(:body) do
+                  wrap_in_html(<<~HTML)
+                    You gave an answer too recently;
+                    You have 1m 28s left to wait.
+                  HTML
+                end
 
-              include_examples :handles_incorrect_attempt
+                include_examples :handles_rate_limited_attempt, wait: 1
+              end
 
-              include_examples :handles_correct_attempt, initial: 1
+              context "and answer is incorrect" do
+                let(:body) do
+                  wrap_in_html(<<~HTML)
+                    That's not the right answer; Please wait one minute
+                  HTML
+                end
+
+                include_examples :handles_incorrect_attempt, wait: 1
+              end
+
+              context "and answer is correct" do
+                let(:body) do
+                  wrap_in_html(<<~HTML)
+                    That's the right answer!
+                  HTML
+                end
+
+                include_examples :handles_correct_attempt, initial: 1
+              end
             end
           end
         end
