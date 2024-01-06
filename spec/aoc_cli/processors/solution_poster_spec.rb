@@ -1,5 +1,9 @@
 RSpec.describe AocCli::Processors::SolutionPoster do
-  before { allow(Time).to receive(:now).and_return(now) }
+  before do
+    allow(AocCli::Processors::PuzzleDirSynchroniser).to receive(:run!)
+
+    allow(Time).to receive(:now).and_return(now)
+  end
 
   let(:now) { Time.now.round(6) }
 
@@ -36,6 +40,13 @@ RSpec.describe AocCli::Processors::SolutionPoster do
         expect { run_process }.not_to change { stats.reload.values }
       end
 
+      it "does not synchronise puzzle files" do
+        run_process
+
+        expect(AocCli::Processors::PuzzleDirSynchroniser)
+          .not_to have_received(:run!)
+      end
+
       it "returns the Attempt" do
         expect(run_process).to eq(attempt)
       end
@@ -69,6 +80,13 @@ RSpec.describe AocCli::Processors::SolutionPoster do
 
       it "does not change the stats attributes" do
         expect { run_process }.not_to change { stats.reload.values }
+      end
+
+      it "does not synchronise puzzle files" do
+        run_process
+
+        expect(AocCli::Processors::PuzzleDirSynchroniser)
+          .not_to have_received(:run!)
       end
 
       it "returns the Attempt" do
@@ -114,6 +132,15 @@ RSpec.describe AocCli::Processors::SolutionPoster do
             .to change { puzzle.reload.part_two_completed_at }
             .to(now)
         end
+      end
+
+      it "synchronises puzzle files" do
+        run_process
+
+        expect(AocCli::Processors::PuzzleDirSynchroniser)
+          .to have_received(:run!)
+          .with(puzzle:, location:)
+          .once
       end
     end
 
@@ -180,7 +207,7 @@ RSpec.describe AocCli::Processors::SolutionPoster do
         end
 
         context "and puzzle location is set" do
-          before { create(:location, :puzzle_dir, puzzle:) }
+          let!(:location) { create(:location, :puzzle_dir, puzzle:) }
 
           context "and puzzle event is not associated to stats" do
             include_examples :failed_process, errors: [

@@ -40,6 +40,8 @@ module AocCli
       def advance_puzzle!
         event.stats.advance_progress!(day)
         puzzle.mark_complete!(level)
+
+        PuzzleDirSynchroniser.run!(puzzle:, location:)
       end
 
       def validate_puzzle_location_set!
