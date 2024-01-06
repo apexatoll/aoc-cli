@@ -173,99 +173,109 @@ RSpec.describe AocCli::Processors::SolutionPoster do
       context "and answer is present" do
         let(:answer) { "123" }
 
-        context "and puzzle event is not associated to stats" do
+        context "and puzzle location is not set" do
           include_examples :failed_process, errors: [
-            "Stats can't be blank"
+            "Location can't be blank"
           ]
         end
 
-        context "and puzzle event is associated to stats" do
-          let!(:stats) do
-            create(:stats, event: puzzle.event, "day_#{puzzle.day}": progress)
-          end
+        context "and puzzle location is set" do
+          before { create(:location, :puzzle_dir, puzzle:) }
 
-          context "and puzzle is already complete" do
-            let(:progress) { 2 }
-
+          context "and puzzle event is not associated to stats" do
             include_examples :failed_process, errors: [
-              "Puzzle is already complete"
+              "Stats can't be blank"
             ]
           end
 
-          context "and puzzle is not already complete" do
-            before do
-              stub_request(:post, solution_url(puzzle)).to_return(body:)
+          context "and puzzle event is associated to stats" do
+            let!(:stats) do
+              create(:stats, event: puzzle.event, "day_#{puzzle.day}": progress)
             end
 
-            let(:attempt) { AocCli::Attempt.last }
+            context "and puzzle is already complete" do
+              let(:progress) { 2 }
 
-            context "and puzzle has no progress" do
-              let(:progress) { 0 }
-
-              context "and answer was given too recently" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    You gave an answer too recently;
-                    You have 1m 28s left to wait.
-                  HTML
-                end
-
-                include_examples :handles_rate_limited_attempt, wait: 1
-              end
-
-              context "and answer is incorrect" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    That's not the right answer; Please wait one minute
-                  HTML
-                end
-
-                include_examples :handles_incorrect_attempt, wait: 1
-              end
-
-              context "and answer is correct" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    That's the right answer!
-                  HTML
-                end
-
-                include_examples :handles_correct_attempt, initial: 0
-              end
+              include_examples :failed_process, errors: [
+                "Puzzle is already complete"
+              ]
             end
 
-            context "and puzzle has partial progress" do
-              let(:progress) { 1 }
-
-              context "and answer was given too recently" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    You gave an answer too recently;
-                    You have 1m 28s left to wait.
-                  HTML
-                end
-
-                include_examples :handles_rate_limited_attempt, wait: 1
+            context "and puzzle is not already complete" do
+              before do
+                stub_request(:post, solution_url(puzzle)).to_return(body:)
               end
 
-              context "and answer is incorrect" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    That's not the right answer; Please wait one minute
-                  HTML
+              let(:attempt) { AocCli::Attempt.last }
+
+              context "and puzzle has no progress" do
+                let(:progress) { 0 }
+
+                context "and answer was given too recently" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      You gave an answer too recently;
+                      You have 1m 28s left to wait.
+                    HTML
+                  end
+
+                  include_examples :handles_rate_limited_attempt, wait: 1
                 end
 
-                include_examples :handles_incorrect_attempt, wait: 1
+                context "and answer is incorrect" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      That's not the right answer; Please wait one minute
+                    HTML
+                  end
+
+                  include_examples :handles_incorrect_attempt, wait: 1
+                end
+
+                context "and answer is correct" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      That's the right answer!
+                    HTML
+                  end
+
+                  include_examples :handles_correct_attempt, initial: 0
+                end
               end
 
-              context "and answer is correct" do
-                let(:body) do
-                  wrap_in_html(<<~HTML)
-                    That's the right answer!
-                  HTML
+              context "and puzzle has partial progress" do
+                let(:progress) { 1 }
+
+                context "and answer was given too recently" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      You gave an answer too recently;
+                      You have 1m 28s left to wait.
+                    HTML
+                  end
+
+                  include_examples :handles_rate_limited_attempt, wait: 1
                 end
 
-                include_examples :handles_correct_attempt, initial: 1
+                context "and answer is incorrect" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      That's not the right answer; Please wait one minute
+                    HTML
+                  end
+
+                  include_examples :handles_incorrect_attempt, wait: 1
+                end
+
+                context "and answer is correct" do
+                  let(:body) do
+                    wrap_in_html(<<~HTML)
+                      That's the right answer!
+                    HTML
+                  end
+
+                  include_examples :handles_correct_attempt, initial: 1
+                end
               end
             end
           end

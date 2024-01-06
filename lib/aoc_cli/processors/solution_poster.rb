@@ -10,6 +10,7 @@ module AocCli
       # TODO: replace with conditional validation
       def validate
         super
+        validate_puzzle_location_set! if errors.empty?
         validate_stats_associated! if errors.empty?
         validate_puzzle_not_complete! if errors.empty?
       end
@@ -22,7 +23,7 @@ module AocCli
 
       private
 
-      def_delegators :puzzle, :event, :year, :day
+      def_delegators :puzzle, :event, :location, :year, :day
 
       def level
         @level ||= event.stats.current_level(day) || raise
@@ -39,6 +40,14 @@ module AocCli
       def advance_puzzle!
         event.stats.advance_progress!(day)
         puzzle.mark_complete!(level)
+      end
+
+      def validate_puzzle_location_set!
+        return unless location.nil?
+
+        errors << Kangaru::Validation::Error.new(
+          attribute: :location, message: "can't be blank"
+        )
       end
 
       def validate_stats_associated!

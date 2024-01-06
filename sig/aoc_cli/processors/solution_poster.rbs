@@ -12,6 +12,7 @@ module AocCli
 
       # Delegated to @puzzle
       def event: -> Event
+      def location: -> Location
       def year: -> Integer
       def day: -> Integer
 
@@ -22,6 +23,8 @@ module AocCli
       def create_attempt!: (Hash[Symbol, untyped]) -> Attempt
 
       def advance_puzzle!: -> void
+
+      def validate_puzzle_location_set!: -> void
 
       def validate_stats_associated!: -> void
 
