@@ -6,7 +6,7 @@ module AocCli
 
       def run: -> Puzzle
 
-      def self.run!: (event: Event, day: Integer) -> Puzzle
+      def self.run!: (event: untyped, day: untyped) -> Puzzle
 
       private
 
