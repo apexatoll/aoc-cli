@@ -196,6 +196,12 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
                     expect { run_process }.not_to create_model(AocCli::Location)
                   end
 
+                  it "updates the Location record path" do
+                    expect { run_process }
+                      .to change { puzzle.reload.location.values }
+                      .to include(path: puzzle_dir.to_s)
+                  end
+
                   it "returns the updated Puzzle" do
                     expect(run_process.reload).to eq(puzzle.reload)
                   end
