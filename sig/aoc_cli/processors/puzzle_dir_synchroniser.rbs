@@ -6,9 +6,9 @@ module AocCli
       attr_accessor skip_cache: bool
 
       def self.run!: (
-        puzzle: Puzzle,
-        location: Location,
-        ?skip_cache: bool?
+        puzzle: untyped,
+        location: untyped,
+        ?skip_cache: untyped
       )-> PuzzleDirSyncLog
 
       private
