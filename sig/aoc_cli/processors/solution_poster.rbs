@@ -6,7 +6,7 @@ module AocCli
 
       def run: -> Attempt
 
-      def self.run!: -> Attempt
+      def self.run!: (puzzle: untyped, answer: untyped) -> Attempt
 
       private
 
