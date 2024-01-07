@@ -197,7 +197,7 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
                   end
 
                   it "returns the updated Puzzle" do
-                    expect(run_process).to eq(puzzle.reload)
+                    expect(run_process.reload).to eq(puzzle.reload)
                   end
                 end
 
