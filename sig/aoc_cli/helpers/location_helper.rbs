@@ -1,0 +1,35 @@
+module AocCli
+  module Helpers
+    module LocationHelper
+      include ErrorHelper
+
+      def current_path: -> String
+
+      def current_location: -> Location?
+
+      def current_event: -> Event?
+
+      def current_puzzle: -> Puzzle?
+
+      def ensure_in_event_dir!: -> bool
+
+      def ensure_in_puzzle_dir!: -> bool
+
+      def ensure_in_aoc_dir!: -> bool
+
+      def ensure_not_in_aoc_dir!: -> bool
+      
+      private
+
+      ERRORS: Hash[Symbol, String]
+
+      def current_resource: -> untyped
+
+      def in_event_dir?: -> bool
+
+      def in_puzzle_dir?: -> bool
+
+      def in_aoc_dir?: -> bool
+    end
+  end
+end
