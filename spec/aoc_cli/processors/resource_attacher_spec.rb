@@ -95,7 +95,7 @@ RSpec.describe AocCli::Processors::ResourceAttacher, :with_temp_dir do
           end
 
           it "returns the Location" do
-            expect(run!).to eq(location.reload)
+            expect(run!.reload).to eq(location.reload)
           end
         end
       end
@@ -157,7 +157,7 @@ RSpec.describe AocCli::Processors::ResourceAttacher, :with_temp_dir do
           end
 
           it "returns the Location" do
-            expect(run!).to eq(location.reload)
+            expect(run!.reload).to eq(location.reload)
           end
         end
       end
