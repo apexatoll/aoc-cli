@@ -77,11 +77,13 @@ RSpec.configure do |config|
     end.to_s
 
     Dir.mktmpdir do |temp_dir|
-      @temp_dir = temp_dir
+      Dir.chdir(temp_dir) do
+        @temp_dir = temp_dir
 
-      spec.run
+        spec.run
 
-      remove_instance_variable(:@temp_dir)
+        remove_instance_variable(:@temp_dir)
+      end
     end
 
     ENV[env_key] = tmpdir_before
