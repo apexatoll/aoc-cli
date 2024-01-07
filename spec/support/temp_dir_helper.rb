@@ -34,11 +34,15 @@ module TempDirHelper
 
       return created unless @contents
 
-      created && File.read(path) == @contents
+      if @contents.is_a?(Proc)
+        created && File.read(path) == @contents.call
+      else
+        created && File.read(path) == @contents
+      end
     end
 
-    chain :with_contents do |contents|
-      @contents = contents
+    chain :with_contents do |contents = nil, &block|
+      @contents = contents || block
     end
   end
 
@@ -56,11 +60,15 @@ module TempDirHelper
 
       return updated unless @contents
 
-      updated && value_after == @contents
+      if @contents.is_a?(Proc)
+        updated && value_after == @contents.call
+      else
+        updated && value_after == @contents
+      end
     end
 
-    chain :to do |contents|
-      @contents = contents
+    chain :to do |contents = nil, &block|
+      @contents = contents || block
     end
   end
 end
