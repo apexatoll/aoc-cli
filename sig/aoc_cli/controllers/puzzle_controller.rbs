@@ -1,7 +1,10 @@
 module AocCli
   class PuzzleController < ApplicationController
     @puzzle: Puzzle
+    @attempt: Attempt
 
     def init: -> void
+
+    def solve: -> void
   end
 end

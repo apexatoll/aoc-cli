@@ -8,5 +8,14 @@ module AocCli
         day: target_id
       )
     end
+
+    def solve
+      return unless ensure_in_puzzle_dir!
+
+      @attempt = Processors::SolutionPoster.run!(
+        puzzle: current_puzzle,
+        answer: params[:answer]
+      )
+    end
   end
 end
