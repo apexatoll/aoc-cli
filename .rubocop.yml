@@ -63,6 +63,9 @@ RSpec/ContextWording:
     - unless
     - and
     - but
+RSpec/DescribeClass:
+  Exclude:
+    - spec/aoc_cli/controllers/**/*.rb
 RSpec/DescribedClass:
   SkipBlocks: true
 RSpec/ExpectChange:
