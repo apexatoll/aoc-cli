@@ -139,7 +139,7 @@ RSpec.describe AocCli::Processors::SolutionPoster do
 
         expect(AocCli::Processors::PuzzleDirSynchroniser)
           .to have_received(:run!)
-          .with(puzzle:, location:)
+          .with(puzzle:, location:, skip_cache: true)
           .once
       end
     end
