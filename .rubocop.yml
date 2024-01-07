@@ -16,8 +16,7 @@ Layout/MultilineMethodCallIndentation:
   Enabled: false
 
 Lint/AmbiguousBlockAssociation:
-  AllowedMethods:
-    - change
+  Enabled: false
 Lint/ConstantDefinitionInBlock:
   Exclude:
     - spec/spec_helper.rb
