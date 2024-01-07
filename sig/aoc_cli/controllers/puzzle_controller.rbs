@@ -1,0 +1,7 @@
+module AocCli
+  class PuzzleController < ApplicationController
+    @puzzle: Puzzle
+
+    def init: -> void
+  end
+end
