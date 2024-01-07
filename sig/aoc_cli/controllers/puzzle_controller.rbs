@@ -2,9 +2,12 @@ module AocCli
   class PuzzleController < ApplicationController
     @puzzle: Puzzle
     @attempt: Attempt
+    @sync_log: PuzzleDirSyncLog
 
     def init: -> void
 
     def solve: -> void
+
+    def sync: -> void
   end
 end

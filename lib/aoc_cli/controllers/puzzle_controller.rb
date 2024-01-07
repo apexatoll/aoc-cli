@@ -17,5 +17,15 @@ module AocCli
         answer: params[:answer]
       )
     end
+
+    def sync
+      return unless ensure_in_puzzle_dir!
+
+      @sync_log = Processors::PuzzleDirSynchroniser.run!(
+        puzzle: current_puzzle,
+        location: current_location,
+        skip_cache: params[:skip_cache] || false
+      )
+    end
   end
 end
