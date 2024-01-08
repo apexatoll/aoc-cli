@@ -27,5 +27,11 @@ module AocCli
         skip_cache: params[:skip_cache] || false
       )
     end
+
+    def attempts
+      return unless ensure_in_puzzle_dir!
+
+      Components::AttemptsTable.new(puzzle: current_puzzle || raise).render
+    end
   end
 end

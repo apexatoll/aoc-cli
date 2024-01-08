@@ -9,5 +9,7 @@ module AocCli
     def solve: -> void
 
     def sync: -> void
+
+    def attempts: -> void
   end
 end
