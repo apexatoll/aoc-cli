@@ -3,5 +3,7 @@ module AocCli
     @event: Event
 
     def init: -> void
+
+    def progress: -> void
   end
 end
