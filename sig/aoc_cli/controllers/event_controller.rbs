@@ -4,6 +4,15 @@ module AocCli
 
     def init: -> void
 
+    @source: String
+    @target: String
+
+    def attach: -> void
+
     def progress: -> void
+
+    private
+
+    attr_reader queried_event: Event?
   end
 end
