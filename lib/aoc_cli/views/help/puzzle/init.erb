@@ -1,0 +1,31 @@
+aoc puzzle init
+
+Description:
+
+  This command can only be run from an event directory (see event init).
+
+  Initialises the given day's puzzle for the current event. This fetches
+  the puzzle prompt and input from Advent of Code, creates a puzzle directory,
+  and writes the puzzle files to it.
+
+  Once initialised, the new puzzle directory contains two files:
+  * Markdown puzzle prompt (format "day_<day>.md")
+  * Plain text puzzle input (format "input")
+
+  These files can be restored at any time using puzzle sync.
+
+  The puzzle directory is a good place to write puzzle solution code and review
+  previous solution attempts. See puzzle solve and puzzle attempts respectively
+
+Usage:
+
+  aoc puzzle init <day>
+
+  * <day>: Day of puzzle to initialise (1-25).
+
+Examples:
+
+  aoc puzzle init 20 (in an event directory)
+
+  Initializes the day 20 puzzle and creates puzzle directory
+

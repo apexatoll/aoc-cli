@@ -1,0 +1,33 @@
+aoc puzzle solve
+
+Description:
+
+  This command can only be run from a puzzle directory (see puzzle init).
+
+  Posts the given answer to Advent of Code for the current puzzle. The response
+  will have one of three possible states:
+
+    1. Correct
+    2. Incorrect
+    3. Rate-limited
+
+  If the attempt was correct, relevant stats are updated and the puzzle files
+  are refreshed to include any new puzzle information.
+
+  If the attempt was incorrect or rate-limited, the required wait time will be
+  indicated to the nearest minute.
+
+  Previous attempt data can be reviewed with the puzzle attempts command.
+
+Usage:
+
+  aoc puzzle solve --answer=<answer>
+
+  * <answer>: The puzzle solution to attempt
+
+Examples:
+
+  aoc puzzle solve --answer abcdef (in a puzzle directory)
+
+  Initializes the day 20 puzzle and creates puzzle directory
+

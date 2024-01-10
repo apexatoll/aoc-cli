@@ -1,0 +1,13 @@
+module AocCli
+  module Help
+    class PuzzleController < ApplicationController
+      def init: -> void
+
+      def solve: -> void
+
+      def sync: -> void
+
+      def attempts: -> void
+    end
+  end
+end

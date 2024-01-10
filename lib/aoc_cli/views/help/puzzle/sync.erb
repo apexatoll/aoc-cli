@@ -1,0 +1,32 @@
+aoc puzzle sync
+
+Description:
+
+  This command can only be run from a puzzle directory (see puzzle init).
+
+  Restores puzzle dir files (puzzle and input) to their cached state.
+
+  Puzzle data is cached when puzzles are initialised and correctly solved in
+  order to decrease load on Advent of Code and increase performance. However
+  there may be situations where the cache is outdated: for example if puzzles
+  have been solved from the browser.
+
+  To fetch and write the latest puzzle data, pass the --skip-cache flag.
+
+Usage:
+
+  aoc puzzle sync [--skip-cache]
+
+  * <skip-cache>: Whether to ignore puzzle file cache (default false)
+
+Examples:
+
+  aoc puzzle sync (in a puzzle directory)
+
+  Restores (writes or updates) puzzle files to cached state.
+
+
+  aoc puzzle sync --skip-cache (in a puzzle directory)
+
+  Puzzle data is refreshed before writing the puzzle files.
+
