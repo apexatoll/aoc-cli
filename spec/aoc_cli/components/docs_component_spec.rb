@@ -1,5 +1,5 @@
-RSpec.describe AocCli::Components::HelpComponent do
-  subject(:help_component) { described_class.new }
+RSpec.describe AocCli::Components::DocsComponent do
+  subject(:docs_component) { described_class.new }
 
   around do |spec|
     String.disable_colorization = true
@@ -8,7 +8,7 @@ RSpec.describe AocCli::Components::HelpComponent do
   end
 
   describe "#render" do
-    subject(:render) { help_component.render }
+    subject(:render) { docs_component.render }
 
     let(:expected_text) do
       <<~TEXT

@@ -1,6 +1,6 @@
 module AocCli
   module Components
-    class HelpComponent < Kangaru::Component
+    class DocsComponent < Kangaru::Component
       ENDPOINTS = {
         event: {
           description: "Handle event directories",

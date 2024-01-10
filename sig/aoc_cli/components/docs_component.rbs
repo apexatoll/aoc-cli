@@ -1,6 +1,6 @@
 module AocCli
   module Components
-    class HelpComponent < Kangaru::Component
+    class DocsComponent < Kangaru::Component
       ENDPOINTS: Hash[Symbol, untyped]
 
       def endpoints: -> Hash[Symbol, untyped]
