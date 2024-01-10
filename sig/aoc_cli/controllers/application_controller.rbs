@@ -2,5 +2,9 @@ module AocCli
   class ApplicationController < Kangaru::Controller
     include Helpers::ErrorHelper
     include Helpers::LocationHelper
+
+    private
+
+    def handle_help_param!: -> void
   end
 end
