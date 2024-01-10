@@ -1,0 +1,5 @@
+module AocCli
+  class DefaultController < ApplicationController
+    def default: -> void
+  end
+end
