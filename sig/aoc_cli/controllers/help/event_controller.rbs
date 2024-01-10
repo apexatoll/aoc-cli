@@ -1,0 +1,11 @@
+module AocCli
+  module Help
+    class EventController < ApplicationController
+      def init: -> void
+
+      def attach: -> void
+
+      def progress: -> void
+    end
+  end
+end

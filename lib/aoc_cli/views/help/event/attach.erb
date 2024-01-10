@@ -1,0 +1,32 @@
+aoc event attach
+
+Description:
+
+  Attaches an existing event to the specified directory (defaults to current
+  directory). This may be useful if the original directories have been moved
+  or deleted.
+
+  This command cannot be executed from, or target, a directory that is already
+  managed by aoc (i.e., existing event and puzzle directories).
+
+  The command will fail if the event has not already been initialized. To
+  create a new event, see the event init command.
+
+Usage:
+
+  aoc event attach <year> [--dir=<dir>]
+
+  * <year>: Year of the event to relocate.
+  * <dir>: The new event directory (default ".").
+
+Examples:
+
+  aoc event attach 2023 (in a non-AoC directory)
+
+  Relocates the 2023 event directory to the current directory
+
+
+  aoc event attach 2023 --dir /foo/bar/aoc
+
+  Relocates the 2023 event directory to the specified directory.
+

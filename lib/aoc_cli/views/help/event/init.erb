@@ -1,0 +1,38 @@
+aoc event init
+
+Description:
+
+  Initializes the event for the specified year by fetching event stats and
+  creating an event directory in the target directory. The target directory
+  defaults to the current directory but can be explicitly specified with the
+  optional --dir String argument.
+
+  The event directory serves as the location of event puzzle directories. For
+  more information, refer to puzzle init. The name of the created event
+  directory defaults to the event year.
+
+  This command cannot be executed from, or target, a directory that is already
+  managed by aoc (i.e., existing event and puzzle directories).
+
+  The command will fail if the event has already been initialized elsewhere. To
+  move an existing event's location, see the event attach command.
+
+Usage:
+
+  aoc event init <year> [--dir=<dir>]
+
+  * <year>: Year of the event to initialize.
+  * <dir>: Base directory to initialize the event within (default ".").
+
+Examples:
+
+  aoc event init 2023 (in a non-AoC directory)
+
+  Initializes the 2023 event and creates the 2023 event directory inside the
+  current directory.
+
+  aoc event init 2023 --dir /foo/bar/aoc
+
+  Initializes the 2023 event and creates the 2023 event directory in the
+  specified directory.
+
