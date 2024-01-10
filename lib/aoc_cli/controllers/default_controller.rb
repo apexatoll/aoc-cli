@@ -3,5 +3,7 @@ module AocCli
     def default
       Components::DocsComponent.new.render
     end
+
+    alias help default
   end
 end

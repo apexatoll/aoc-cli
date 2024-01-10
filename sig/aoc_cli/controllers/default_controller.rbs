@@ -1,5 +1,7 @@
 module AocCli
   class DefaultController < ApplicationController
     def default: -> void
+
+    alias help default
   end
 end
