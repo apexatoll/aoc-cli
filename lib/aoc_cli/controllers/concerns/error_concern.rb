@@ -1,6 +1,6 @@
 module AocCli
-  module Helpers
-    module ErrorHelper
+  module Concerns
+    module ErrorConcern
       def render_error!(error)
         Components::ErrorsComponent.new(error).render
 

@@ -1,7 +1,7 @@
 module AocCli
-  module Helpers
-    module LocationHelper
-      include ErrorHelper
+  module Concerns
+    module LocationConcern
+      include ErrorConcern
 
       def current_path: -> String
 

@@ -1,6 +1,6 @@
-RSpec.describe AocCli::Helpers::ErrorHelper do
+RSpec.describe AocCli::Concerns::ErrorConcern do
   describe "#render_error!" do
-    subject(:render_error!) { helper.render_error!(message) }
+    subject(:render_error!) { controller.render_error!(message) }
 
     let(:message) { "This is an error" }
 
@@ -14,7 +14,7 @@ RSpec.describe AocCli::Helpers::ErrorHelper do
   end
 
   describe "#render_model_errors!" do
-    subject(:render_model_errors!) { helper.render_model_errors!(model) }
+    subject(:render_model_errors!) { controller.render_model_errors!(model) }
 
     let(:model) { Struct.new(:errors).new([error]) }
 

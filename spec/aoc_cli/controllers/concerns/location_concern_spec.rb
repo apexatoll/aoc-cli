@@ -1,8 +1,8 @@
-RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
+RSpec.describe AocCli::Concerns::LocationConcern, :with_temp_dir do
   around { |spec| Dir.chdir(temp_dir) { spec.run } }
 
   describe "#current_path" do
-    subject(:path) { helper.current_path }
+    subject(:path) { controller.current_path }
 
     it "returns the current path" do
       expect(path).to eq(temp_dir)
@@ -10,7 +10,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#current_location" do
-    subject(:current_location) { helper.current_location }
+    subject(:current_location) { controller.current_location }
 
     context "when not in an AoC directory" do
       it "returns nil" do
@@ -36,7 +36,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#current_event" do
-    subject(:current_event) { helper.current_event }
+    subject(:current_event) { controller.current_event }
 
     context "when not in an AoC directory" do
       it "returns nil" do
@@ -62,7 +62,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#current_puzzle" do
-    subject(:current_puzzle) { helper.current_puzzle }
+    subject(:current_puzzle) { controller.current_puzzle }
 
     context "when not in an AoC directory" do
       it "returns nil" do
@@ -88,7 +88,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#ensure_in_event_dir!" do
-    subject(:ensure_in_event_dir!) { helper.ensure_in_event_dir! }
+    subject(:ensure_in_event_dir!) { controller.ensure_in_event_dir! }
 
     context "when not in aoc directory" do
       it "renders the expected error" do
@@ -130,7 +130,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#ensure_in_puzzle_dir!" do
-    subject(:ensure_in_puzzle_dir!) { helper.ensure_in_puzzle_dir! }
+    subject(:ensure_in_puzzle_dir!) { controller.ensure_in_puzzle_dir! }
 
     context "when not in aoc directory" do
       it "renders the expected error" do
@@ -172,7 +172,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#ensure_in_aoc_dir!" do
-    subject(:ensure_in_aoc_dir!) { helper.ensure_in_aoc_dir! }
+    subject(:ensure_in_aoc_dir!) { controller.ensure_in_aoc_dir! }
 
     context "when not in aoc directory" do
       it "renders the expected error" do
@@ -212,7 +212,7 @@ RSpec.describe AocCli::Helpers::LocationHelper, :with_temp_dir do
   end
 
   describe "#ensure_not_in_aoc_dir!" do
-    subject(:ensure_not_in_aoc_dir!) { helper.ensure_not_in_aoc_dir! }
+    subject(:ensure_not_in_aoc_dir!) { controller.ensure_not_in_aoc_dir! }
 
     context "when not in aoc directory" do
       it "does not render any errors" do

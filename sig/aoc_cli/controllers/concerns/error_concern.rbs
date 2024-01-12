@@ -1,6 +1,6 @@
 module AocCli
-  module Helpers
-    module ErrorHelper
+  module Concerns
+    module ErrorConcern
       def render_error!: (String) -> false
 
       def render_model_errors!: (untyped) -> false

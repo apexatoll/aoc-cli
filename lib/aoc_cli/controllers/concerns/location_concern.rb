@@ -1,6 +1,6 @@
 module AocCli
-  module Helpers
-    module LocationHelper
+  module Concerns
+    module LocationConcern
       def current_path
         File.expand_path(".")
       end

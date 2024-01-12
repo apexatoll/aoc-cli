@@ -1,7 +1,7 @@
 module AocCli
   class ApplicationController < Kangaru::Controller
-    include Helpers::ErrorHelper
-    include Helpers::LocationHelper
+    include Concerns::ErrorConcern
+    include Concerns::LocationConcern
 
     def execute
       return handle_help_param! if params[:help]
