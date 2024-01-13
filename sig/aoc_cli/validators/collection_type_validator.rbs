@@ -1,0 +1,24 @@
+module AocCli
+  module Validators
+    class CollectionTypeValidator < Kangaru::Validator
+
+      private
+
+      VALIDATION_RULES: Array[Symbol]
+
+      ERROR: String
+
+      attr_reader validation_rule: Symbol
+
+      attr_reader target_type: Class
+
+      def validate_preconditions!: -> void
+
+      def validate_all_elements!: -> void
+
+      def validate_any_elements!: -> void
+
+      def validate_none_elements!: -> void
+    end
+  end
+end
