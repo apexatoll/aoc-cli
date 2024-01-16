@@ -1,0 +1,31 @@
+module AocCli
+  module Helpers
+    class TableGenerator
+      type matrix[T] = Array[Array[T]]
+
+      include Kangaru::Validatable
+      extend Kangaru::Validatable::ClassMethods
+
+      attr_reader rows: matrix[String]
+      attr_reader indent: Integer
+
+      def initialize: (rows: matrix[String], ?indent: Integer) -> void
+
+      def validate!: -> void
+
+      def generate!: -> String
+
+      private
+
+      CELL_GAP: Integer
+
+      attr_reader column_widths: Array[Integer]
+
+      def space: (Integer) -> String
+
+      def format_row!: (Array[String]) -> String
+
+      def validate_rows_are_same_length!: -> void
+    end
+  end
+end
