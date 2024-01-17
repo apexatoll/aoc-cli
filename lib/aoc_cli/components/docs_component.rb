@@ -1,6 +1,8 @@
 module AocCli
   module Components
     class DocsComponent < Kangaru::Component
+      include Helpers::ViewHelper
+
       ENDPOINTS = {
         event: {
           description: "Handle event directories",
@@ -25,32 +27,14 @@ module AocCli
         ENDPOINTS
       end
 
-      def heading(text)
-        text.to_s.bold.cyan
-      end
-
       def title
         "Advent of Code CLI"
       end
 
       def commands_table(commands, indent: 0)
-        commands.map do |command, description|
-          format_command_row(command.to_s, description, indent:)
-        end.join("\n").concat("\n")
-      end
+        rows = commands.transform_keys(&:to_s).to_a
 
-      private
-
-      COMMAND_COLUMN_WIDTH = 12
-
-      def format_command_row(command, description, indent:)
-        padding = COMMAND_COLUMN_WIDTH - command.length
-
-        [space(indent), command.cyan, space(padding), description].join
-      end
-
-      def space(size)
-        " " * size
+        table_for(*rows, gap: 4, indent:)
       end
     end
   end
