@@ -11,7 +11,7 @@ RSpec.describe AocCli::Components::DocsComponent do
     subject(:render) { docs_component.render }
 
     let(:expected_text) do
-      <<~TEXT
+      <<~TEXT.gsub("|", "")
 
         Advent of Code CLI <#{AocCli::VERSION}>
 
@@ -29,8 +29,8 @@ RSpec.describe AocCli::Components::DocsComponent do
 
           Usage: aoc event <command>
 
-            init        Create and initialise an event directory
-            progress    Check your progress for the current event
+            init        Create and initialise an event directory|
+            progress    Check your progress for the current event|
 
 
           puzzle
@@ -39,10 +39,10 @@ RSpec.describe AocCli::Components::DocsComponent do
 
           Usage: aoc puzzle <command>
 
-            init        Fetch and initialise puzzles for the current event
-            solve       Submit and evaluate a puzzle solution
-            sync        Ensure puzzle files are up to date
-            attempts    Review previous attempts for the current puzzle
+            init        Fetch and initialise puzzles for the current event|
+            solve       Submit and evaluate a puzzle solution|
+            sync        Ensure puzzle files are up to date|
+            attempts    Review previous attempts for the current puzzle|
 
       TEXT
     end
