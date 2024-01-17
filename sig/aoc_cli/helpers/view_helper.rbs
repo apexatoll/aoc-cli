@@ -1,0 +1,13 @@
+module AocCli
+  module Helpers
+    module ViewHelper
+      def main_header: -> String
+
+      def heading: (String) -> String
+
+      def table_for: (*Array[String], ?gap: Integer, ?indent: Integer) -> String
+
+      def wrap_text: (String, ?width: Integer) -> String
+    end
+  end
+end
