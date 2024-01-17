@@ -7,9 +7,14 @@ module AocCli
       extend Kangaru::Validatable::ClassMethods
 
       attr_reader rows: matrix[String]
+      attr_reader gap: Integer
       attr_reader indent: Integer
 
-      def initialize: (rows: matrix[String], ?indent: Integer) -> void
+      def initialize: (
+        rows: matrix[String],
+        ?gap: Integer,
+        ?indent: Integer
+      ) -> void
 
       def validate!: -> void
 

@@ -1,5 +1,7 @@
 RSpec.describe AocCli::Helpers::TableGenerator do
-  subject(:table_generator) { described_class.new(rows:, indent:) }
+  subject(:table_generator) { described_class.new(rows:, gap:, indent:) }
+
+  let(:gap) { 2 }
 
   let(:indent) { 0 }
 
@@ -80,14 +82,33 @@ RSpec.describe AocCli::Helpers::TableGenerator do
           context "and indent is 0" do
             let(:indent) { 0 }
 
-            include_examples :generates_table do
-              let(:expected) do
-                <<~TEXT
-                  |Harry   Potter    Gryffindor  |
-                  |Draco   Malfoy    Slytherin   |
-                  |Hannah  Abbott    Hufflepuff  |
-                  |Luna    Lovegood  Ravenclaw   |
-                TEXT
+            context "and gap is 0" do
+              let(:gap) { 0 }
+
+              include_examples :generates_table do
+                let(:expected) do
+                  <<~TEXT
+                    |Harry Potter  Gryffindor|
+                    |Draco Malfoy  Slytherin |
+                    |HannahAbbott  Hufflepuff|
+                    |Luna  LovegoodRavenclaw |
+                  TEXT
+                end
+              end
+            end
+
+            context "and gap is positive" do
+              let(:gap) { 2 }
+
+              include_examples :generates_table do
+                let(:expected) do
+                  <<~TEXT
+                    |Harry   Potter    Gryffindor  |
+                    |Draco   Malfoy    Slytherin   |
+                    |Hannah  Abbott    Hufflepuff  |
+                    |Luna    Lovegood  Ravenclaw   |
+                  TEXT
+                end
               end
             end
           end
@@ -95,14 +116,33 @@ RSpec.describe AocCli::Helpers::TableGenerator do
           context "and indent is positive" do
             let(:indent) { 2 }
 
-            include_examples :generates_table do
-              let(:expected) do
-                <<~TEXT
-                  |  Harry   Potter    Gryffindor  |
-                  |  Draco   Malfoy    Slytherin   |
-                  |  Hannah  Abbott    Hufflepuff  |
-                  |  Luna    Lovegood  Ravenclaw   |
-                TEXT
+            context "and gap is 0" do
+              let(:gap) { 0 }
+
+              include_examples :generates_table do
+                let(:expected) do
+                  <<~TEXT
+                    |  Harry Potter  Gryffindor|
+                    |  Draco Malfoy  Slytherin |
+                    |  HannahAbbott  Hufflepuff|
+                    |  Luna  LovegoodRavenclaw |
+                  TEXT
+                end
+              end
+            end
+
+            context "and gap is positive" do
+              let(:gap) { 4 }
+
+              include_examples :generates_table do
+                let(:expected) do
+                  <<~TEXT
+                    |  Harry     Potter      Gryffindor    |
+                    |  Draco     Malfoy      Slytherin     |
+                    |  Hannah    Abbott      Hufflepuff    |
+                    |  Luna      Lovegood    Ravenclaw     |
+                  TEXT
+                end
               end
             end
           end

@@ -3,12 +3,13 @@ module AocCli
     class TableGenerator
       include Kangaru::Validatable
 
-      attr_reader :rows, :indent
+      attr_reader :rows, :gap, :indent
 
       validates :rows, collection_type: { all: Array }
 
-      def initialize(rows:, indent: 0)
+      def initialize(rows:, gap: 2, indent: 0)
         @rows = rows
+        @gap = gap
         @indent = indent
       end
 
@@ -33,11 +34,9 @@ module AocCli
 
       private
 
-      CELL_GAP = 2
-
       def column_widths
         @column_widths ||= rows.transpose.map do |column|
-          column.map(&:length).max + CELL_GAP
+          column.map(&:length).max + gap
         end
       end
 
