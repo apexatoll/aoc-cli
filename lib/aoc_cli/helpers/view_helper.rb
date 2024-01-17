@@ -13,9 +13,15 @@ module AocCli
         TableGenerator.new(rows:, gap:, indent:).generate!
       end
 
-      def wrap_text(text, width: 80)
+      def wrap_text(text, width: 80, indent: 0)
+        raise "indent must be less than width" unless indent < width
+
         text.gsub(
-          /(.{1,#{width}})(?:[^\S\n]+\n?|\n*\Z|\n)|\n/, "\\1\n"
+          # Match the longest string (up to the indented width) thats followed
+          # by a non-word char or any combination of newlines.
+          /(.{1,#{width - indent}})(?:[^\S\n]+\n?|\n*\Z|\n)|\n/,
+          # Surround string fragment with indent and newline.
+          "#{' ' * indent}\\1\n"
         )
       end
     end

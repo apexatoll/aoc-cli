@@ -7,7 +7,7 @@ module AocCli
 
       def table_for: (*Array[String], ?gap: Integer, ?indent: Integer) -> String
 
-      def wrap_text: (String, ?width: Integer) -> String
+      def wrap_text: (String, ?width: Integer, ?indent: Integer) -> String
     end
   end
 end

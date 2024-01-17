@@ -62,7 +62,7 @@ RSpec.describe AocCli::Helpers::ViewHelper do
   end
 
   describe "#wrap_text" do
-    subject(:wrapped_text) { target.wrap_text(text, width:) }
+    subject(:wrapped_text) { target.wrap_text(text, width:, indent:) }
 
     let(:text) do
       <<~TEXT
@@ -72,96 +72,169 @@ RSpec.describe AocCli::Helpers::ViewHelper do
 
     shared_examples :returns_wrapped_text do
       it "returns the expected wrapped string" do
-        expect(wrapped_text).to eq(expected)
+        expect(wrapped_text).to eq(expected.gsub("|", ""))
       end
     end
 
-    context "when width is 1" do
-      let(:width) { 1 }
+    context "when indent is 0" do
+      let(:indent) { 0 }
 
-      include_examples :returns_wrapped_text do
-        let(:expected) do
-          <<~TEXT
-            Features
-            include
-            downloading
-            puzzles
-            and
-            inputs,
-            solving
-            puzzles
-            and
-            tracking
-            year
-            progress
-            from
-            within
-            the
-            terminal.
-            This
-            is
-            an
-            unofficial
-            project
-            with
-            no
-            affiliation
-            to
-            Advent
-            of
-            Code.
-          TEXT
+      context "and width is 1" do
+        let(:width) { 1 }
+
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |Features
+              |include
+              |downloading
+              |puzzles
+              |and
+              |inputs,
+              |solving
+              |puzzles
+              |and
+              |tracking
+              |year
+              |progress
+              |from
+              |within
+              |the
+              |terminal.
+              |This
+              |is
+              |an
+              |unofficial
+              |project
+              |with
+              |no
+              |affiliation
+              |to
+              |Advent
+              |of
+              |Code.
+            TEXT
+          end
+        end
+      end
+
+      context "and width is 20" do
+        let(:width) { 20 }
+
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |Features include
+              |downloading puzzles
+              |and inputs, solving
+              |puzzles and tracking
+              |year progress from
+              |within the terminal.
+              |This is an
+              |unofficial project
+              |with no affiliation
+              |to Advent of Code.
+            TEXT
+          end
+        end
+      end
+
+      context "and width is 40" do
+        let(:width) { 40 }
+
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |Features include downloading puzzles and
+              |inputs, solving puzzles and tracking
+              |year progress from within the terminal.
+              |This is an unofficial project with no
+              |affiliation to Advent of Code.
+            TEXT
+          end
+        end
+      end
+
+      context "and width is 80" do
+        let(:width) { 80 }
+
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |Features include downloading puzzles and inputs, solving puzzles and tracking
+              |year progress from within the terminal. This is an unofficial project with no
+              |affiliation to Advent of Code.
+            TEXT
+          end
         end
       end
     end
 
-    context "when width is 20" do
-      let(:width) { 20 }
+    context "when indent is 2" do
+      let(:indent) { 2 }
 
-      include_examples :returns_wrapped_text do
-        let(:expected) do
-          <<~TEXT
-            Features include
-            downloading puzzles
-            and inputs, solving
-            puzzles and tracking
-            year progress from
-            within the terminal.
-            This is an
-            unofficial project
-            with no affiliation
-            to Advent of Code.
-          TEXT
+      context "and width is 1" do
+        let(:width) { 1 }
+
+        it "raises an error" do
+          expect { wrapped_text }.to raise_error(
+            "indent must be less than width"
+          )
         end
       end
-    end
 
-    context "when width is 40" do
-      let(:width) { 40 }
+      context "and width is 20" do
+        let(:width) { 20 }
 
-      include_examples :returns_wrapped_text do
-        let(:expected) do
-          <<~TEXT
-            Features include downloading puzzles and
-            inputs, solving puzzles and tracking
-            year progress from within the terminal.
-            This is an unofficial project with no
-            affiliation to Advent of Code.
-          TEXT
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |  Features include
+              |  downloading
+              |  puzzles and
+              |  inputs, solving
+              |  puzzles and
+              |  tracking year
+              |  progress from
+              |  within the
+              |  terminal. This is
+              |  an unofficial
+              |  project with no
+              |  affiliation to
+              |  Advent of Code.
+            TEXT
+          end
         end
       end
-    end
 
-    context "when width is 80" do
-      let(:width) { 80 }
+      context "and width is 40" do
+        let(:width) { 40 }
 
-      include_examples :returns_wrapped_text do
-        let(:expected) do
-          <<~TEXT
-            Features include downloading puzzles and inputs, solving puzzles and tracking
-            year progress from within the terminal. This is an unofficial project with no
-            affiliation to Advent of Code.
-          TEXT
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |  Features include downloading puzzles
+              |  and inputs, solving puzzles and
+              |  tracking year progress from within the
+              |  terminal. This is an unofficial
+              |  project with no affiliation to Advent
+              |  of Code.
+            TEXT
+          end
+        end
+      end
+
+      context "and width is 80" do
+        let(:width) { 80 }
+
+        include_examples :returns_wrapped_text do
+          let(:expected) do
+            <<~TEXT
+              |  Features include downloading puzzles and inputs, solving puzzles and tracking
+              |  year progress from within the terminal. This is an unofficial project with no
+              |  affiliation to Advent of Code.
+            TEXT
+          end
         end
       end
     end
