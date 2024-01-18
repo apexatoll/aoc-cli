@@ -22,7 +22,7 @@ module AocCli
           /(.{1,#{width - indent}})(?:[^\S\n]+\n?|\n*\Z|\n)|\n/,
           # Surround string fragment with indent and newline.
           "#{' ' * indent}\\1\n"
-        )
+        ).chomp
       end
     end
   end

@@ -72,7 +72,7 @@ RSpec.describe AocCli::Helpers::ViewHelper do
 
     shared_examples :returns_wrapped_text do
       it "returns the expected wrapped string" do
-        expect(wrapped_text).to eq(expected.gsub("|", ""))
+        expect(wrapped_text).to eq(expected.gsub("|", "").chomp)
       end
     end
 
