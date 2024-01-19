@@ -1,0 +1,19 @@
+module AocCli
+  module Components
+    class PuzzleSyncComponent < Kangaru::Component
+      extend Forwardable
+
+      include Helpers::ViewHelper
+
+      attr_reader log: PuzzleDirSyncLog
+
+      def puzzle: -> Puzzle
+
+      def initialize: (log: PuzzleDirSyncLog) -> void
+
+      private
+
+      def status_rows: -> Array[[untyped, untyped]]
+    end
+  end
+end
