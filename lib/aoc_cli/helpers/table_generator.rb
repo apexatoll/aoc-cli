@@ -30,11 +30,7 @@ module AocCli
         validate!
 
         rows.map do |row|
-          [
-            space(indent),
-            format_row!(row),
-            "\n"
-          ].join
+          [space(indent), format_row!(row).strip, "\n"].join
         end.join
       end
 

@@ -88,10 +88,10 @@ RSpec.describe AocCli::Helpers::TableGenerator do
               include_examples :generates_table do
                 let(:expected) do
                   <<~TEXT
-                    |Harry Potter  Gryffindor|
-                    |Draco Malfoy  Slytherin |
-                    |HannahAbbott  Hufflepuff|
-                    |Luna  LovegoodRavenclaw |
+                    Harry Potter  Gryffindor|
+                    Draco Malfoy  Slytherin
+                    HannahAbbott  Hufflepuff|
+                    Luna  LovegoodRavenclaw
                   TEXT
                 end
               end
@@ -103,10 +103,10 @@ RSpec.describe AocCli::Helpers::TableGenerator do
               include_examples :generates_table do
                 let(:expected) do
                   <<~TEXT
-                    |Harry   Potter    Gryffindor  |
-                    |Draco   Malfoy    Slytherin   |
-                    |Hannah  Abbott    Hufflepuff  |
-                    |Luna    Lovegood  Ravenclaw   |
+                    Harry   Potter    Gryffindor
+                    Draco   Malfoy    Slytherin
+                    Hannah  Abbott    Hufflepuff
+                    Luna    Lovegood  Ravenclaw
                   TEXT
                 end
               end
@@ -123,9 +123,9 @@ RSpec.describe AocCli::Helpers::TableGenerator do
                 let(:expected) do
                   <<~TEXT
                     |  Harry Potter  Gryffindor|
-                    |  Draco Malfoy  Slytherin |
+                    |  Draco Malfoy  Slytherin
                     |  HannahAbbott  Hufflepuff|
-                    |  Luna  LovegoodRavenclaw |
+                    |  Luna  LovegoodRavenclaw
                   TEXT
                 end
               end
@@ -137,10 +137,10 @@ RSpec.describe AocCli::Helpers::TableGenerator do
               include_examples :generates_table do
                 let(:expected) do
                   <<~TEXT
-                    |  Harry     Potter      Gryffindor    |
-                    |  Draco     Malfoy      Slytherin     |
-                    |  Hannah    Abbott      Hufflepuff    |
-                    |  Luna      Lovegood    Ravenclaw     |
+                    |  Harry     Potter      Gryffindor
+                    |  Draco     Malfoy      Slytherin
+                    |  Hannah    Abbott      Hufflepuff
+                    |  Luna      Lovegood    Ravenclaw
                   TEXT
                 end
               end
