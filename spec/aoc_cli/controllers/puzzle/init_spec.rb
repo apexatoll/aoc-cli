@@ -82,7 +82,9 @@ RSpec.describe "/puzzle/init/:day", :with_temp_dir do
     shared_examples :renders_init_message do
       it "renders the expected message" do
         expect { make_request }.to output(<<~TEXT).to_stdout
-          #{year}: Puzzle #{day} initialised
+          Puzzle initialised
+            event  #{year}
+            day    #{day}
         TEXT
       end
     end

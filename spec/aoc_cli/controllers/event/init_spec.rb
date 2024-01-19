@@ -74,7 +74,9 @@ RSpec.describe "/event/init/:year", :with_temp_dir do
 
     it "renders the expected output" do
       expect { make_request }.to output(<<~TEXT).to_stdout
-        Event #{year} initialised in #{event_dir}
+        Event initialised
+          year  #{year}
+          path  #{event_dir}
       TEXT
     end
   end

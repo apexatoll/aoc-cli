@@ -29,9 +29,9 @@ RSpec.describe "/event/attach/:year", :with_temp_dir do
 
     it "renders the expected response" do
       expect { make_request }.to output(<<~TEXT).to_stdout
-        Event (#{year}) location updated
-          from #{source_path}
-          to   #{target_path}
+        #{year} location updated
+          from  #{source_path}
+          to    #{target_path}
       TEXT
     end
   end
