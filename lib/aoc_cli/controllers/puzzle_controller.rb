@@ -26,6 +26,8 @@ module AocCli
         location: current_location,
         skip_cache: params[:skip_cache] || false
       )
+
+      Components::PuzzleSyncComponent.new(log: @sync_log).render
     end
 
     def attempts

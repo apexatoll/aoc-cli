@@ -54,9 +54,9 @@ RSpec.describe "/puzzle/sync", :with_temp_dir do
 
     it "renders the expected message" do
       expect { make_request }.to output(<<~TEXT).to_stdout
-        Puzzle #{puzzle.presenter.date} refreshed
-        Puzzle: new
-        Input: new
+        Puzzle #{puzzle.presenter.date} dir synchronised
+          day_02.md  new
+          input      new
       TEXT
     end
   end
@@ -76,9 +76,9 @@ RSpec.describe "/puzzle/sync", :with_temp_dir do
 
     it "renders the expected message" do
       expect { make_request }.to output(<<~TEXT).to_stdout
-        Puzzle #{puzzle.presenter.date} refreshed
-        Puzzle: modified
-        Input: modified
+        Puzzle #{puzzle.presenter.date} dir synchronised
+          day_02.md  modified
+          input      modified
       TEXT
     end
   end
@@ -94,9 +94,9 @@ RSpec.describe "/puzzle/sync", :with_temp_dir do
 
     it "renders the expected message" do
       expect { make_request }.to output(<<~TEXT).to_stdout
-        Puzzle #{puzzle.presenter.date} refreshed
-        Puzzle: unmodified
-        Input: unmodified
+        Puzzle #{puzzle.presenter.date} dir synchronised
+          day_02.md  unmodified
+          input      unmodified
       TEXT
     end
   end
