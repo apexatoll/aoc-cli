@@ -24,7 +24,7 @@ RSpec.describe AocCli::Helpers::ViewHelper do
   describe "#table_for" do
     subject(:table) { target.table_for(*rows, gap:, indent:) }
 
-    let(:rows) { [%i[foo bar baz], %i[foo bar baz]] }
+    let(:rows) { [%w[foo bar baz], %w[foo bar baz]] }
 
     let(:gap) { 2 }
 

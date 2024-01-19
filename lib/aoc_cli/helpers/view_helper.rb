@@ -10,6 +10,8 @@ module AocCli
       end
 
       def table_for(*rows, gap: 2, indent: 0)
+        rows.map! { |row| row.map(&:to_s) }
+
         TableGenerator.new(rows:, gap:, indent:).generate!
       end
 
