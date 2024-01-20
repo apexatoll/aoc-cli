@@ -25,7 +25,7 @@ RSpec.describe AocCli::Helpers::TableGenerator do
 
       matcher :eq_table do |expected|
         match do |actual|
-          formatted_table = expected.gsub("|", "").chomp
+          formatted_table = expected.gsub("|", "")
 
           expect(actual).to eq(formatted_table)
         end

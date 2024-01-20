@@ -29,7 +29,13 @@ module AocCli
       def generate!
         validate!
 
-        rows.map { |row| space(indent) + format_row!(row) }.join("\n")
+        rows.map do |row|
+          [
+            space(indent),
+            format_row!(row),
+            "\n"
+          ].join
+        end.join
       end
 
       private
