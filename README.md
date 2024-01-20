@@ -6,7 +6,7 @@ A command-line interface for Advent of Code, built in Ruby.
 > `aoc_cli` has gone through a complete rewrite as of `1.0.0` in order to improve resilience and the overall user interface.
 > The core application has been swapped out to use the [Kangaru](https://github.com/apexatoll/kangaru) command line framework, with a completely new API and removal of bloated features.
 > There are also some other improvements on performance, and removal of some hefty dependencies such as `pandoc`.
-> These are breaking changes, so please pin your version to `0.2.3` if you wisth to continue using the previous version.
+> These are breaking changes, so please pin your version to `0.2.3` if you wish to continue using the previous version.
 
 
 ## Main Features
@@ -188,4 +188,4 @@ Please create an issue if there are any bugs or problems using `aoc-cli`. Contri
 
 ## Acknowledgments
 
-`aoc-cli` is in no way affiliated with Advent of Code, but I would like to take this opportunity to thank the creator, Eric Wastl, for the immense effort to produce these fantastic puzzles year on year.
+`aoc-cli` is in no way affiliated with Advent of Code, but I would like to take this opportunity to thank the creator, Eric Wastl, for his efforts in producing these fantastic puzzles year on year.
