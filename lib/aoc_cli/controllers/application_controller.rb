@@ -3,6 +3,8 @@ module AocCli
     include Concerns::ErrorConcern
     include Concerns::LocationConcern
 
+    include Helpers::ViewHelper
+
     def execute
       return handle_help_param! if params[:help]
 
