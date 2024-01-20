@@ -111,6 +111,9 @@ At the time of writing, the valid years are 2015 - 2023.
 
 ### Initialising a Puzzle
 
+> [!CAUTION]
+> Please do not check puzzle or input files into your version control system, as this is against Advent of Code rules.
+
 Run the following command from an event directory to fetch and initialize a puzzle directory and associated files:
 
 ```bash
