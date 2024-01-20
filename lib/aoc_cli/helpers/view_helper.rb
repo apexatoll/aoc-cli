@@ -9,6 +9,10 @@ module AocCli
         text.to_s.bold.cyan
       end
 
+      def success_tag
+        "Success".green.bold
+      end
+
       def table_for(*rows, gap: 2, indent: 0)
         rows.map! { |row| row.map(&:to_s) }
 
