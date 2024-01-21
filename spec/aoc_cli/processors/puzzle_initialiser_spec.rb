@@ -147,8 +147,13 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
 
     let(:day) { 20 }
 
+    before do
+      allow(AocCli::Processors::ProgressSyncer).to receive(:run!)
+    end
+
     context "and puzzle is not already initialised elsewhere" do
       let(:puzzle)   { AocCli::Puzzle.last }
+      let(:progress) { AocCli::Progress.last }
       let(:location) { AocCli::Location.last }
 
       it "fetches the puzzle content" do
@@ -165,10 +170,23 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
           .with_attributes(event:, day:, content:, input:)
       end
 
+      it "syncs the puzzle progress" do
+        run_process
+
+        expect(AocCli::Processors::ProgressSyncer)
+          .to have_received(:run!)
+          .with(puzzle:, stats: event.stats)
+      end
+
       it "creates the Location record" do
         expect { run_process }
           .to create_model(AocCli::Location)
           .with_attributes(path: puzzle_dir.to_s)
+      end
+
+      it "associates the progress to the puzzle" do
+        run_process
+        expect(puzzle.part_one_progress).to eq(progress)
       end
 
       it "associates the location to the puzzle" do
@@ -213,6 +231,14 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
             .to include(content:, input:)
         end
 
+        it "syncs the puzzle progress" do
+          run_process
+
+          expect(AocCli::Processors::ProgressSyncer)
+            .to have_received(:run!)
+            .with(puzzle:, stats: event.stats)
+        end
+
         it "does not create a Location record" do
           expect { run_process }.not_to create_model(AocCli::Location)
         end
@@ -246,6 +272,14 @@ RSpec.describe AocCli::Processors::PuzzleInitialiser, :with_temp_dir do
 
         it "does not update the Puzzle" do
           expect { run_process }.not_to change { puzzle.reload.values }
+        end
+
+        it "syncs the puzzle progress" do
+          run_process
+
+          expect(AocCli::Processors::ProgressSyncer)
+            .to have_received(:run!)
+            .with(puzzle:, stats: event.stats)
         end
 
         it "does not create a Location record" do
