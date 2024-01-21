@@ -1,0 +1,29 @@
+module AocCli
+  module Processors
+    class ProgressSyncer < Core::Processor
+      attr_accessor puzzle: Puzzle
+      attr_accessor stats: Stats
+
+      def run: -> void
+
+      def self.run!: (puzzle: untyped, stats: untyped) -> void
+
+      private
+
+      def part_one_progress: -> Progress?
+      def part_two_progress: -> Progress?
+
+      def current_progress: -> Integer
+
+      def create_part_one_progress!: -> void
+
+      def create_part_two_progress!: -> void
+
+      def handle_not_complete!: -> void
+
+      def handle_partially_complete!: -> void
+
+      def handle_fully_complete!: -> void
+    end
+  end
+end
