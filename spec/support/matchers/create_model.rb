@@ -13,6 +13,7 @@ module Matchers
 
       return created unless @attributes
 
+      expect(created).to be(true)
       expect(model_class.last).to have_attributes(**@attributes)
     end
 
