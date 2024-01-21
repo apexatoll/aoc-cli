@@ -6,7 +6,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: addressable
@@ -14,7 +14,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: base64
@@ -42,7 +42,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: connection_pool
@@ -50,7 +50,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: date
@@ -74,7 +74,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: i18n
@@ -82,7 +82,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: kangaru
@@ -114,7 +114,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 20e6e0f0685139dbd29df50e03367e222aa5d1b8
+    revision: ec140aff951e3af39846eed4525ba5d040d294fa
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: pathname
