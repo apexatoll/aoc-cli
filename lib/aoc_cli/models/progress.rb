@@ -6,6 +6,14 @@ module AocCli
     validates :level, integer: { between: 1..2 }
     validates :started_at, required: true
 
+    def complete?
+      !incomplete?
+    end
+
+    def incomplete?
+      completed_at.nil?
+    end
+
     def complete!
       update(completed_at: Time.now)
     end
