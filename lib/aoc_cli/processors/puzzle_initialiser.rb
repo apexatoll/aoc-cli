@@ -16,6 +16,8 @@ module AocCli
 
       def run
         create_or_update_puzzle!(fetch_content!, fetch_input!).tap do |puzzle|
+          sync_puzzle_progress!(puzzle)
+
           attach_puzzle_dir!(puzzle).tap do |location|
             write_puzzle_files!(puzzle, location)
           end
@@ -52,6 +54,10 @@ module AocCli
         else
           existing_puzzle.update(content:, input:) || existing_puzzle
         end
+      end
+
+      def sync_puzzle_progress!(puzzle)
+        ProgressSyncer.run!(puzzle:, stats: event.stats)
       end
 
       def attach_puzzle_dir!(puzzle)

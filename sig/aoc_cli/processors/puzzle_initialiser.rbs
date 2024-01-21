@@ -23,6 +23,8 @@ module AocCli
 
       def create_or_update_puzzle!: (String, String) -> Puzzle
 
+      def sync_puzzle_progress!: (Puzzle) -> void
+
       def attach_puzzle_dir!: (Puzzle) -> Location
 
       def write_puzzle_files!: (Puzzle, Location) -> PuzzleDirSyncLog
