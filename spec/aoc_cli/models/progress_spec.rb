@@ -83,6 +83,24 @@ RSpec.describe AocCli::Progress do
     end
   end
 
+  describe "#complete?" do
+    let(:started_at) { now - 5000 }
+
+    context "when incomplete" do
+      it "returns false" do
+        expect(progress).not_to be_complete
+      end
+    end
+
+    context "when complete" do
+      before { progress.complete! }
+
+      it "returns true" do
+        expect(progress).to be_complete
+      end
+    end
+  end
+
   describe "#complete!" do
     subject(:complete!) { progress.complete! }
 
