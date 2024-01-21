@@ -21,5 +21,13 @@ module AocCli
     def reset!
       update(started_at: Time.now)
     end
+
+    def time_taken
+      if complete?
+        completed_at - started_at
+      else
+        Time.now - started_at
+      end
+    end
   end
 end

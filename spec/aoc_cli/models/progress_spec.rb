@@ -1,13 +1,15 @@
 RSpec.describe AocCli::Progress do
   subject(:progress) { described_class.create(**attributes) }
 
-  let(:attributes) { { puzzle:, level:, started_at: }.compact }
+  let(:attributes) { { puzzle:, level:, started_at:, completed_at: }.compact }
 
   let(:puzzle) { create(:puzzle) }
 
   let(:level) { 1 }
 
   let(:started_at) { now }
+
+  let(:completed_at) { nil }
 
   let(:now) { Time.now.round(6) }
 
@@ -124,6 +126,26 @@ RSpec.describe AocCli::Progress do
         .to change { progress.reload.started_at }
         .from(started_at)
         .to(now)
+    end
+  end
+
+  describe "#time_taken" do
+    subject(:time_taken) { progress.time_taken }
+
+    let(:started_at) { now - 10_000 }
+
+    context "when progress is complete" do
+      let(:completed_at) { started_at + 5000 }
+
+      it "returns the time taken to complete the puzzle" do
+        expect(time_taken).to eq(completed_at - started_at)
+      end
+    end
+
+    context "when progress not complete" do
+      it "returns the time elapsed since starting the puzzle" do
+        expect(time_taken).to eq(now - started_at)
+      end
     end
   end
 end
