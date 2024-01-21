@@ -111,25 +111,21 @@ RSpec.describe AocCli::Processors::SolutionPoster do
       end
 
       if options[:initial].zero?
-        it "sets the part_one_completed_at timestamp" do
+        it "sets the part_one_progress completed at timestamp" do
           expect { run_process }
-            .to change { puzzle.reload.part_one_completed_at }
+            .to change { puzzle.reload.part_one_progress.completed_at }
             .to(now)
         end
 
-        it "does not set the part_two_completed_at timestamp" do
+        it "creates the part_two_progress record" do
           expect { run_process }
-            .not_to change { puzzle.reload.part_two_completed_at }
+            .to create_model(AocCli::Progress)
+            .with_attributes(puzzle:, level: 2, started_at: now)
         end
       else
-        it "does not set the part_one_completed_at timestamp" do
-          expect { run_process }
-            .not_to change { puzzle.reload.part_one_completed_at }
-        end
-
         it "sets the part_two_completed_at timestamp" do
           expect { run_process }
-            .to change { puzzle.reload.part_two_completed_at }
+            .to change { puzzle.reload.part_two_progress.completed_at }
             .to(now)
         end
       end
@@ -238,6 +234,8 @@ RSpec.describe AocCli::Processors::SolutionPoster do
               context "and puzzle has no progress" do
                 let(:progress) { 0 }
 
+                before { create(:progress, puzzle:, level: 1) }
+
                 context "and answer was given too recently" do
                   let(:body) do
                     wrap_in_html(<<~HTML)
@@ -272,6 +270,8 @@ RSpec.describe AocCli::Processors::SolutionPoster do
 
               context "and puzzle has partial progress" do
                 let(:progress) { 1 }
+
+                before { create(:progress, puzzle:, level: 2) }
 
                 context "and answer was given too recently" do
                   let(:body) do

@@ -99,8 +99,8 @@ RSpec.describe "/puzzle/solve", :with_temp_dir do
     context "and answer was correct" do
       let(:tag) { :correct }
 
-      let(:puzzle_timestamp) do
-        progress == 0 ? :part_one_completed_at : :part_two_completed_at
+      let(:progress_record) do
+        progress == 0 ? :part_one_progress : :part_two_progress
       end
 
       let(:updated_puzzle) { "updated puzzle content" }
@@ -135,7 +135,7 @@ RSpec.describe "/puzzle/solve", :with_temp_dir do
 
       it "updates the Puzzle" do
         expect { make_request }
-          .to change { puzzle.reload[puzzle_timestamp] }
+          .to change { puzzle.reload.send(progress_record).completed_at }
           .from(nil)
           .to(a_kind_of(Time))
       end
@@ -218,11 +218,15 @@ RSpec.describe "/puzzle/solve", :with_temp_dir do
         context "and puzzle is partially complete" do
           let(:progress) { 1 }
 
+          before { create(:progress, puzzle:, level: 2) }
+
           include_examples :posts_solution
         end
 
         context "and puzzle is not complete" do
           let(:progress) { 0 }
+
+          before { create(:progress, puzzle:, level: 1) }
 
           include_examples :posts_solution
         end

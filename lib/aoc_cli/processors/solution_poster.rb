@@ -39,8 +39,8 @@ module AocCli
 
       def advance_puzzle!
         event.stats.advance_progress!(day)
-        puzzle.mark_complete!(level)
 
+        ProgressSyncer.run!(puzzle:, stats: event.stats.reload)
         PuzzleDirSynchroniser.run!(puzzle:, location:, skip_cache: true)
       end
 
