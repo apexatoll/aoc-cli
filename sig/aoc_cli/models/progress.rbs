@@ -1,0 +1,11 @@
+module AocCli
+  class Progress < Kangaru::Model
+    attr_accessor id: Integer
+    attr_accessor puzzle: Puzzle
+    attr_accessor level: Integer
+    attr_accessor started_at: Time
+    attr_accessor completed_at: Time
+    attr_accessor created_at: Time
+    attr_accessor updated_at: Time
+  end
+end
