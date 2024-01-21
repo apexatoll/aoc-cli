@@ -15,5 +15,7 @@ module AocCli
     def complete!: -> void
 
     def reset!: -> void
+
+    def time_taken: -> Float
   end
 end
