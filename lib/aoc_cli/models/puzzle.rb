@@ -6,6 +6,14 @@ module AocCli
     one_to_one :location, as: :resource
     one_to_many :attempts
 
+    one_to_one :part_one_progress,
+               class: "AocCli::Progress",
+               conditions: { level: 1 }
+
+    one_to_one :part_two_progress,
+               class: "AocCli::Progress",
+               conditions: { level: 2 }
+
     validates :event, required: true
     validates :day, integer: { between: 1..25 }
     validates :content, required: true

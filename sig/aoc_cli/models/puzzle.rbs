@@ -18,6 +18,9 @@ module AocCli
     attr_accessor attempts: Array[Attempt]
     attr_accessor attempts_dataset: Sequel::Dataset
 
+    attr_accessor part_one_progress: Progress?
+    attr_accessor part_two_progress: Progress?
+
     # Delegated to event
     def year: -> Integer
 
