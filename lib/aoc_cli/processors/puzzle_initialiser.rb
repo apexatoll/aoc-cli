@@ -8,6 +8,7 @@ module AocCli
 
       def validate
         super
+        validate_event_stats_set! if errors.empty?
         validate_event_location_set! if errors.empty?
         validate_event_dir_exists! if errors.empty?
         validate_puzzle_dir_does_not_exist! if errors.empty?
@@ -61,6 +62,14 @@ module AocCli
 
       def write_puzzle_files!(puzzle, location)
         PuzzleDirSynchroniser.run!(puzzle:, location:)
+      end
+
+      def validate_event_stats_set!
+        return unless event.stats.nil?
+
+        errors << Kangaru::Validation::Error.new(
+          attribute: :event_stats, message: "can't be blank"
+        )
       end
 
       def validate_event_location_set!

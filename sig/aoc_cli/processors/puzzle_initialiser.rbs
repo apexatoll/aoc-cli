@@ -27,6 +27,8 @@ module AocCli
 
       def write_puzzle_files!: (Puzzle, Location) -> PuzzleDirSyncLog
 
+      def validate_event_stats_set!: -> void
+
       def validate_event_location_set!: -> void
 
       def validate_event_dir_exists!: -> void
