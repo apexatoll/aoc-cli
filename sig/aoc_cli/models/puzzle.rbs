@@ -25,7 +25,5 @@ module AocCli
     def year: -> Integer
 
     attr_reader presenter: Presenters::PuzzlePresenter
-
-    def mark_complete!: (Integer) -> void
   end
 end
