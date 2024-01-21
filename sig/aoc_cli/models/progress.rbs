@@ -7,5 +7,9 @@ module AocCli
     attr_accessor completed_at: Time
     attr_accessor created_at: Time
     attr_accessor updated_at: Time
+
+    def complete!: -> void
+
+    def reset!: -> void
   end
 end

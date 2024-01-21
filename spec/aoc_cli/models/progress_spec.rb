@@ -82,4 +82,30 @@ RSpec.describe AocCli::Progress do
       end
     end
   end
+
+  describe "#complete!" do
+    subject(:complete!) { progress.complete! }
+
+    let(:started_at) { now - 5000 }
+
+    it "updates the completed_at timestamp" do
+      expect { complete! }
+        .to change { progress.reload.completed_at }
+        .from(nil)
+        .to(now)
+    end
+  end
+
+  describe "#reset!" do
+    subject(:reset!) { progress.reset! }
+
+    let(:started_at) { now - 5000 }
+
+    it "updates the started_at timestamp" do
+      expect { reset! }
+        .to change { progress.reload.started_at }
+        .from(started_at)
+        .to(now)
+    end
+  end
 end
