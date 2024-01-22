@@ -14,9 +14,13 @@ module AocCli
   config_path "spec/aoc.yml", env: :test
 
   configure do |config|
+    migration_path = File.join(
+      File.expand_path(__dir__ || raise), "../db/migrate"
+    )
+
     config.database.adaptor = :sqlite
     config.database.path = File.expand_path("~/.local/share/aoc/aoc.sqlite3")
-    config.database.migration_path = "db/migrate"
+    config.database.migration_path = migration_path
   end
 
   configure env: :test do |config|
