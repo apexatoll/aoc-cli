@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aoc_cli (1.0.0)
+    aoc_cli (1.0.1)
       http
       kangaru
       nokogiri
