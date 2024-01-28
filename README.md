@@ -1,6 +1,6 @@
 # `aoc-cli`
 
-![![Gem Version](https://badge.fury.io/rb/aoc_cli.svg)](https://badge.fury.io/rb/aoc_cli) [example workflow](https://github.com/apexatoll/aoc-cli/actions/workflows/main.yml/badge.svg) [![codecov](https://codecov.io/gh/apexatoll/aoc-cli/graph/badge.svg?token=7R3GFUAXI5)](https://codecov.io/gh/apexatoll/aoc-cli)
+[![Gem Version](https://badge.fury.io/rb/aoc_cli.svg)](https://badge.fury.io/rb/aoc_cli) ![aoc-ci](https://github.com/apexatoll/aoc-cli/actions/workflows/main.yml/badge.svg) [![codecov](https://codecov.io/gh/apexatoll/aoc-cli/graph/badge.svg?token=7R3GFUAXI5)](https://codecov.io/gh/apexatoll/aoc-cli)
 
 A command-line interface for Advent of Code, built in Ruby.
 
