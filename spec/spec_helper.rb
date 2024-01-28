@@ -1,7 +1,10 @@
 require "aoc_cli"
 require "factory_bot"
+require "simplecov"
 require "webmock/rspec"
 require "vcr"
+
+SimpleCov.start
 
 RSpec.configure do |config|
   Kernel.srand(config.seed)
