@@ -1,5 +1,7 @@
 # `aoc-cli`
 
+![example workflow](https://github.com/apexatoll/aoc-cli/actions/workflows/main.yml/badge.svg)[![codecov](https://codecov.io/gh/apexatoll/aoc-cli/graph/badge.svg?token=7R3GFUAXI5)](https://codecov.io/gh/apexatoll/aoc-cli)
+
 A command-line interface for Advent of Code, built in Ruby.
 
 > [!IMPORTANT]
