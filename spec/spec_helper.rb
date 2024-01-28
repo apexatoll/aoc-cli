@@ -1,9 +1,11 @@
 require "aoc_cli"
 require "factory_bot"
 require "simplecov"
+require "simplecov_json_formatter"
 require "webmock/rspec"
 require "vcr"
 
+SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
 SimpleCov.start
 
 RSpec.configure do |config|
