@@ -44,3 +44,7 @@ jobs:
           bundler-cache: true
       - name: Run tests
         run: bundle exec rspec
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
