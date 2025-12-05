@@ -4,6 +4,7 @@ module AocCli
       extend Forwardable
 
       attr_reader client: HTTP::Client
+      attr_reader ssl_context: OpenSSL::SSL::SSLContext
 
       def initialize: (token: String) -> void
 
@@ -24,6 +25,10 @@ module AocCli
       private
 
       def setup_client!: (String) -> HTTP::Client
+
+      def setup_ssl_context!: -> OpenSSL::SSL::SSLContext
+
+      def default_options: -> Hash[Symbol, untyped]
     end
   end
 end

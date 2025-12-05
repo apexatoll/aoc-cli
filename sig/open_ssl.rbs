@@ -1,0 +1,13 @@
+module OpenSSL
+  module SSL
+    class SSLContext
+      attr_accessor cert_store: untyped
+    end
+  end
+
+  module X509
+    class Store
+      def set_default_paths: -> void
+    end
+  end
+end

@@ -39,7 +39,7 @@ module AocCli
       end
 
       def setup_ssl_context!
-        OpenSSL::SSL::SSLContext.new do |context|
+        OpenSSL::SSL::SSLContext.new.tap do |context|
           context.cert_store = OpenSSL::X509::Store.new.tap(&:set_default_paths)
           context.cert_store.flags = 0
         end

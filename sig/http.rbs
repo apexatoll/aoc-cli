@@ -1,3 +1,9 @@
 module HTTP
   def self.headers: (**untyped) -> Client
+
+  class Client
+    def get: (String, **untyped) -> untyped
+
+    def post: (String, **untyped) -> untyped
+  end
 end
