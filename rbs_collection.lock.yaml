@@ -69,6 +69,14 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: hashdiff
+  version: '1.1'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: f1d2dae32fe8d46683fbc79bbd0f1ca391d5e11a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: http
   version: '5.1'
   source:
@@ -133,10 +141,26 @@ gems:
     revision: aad38d45071ab6a1389c58052d06604f0ef71591
     remote: https://github.com/apexatoll/gem_signatures
     repo_dir: sig
+- name: simplecov
+  version: '0.22'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: f1d2dae32fe8d46683fbc79bbd0f1ca391d5e11a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: singleton
   version: '0'
   source:
     type: stdlib
+- name: sqlite3
+  version: '2.0'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: f1d2dae32fe8d46683fbc79bbd0f1ca391d5e11a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: tempfile
   version: '0'
   source:
@@ -157,6 +181,22 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: tzinfo
+  version: '2.0'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: f1d2dae32fe8d46683fbc79bbd0f1ca391d5e11a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: webmock
+  version: '3.19'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: f1d2dae32fe8d46683fbc79bbd0f1ca391d5e11a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: zeitwerk
   version: '2.6'
   source:
